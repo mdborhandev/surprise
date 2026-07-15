@@ -353,6 +353,51 @@
             border-color: rgba(251,191,36,0.5);
             color: white;
         }
+
+        /* Status bar */
+        .status-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 20px;
+        }
+        .status-steps {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .status-step {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-family: 'Orbitron', monospace;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+        .status-step.active {
+            background: rgba(251,191,36,0.2);
+            border-color: rgba(251,191,36,0.5);
+            color: #FBBF24;
+        }
+        .status-step.completed {
+            background: rgba(52,211,153,0.2);
+            border-color: rgba(52,211,153,0.5);
+            color: #34D399;
+        }
+        .status-step .icon {
+            font-size: 12px;
+        }
     </style>
 </head>
 <body style="background:#000000" class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-hidden">
@@ -364,6 +409,40 @@
     <button id="music-btn" class="music-btn rounded-full w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors hidden" onclick="toggleMusic()">
         <span id="music-icon">&#9835;</span>
     </button>
+
+    <!-- Status Bar -->
+    <div id="status-bar" class="status-bar hidden">
+        <div class="status-steps">
+            <div id="step-reveal" class="status-step">
+                <span class="icon">&#127874;</span>
+                <span>Reveal</span>
+            </div>
+            <div id="step-story" class="status-step">
+                <span class="icon">&#128247;</span>
+                <span>Story</span>
+            </div>
+            <div id="step-quiz" class="status-step">
+                <span class="icon">&#10067;</span>
+                <span>Quiz</span>
+            </div>
+            <div id="step-memory" class="status-step">
+                <span class="icon">&#129504;</span>
+                <span>Memory</span>
+            </div>
+            <div id="step-spin" class="status-step">
+                <span class="icon">&#127905;</span>
+                <span>Spin</span>
+            </div>
+            <div id="step-reasons" class="status-step">
+                <span class="icon">&#10084;&#65039;</span>
+                <span>Reasons</span>
+            </div>
+            <div id="step-finale" class="status-step">
+                <span class="icon">&#127881;</span>
+                <span>Finale</span>
+            </div>
+        </div>
+    </div>
 
     <!-- ==================== COUNTDOWN PHASE ==================== -->
     <div id="countdown-phase">
@@ -536,17 +615,18 @@
 
     <!-- ==================== AUDIO ==================== -->
     <audio id="bg-music" loop preload="auto">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="Fahamida/Happy Birthday To You Ji - Funny Hindi Birthday Song (Part 1) - Funzoa Mimi Teddy, Krsna Solo.mp3" type="audio/mpeg">
     </audio>
 
     <script>
         // ==================== CONFIGURATION ====================
         const NICKNAMES = ['Paki', 'Monu', 'Fahu', 'Sonamoni', 'Baby', 'My Pet', 'My Sajna'];
-        const TOTAL_IMAGES = 44;
-        const STORY_IMAGES = Array.from({length: 25}, (_, i) => i + 1);
-        const MEMORY_IMAGES = [1, 6, 11, 16, 21, 26]; // 6 pairs
-        const REASON_IMAGES = Array.from({length: 13}, (_, i) => i + 26);
-        const FINALE_IMAGES = Array.from({length: 6}, (_, i) => i + 39);
+        const TOTAL_IMAGES = 28;
+        const IMAGE_FILES = ['Paki', 'Monu', 'Fahu', 'Sonamoni', 'Baby', 'My Pet', 'My Sajna', 'Jaan', 'Jaanu', 'Sweetheart', 'Princess', 'Darling', 'Honey', 'My Queen', 'Angel', 'Beautiful', 'Cutie', 'Babu', 'Shona', 'Gudiya', 'Rani', 'Mere Dil', 'Meri Jaan', 'Pyaari', 'Choti', 'Jaane Jaan', 'Dil Ki Dhadkan', 'Meri Zindagi'];
+        const STORY_IMAGES = IMAGE_FILES.slice(0, 14);
+        const MEMORY_IMAGES = ['Beautiful', 'Cutie', 'Babu', 'Shona', 'Gudiya', 'Rani'];
+        const REASON_IMAGES = IMAGE_FILES.slice(14, 22);
+        const FINALE_IMAGES = IMAGE_FILES.slice(22, 28);
 
         const SPIN_MESSAGES = [
             "You are the most beautiful person I know, {nickname}!",
@@ -573,17 +653,6 @@
             "You are the reason I believe in magic, {nickname}",
             "Your kindness touches everyone around you, {nickname}",
             "You are my happy place, {nickname}",
-            "I cherish every second with you, {nickname}",
-            "You are stronger than you know, {nickname}",
-            "Your beauty takes my breath away, {nickname}",
-            "You are my dream come true, {nickname}",
-            "I am so grateful for you, {nickname}",
-            "You make ordinary moments extraordinary, {nickname}",
-            "Your heart is pure gold, {nickname}",
-            "I love the way you smile, {nickname}",
-            "You are my inspiration, {nickname}",
-            "You are everything I ever wished for, {nickname}",
-            "Your presence makes my world complete, {nickname}",
             "Happy birthday to the most amazing person, {nickname}"
         ];
 
@@ -766,6 +835,7 @@
         function startSurprise() {
             // Hide countdown
             document.getElementById('countdown-phase').style.display = 'none';
+            showStatusBar();
 
             // Start music
             const music = document.getElementById('bg-music');
@@ -803,6 +873,7 @@
         // ==================== PHASE 1: DRAMATIC REVEAL ====================
         function startPhase1() {
             isTransitioning = true;
+            updateStatusBar('reveal');
             document.getElementById('phase1').classList.add('active');
             setTimeout(() => {
                 document.getElementById('phase1-content').classList.add('fade-in');
@@ -835,6 +906,7 @@
 
         // ==================== PHASE 2: PHOTO STORY ====================
         function startPhase2() {
+            updateStatusBar('story');
             document.getElementById('phase2').classList.add('active');
             initSlideshow();
         }
@@ -915,6 +987,7 @@
 
         function startPhase3() {
             isTransitioning = true;
+            updateStatusBar('quiz');
             document.getElementById('phase3').classList.add('active');
             quizIndex = 0;
             quizScore = 0;
@@ -1003,6 +1076,7 @@
         // ==================== PHASE 3.5: MEMORY MATCH GAME ====================
         function startPhase3_5() {
             isTransitioning = true;
+            updateStatusBar('memory');
             document.getElementById('phase3-5').classList.add('active');
             initMemoryGame();
         }
@@ -1017,9 +1091,9 @@
 
             // Create pairs
             memoryCards = [];
-            MEMORY_IMAGES.forEach((imgNum, i) => {
-                memoryCards.push({ id: i, img: imgNum });
-                memoryCards.push({ id: i, img: imgNum });
+            MEMORY_IMAGES.forEach((imgName, i) => {
+                memoryCards.push({ id: i, img: imgName });
+                memoryCards.push({ id: i, img: imgName });
             });
 
             // Shuffle
@@ -1110,6 +1184,7 @@
         // ==================== PHASE 4: SPIN THE WHEEL ====================
         function startPhase4() {
             isTransitioning = true;
+            updateStatusBar('spin');
             document.getElementById('phase4').classList.add('active');
             initSpinWheel();
         }
@@ -1163,19 +1238,20 @@
         // ==================== PHASE 5: REASONS I LOVE YOU ====================
         function startPhase5() {
             isTransitioning = true;
+            updateStatusBar('reasons');
             document.getElementById('phase5').classList.add('active');
             const container = document.getElementById('reasons-container');
             container.innerHTML = '';
 
-            REASON_IMAGES.forEach((imgNum, i) => {
+            REASON_IMAGES.forEach((imgName, i) => {
                 const card = document.createElement('div');
                 card.className = 'reason-card rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 opacity-0';
                 card.style.animationDelay = (i * 0.2) + 's';
 
                 const img = document.createElement('img');
-                img.src = 'Fahamida/' + imgNum + '.png';
+                img.src = 'Fahamida/' + imgName + '.png';
                 img.className = 'w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-xl';
-                img.alt = 'Reason ' + (i + 1);
+                img.alt = imgName;
 
                 const textDiv = document.createElement('div');
                 textDiv.className = 'text-center sm:text-left';
@@ -1205,16 +1281,17 @@
         // ==================== PHASE 6: FINAL SURPRISE ====================
         function startPhase6() {
             isTransitioning = true;
+            updateStatusBar('finale');
             document.getElementById('phase6').classList.add('active');
             createConfetti();
 
             // Build mosaic grid
             const grid = document.getElementById('mosaic-grid');
             grid.innerHTML = '';
-            FINALE_IMAGES.forEach((imgNum, i) => {
+            FINALE_IMAGES.forEach((imgName, i) => {
                 const item = document.createElement('div');
                 item.className = 'mosaic-item opacity-0';
-                item.innerHTML = `<img src="Fahamida/${imgNum}.png" class="w-full h-24 sm:h-32 object-cover rounded-lg" alt="">`;
+                item.innerHTML = `<img src="Fahamida/${imgName}.png" class="w-full h-24 sm:h-32 object-cover rounded-lg" alt="${imgName}">`;
                 grid.appendChild(item);
                 setTimeout(() => {
                     item.classList.add('scale-in');
@@ -1237,6 +1314,28 @@
                 document.getElementById('replay-btn').classList.remove('hidden');
                 isTransitioning = false;
             }, 3000);
+        }
+
+        // ==================== STATUS BAR ====================
+        function updateStatusBar(activePhase) {
+            const phases = ['reveal', 'story', 'quiz', 'memory', 'spin', 'reasons', 'finale'];
+            const activeIndex = phases.indexOf(activePhase);
+
+            phases.forEach((phase, index) => {
+                const el = document.getElementById('step-' + phase);
+                if (!el) return;
+
+                el.classList.remove('active', 'completed');
+                if (index < activeIndex) {
+                    el.classList.add('completed');
+                } else if (index === activeIndex) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        function showStatusBar() {
+            document.getElementById('status-bar').classList.remove('hidden');
         }
 
         // ==================== START ====================
