@@ -73,8 +73,8 @@
     <!-- Title -->
     <div class="text-center mb-10 float-anim relative z-10">
         <p class="text-white/60 text-xs sm:text-sm font-body font-bold uppercase tracking-[0.35em] mb-4">Counting down to</p>
-        <h1 class="font-digital text-4xl sm:text-5xl md:text-6xl lg:text-7xl shimmer-text leading-tight tracking-wider">
-            Fahamida's Birthday
+        <h1 id="title-name" class="font-digital text-4xl sm:text-5xl md:text-6xl lg:text-7xl shimmer-text leading-tight tracking-wider">
+            Birthday
         </h1>
         <div class="w-16 h-0.5 bg-white/20 mx-auto mt-5 rounded-full"></div>
         <p class="text-white/50 text-sm sm:text-base font-body font-bold mt-5">Something beautiful is on its way</p>
@@ -107,7 +107,7 @@
 
     <!-- Birthday message -->
     <div id="birthday-msg" class="hidden text-center relative z-10">
-        <h2 class="font-digital text-4xl sm:text-5xl md:text-6xl shimmer-text mb-5 tracking-wider">Happy Birthday Fahamida!</h2>
+        <h2 id="birthday-msg-text" class="font-digital text-4xl sm:text-5xl md:text-6xl shimmer-text mb-5 tracking-wider">Happy Birthday!</h2>
         <p class="font-body text-lg text-white/60 font-bold">Make a wish!</p>
     </div>
 
@@ -115,7 +115,21 @@
     <p class="fixed bottom-3 right-4 text-[10px] text-white/20 font-body font-bold">Font: Digital-7 by Sizenko Alexander</p>
 
     <script>
-        const target = new Date('2026-07-24T00:00:00').getTime();
+        let target;
+
+        async function loadBirthday() {
+            try {
+                const res = await fetch('birthday.json');
+                const data = await res.json();
+                target = new Date(data.birthday + 'T00:00:00').getTime();
+                document.getElementById('title-name').textContent = data.name + "'s Birthday";
+                document.getElementById('birthday-msg-text').textContent = "Happy Birthday " + data.name + "!";
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
+            } catch (e) {
+                console.error('Could not load birthday.json', e);
+            }
+        }
 
         // Stars
         (function() {
@@ -165,8 +179,7 @@
             }
         }
 
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+        loadBirthday();
     </script>
 
 </body>
