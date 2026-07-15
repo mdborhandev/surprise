@@ -117,25 +117,11 @@
         <p class="font-body text-lg text-white/60 font-bold">Make a wish!</p>
     </div>
 
-    <!-- Progress bar -->
-    <div class="max-w-md w-full relative z-10">
-        <div class="flex justify-between text-xs text-white/40 font-body font-bold mb-2">
-            <span>Now</span>
-            <span id="percent-text">0%</span>
-            <span>The Big Day</span>
-        </div>
-        <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-            <div id="progress-bar" class="h-full rounded-full transition-all duration-1000" style="width: 0%; background:#FFFFFF"></div>
-        </div>
-    </div>
-
     <!-- Font credit -->
     <p class="fixed bottom-3 right-4 text-[10px] text-white/20 font-body font-bold">Font: Digital-7 by Sizenko Alexander</p>
 
     <script>
         const target = new Date('2026-07-24T00:00:00').getTime();
-        const start = new Date('2026-01-01T00:00:00').getTime();
-        const totalDuration = target - start;
 
         // Stars
         (function() {
@@ -163,8 +149,6 @@
             if (diff <= 0) {
                 ['days','hours','minutes','seconds'].forEach(id => document.getElementById(id).textContent = '00');
                 document.getElementById('birthday-msg').classList.remove('hidden');
-                document.getElementById('progress-bar').style.width = '100%';
-                document.getElementById('percent-text').textContent = '100%';
                 return;
             }
 
@@ -185,11 +169,6 @@
                 el.classList.add('tick-anim');
                 prevSeconds = s;
             }
-
-            const elapsed = now - start;
-            const pct = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
-            document.getElementById('progress-bar').style.width = pct.toFixed(1) + '%';
-            document.getElementById('percent-text').textContent = pct.toFixed(0) + '%';
         }
 
         updateCountdown();
