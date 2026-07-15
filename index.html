@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fahamida's Birthday Countdown</title>
+    <title>Fahamida's Birthday Surprise</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -32,10 +32,6 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
         }
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
         @keyframes star-twinkle {
             0%, 100% { opacity: 0.1; transform: scale(0.8); }
             50% { opacity: 0.7; transform: scale(1.1); }
@@ -44,11 +40,40 @@
             0%, 80%, 100% { transform: scale(1); }
             40% { transform: scale(1.1); }
         }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        @keyframes glow-pulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(251,191,36,0.5), 0 0 40px rgba(251,191,36,0.3); }
+            50% { text-shadow: 0 0 40px rgba(251,191,36,0.8), 0 0 80px rgba(251,191,36,0.5), 0 0 120px rgba(251,191,36,0.3); }
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
         .card-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
         .float-anim { animation: float 3s ease-in-out infinite; }
-        .shimmer-text {
-            color: #FFFFFF;
-        }
+        .shimmer-text { color: #FFFFFF; }
         .countdown-digit { transition: transform 0.3s ease; }
         .countdown-digit:hover { transform: scale(1.06); }
         .tick-anim { animation: tick 0.4s ease; }
@@ -63,6 +88,271 @@
         body { font-family: 'Orbitron', system-ui, sans-serif; font-weight: 700; }
         .font-digital { font-family: 'Orbitron', monospace; font-weight: 700; }
         .font-body { font-family: 'Orbitron', system-ui, sans-serif; font-weight: 700; }
+
+        /* Surprise phases */
+        .phase { display: none; position: fixed; inset: 0; z-index: 100; }
+        .phase.active { display: flex; }
+        .fade-in { animation: fadeIn 1s ease forwards; }
+        .fade-out { animation: fadeOut 1s ease forwards; }
+        .slide-up { animation: slideUp 0.8s ease forwards; }
+        .scale-in { animation: scaleIn 0.6s ease forwards; }
+        .glow-text { animation: glow-pulse 2s ease-in-out infinite; }
+        .heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall linear forwards;
+        }
+
+        /* Slideshow */
+        .slide-image {
+            max-width: 90vw;
+            max-height: 65vh;
+            object-fit: contain;
+            border-radius: 16px;
+            box-shadow: 0 0 60px rgba(255,255,255,0.15), 0 20px 40px rgba(0,0,0,0.5);
+            transition: all 0.5s ease;
+        }
+        .slide-image:hover {
+            transform: scale(1.02);
+        }
+        .slide-caption {
+            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5), transparent);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0 0 16px 16px;
+        }
+        .slide-container {
+            position: relative;
+            background: linear-gradient(135deg, rgba(15,15,15,0.8), rgba(0,0,0,0.9));
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 0 80px rgba(251,191,36,0.1);
+        }
+
+        /* Quiz */
+        .quiz-option {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .quiz-option:hover {
+            background: rgba(251,191,36,0.2);
+            border-color: rgba(251,191,36,0.5);
+            transform: translateY(-2px);
+        }
+        .quiz-option.selected {
+            background: rgba(251,191,36,0.3);
+            border-color: #FBBF24;
+        }
+
+        /* Reasons gallery */
+        .reason-card {
+            background: rgba(15,15,15,0.9);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Mosaic grid */
+        .mosaic-item {
+            transition: all 0.5s ease;
+        }
+        .mosaic-item:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        /* Progress dots */
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+        .progress-dot.active {
+            background: #FBBF24;
+            transform: scale(1.3);
+        }
+
+        /* Memory game */
+        .memory-card {
+            width: 80px;
+            height: 80px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .memory-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+        .memory-card.flipped .memory-card-inner {
+            transform: rotateY(180deg);
+        }
+        .memory-card-front, .memory-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .memory-card-front {
+            background: linear-gradient(135deg, rgba(251,191,36,0.3), rgba(251,191,36,0.1));
+            border: 2px solid rgba(251,191,36,0.4);
+        }
+        .memory-card-front::after {
+            content: '?';
+            font-size: 24px;
+            color: rgba(255,255,255,0.5);
+            font-family: 'Orbitron', monospace;
+        }
+        .memory-card-back {
+            transform: rotateY(180deg);
+            overflow: hidden;
+        }
+        .memory-card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .memory-card.matched .memory-card-inner {
+            transform: rotateY(180deg);
+        }
+        .memory-card.matched {
+            animation: heartbeat 0.5s ease;
+        }
+
+        /* Spin wheel */
+        .spin-wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        .spin-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            box-shadow: 0 0 30px rgba(251,191,36,0.3);
+        }
+        .spin-segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+        }
+        .spin-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 30px solid #FBBF24;
+            z-index: 10;
+            filter: drop-shadow(0 0 10px rgba(251,191,36,0.5));
+        }
+        .spin-btn {
+            background: linear-gradient(135deg, #FBBF24, #F59E0B);
+            color: #000;
+            font-weight: bold;
+            padding: 12px 32px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(251,191,36,0.4);
+        }
+        .spin-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(251,191,36,0.6);
+        }
+        .spin-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Scratch card */
+        .scratch-card {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .scratch-card canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 16px;
+        }
+        .scratch-message {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(251,191,36,0.05));
+            border: 2px solid rgba(251,191,36,0.3);
+            border-radius: 16px;
+        }
+
+        /* Music control */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Skip button */
+        .skip-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: rgba(255,255,255,0.6);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .skip-btn:hover {
+            background: rgba(251,191,36,0.3);
+            border-color: rgba(251,191,36,0.5);
+            color: white;
+        }
     </style>
 </head>
 <body style="background:#000000" class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-hidden">
@@ -70,61 +360,371 @@
     <!-- Stars -->
     <div id="stars" class="fixed inset-0 pointer-events-none"></div>
 
-    <!-- Title -->
-    <div class="text-center mb-10 float-anim relative z-10">
-        <p class="text-white/60 text-xs sm:text-sm font-body font-bold uppercase tracking-[0.35em] mb-4">Counting down to</p>
-        <h1 id="title-name" class="font-digital text-4xl sm:text-5xl md:text-6xl lg:text-7xl shimmer-text leading-tight tracking-wider">
-            Birthday
-        </h1>
-        <div class="w-16 h-0.5 bg-white/20 mx-auto mt-5 rounded-full"></div>
-        <p class="text-white/50 text-sm sm:text-base font-body font-bold mt-5">Something beautiful is on its way</p>
+    <!-- Music Control -->
+    <button id="music-btn" class="music-btn rounded-full w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors hidden" onclick="toggleMusic()">
+        <span id="music-icon">&#9835;</span>
+    </button>
+
+    <!-- ==================== COUNTDOWN PHASE ==================== -->
+    <div id="countdown-phase">
+        <!-- Title -->
+        <div class="text-center mb-10 float-anim relative z-10">
+            <p class="text-white/60 text-xs sm:text-sm font-body font-bold uppercase tracking-[0.35em] mb-4">Counting down to</p>
+            <h1 id="title-name" class="font-digital text-4xl sm:text-5xl md:text-6xl lg:text-7xl shimmer-text leading-tight tracking-wider">
+                Birthday
+            </h1>
+            <div class="w-16 h-0.5 bg-white/20 mx-auto mt-5 rounded-full"></div>
+            <p class="text-white/50 text-sm sm:text-base font-body font-bold mt-5">Something beautiful is on its way</p>
+        </div>
+
+        <!-- Countdown Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 max-w-3xl w-full mb-12 relative z-10">
+            <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F">
+                <span id="days" class="font-digital text-5xl sm:text-6xl md:text-7xl text-white countdown-digit tracking-wider">00</span>
+                <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Days</span>
+            </div>
+            <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F; animation-delay: 0.3s">
+                <span id="hours" class="font-digital text-5xl sm:text-6xl md:text-7xl countdown-digit tracking-wider" style="color:#FFFFFF !important">00</span>
+                <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Hours</span>
+            </div>
+            <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F; animation-delay: 0.6s">
+                <span id="minutes" class="font-digital text-5xl sm:text-6xl md:text-7xl text-white countdown-digit tracking-wider">00</span>
+                <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Minutes</span>
+            </div>
+            <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F; animation-delay: 0.9s">
+                <span id="seconds" class="font-digital text-5xl sm:text-6xl md:text-7xl countdown-digit tracking-wider" style="color:#FFFFFF !important">00</span>
+                <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Seconds</span>
+            </div>
+        </div>
     </div>
 
-    <!-- Countdown Cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 max-w-3xl w-full mb-12 relative z-10">
-
-        <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F">
-            <span id="days" class="font-digital text-5xl sm:text-6xl md:text-7xl text-white countdown-digit tracking-wider">00</span>
-            <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Days</span>
+    <!-- ==================== PHASE 1: DRAMATIC REVEAL ==================== -->
+    <div id="phase1" class="phase flex-col items-center justify-center text-center px-4" style="background:#000000">
+        <button class="skip-btn" onclick="skipPhase(1)">SKIP &#8594;</button>
+        <div id="phase1-content" class="opacity-0">
+            <h1 id="reveal-name" class="font-digital text-4xl sm:text-5xl md:text-6xl lg:text-8xl glow-text mb-6 tracking-wider"></h1>
+            <p id="reveal-nickname" class="font-body text-xl sm:text-2xl text-white/70 mb-8"></p>
+            <div class="w-32 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent mx-auto mb-8"></div>
+            <p class="font-body text-lg text-white/50">Your surprise awaits...</p>
         </div>
-
-        <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F; animation-delay: 0.3s">
-            <span id="hours" class="font-digital text-5xl sm:text-6xl md:text-7xl countdown-digit tracking-wider" style="color:#FFFFFF !important">00</span>
-            <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Hours</span>
-        </div>
-
-        <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F; animation-delay: 0.6s">
-            <span id="minutes" class="font-digital text-5xl sm:text-6xl md:text-7xl text-white countdown-digit tracking-wider">00</span>
-            <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Minutes</span>
-        </div>
-
-        <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F; animation-delay: 0.9s">
-            <span id="seconds" class="font-digital text-5xl sm:text-6xl md:text-7xl countdown-digit tracking-wider" style="color:#FFFFFF !important">00</span>
-            <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Seconds</span>
-        </div>
-
     </div>
 
-    <!-- Birthday message -->
-    <div id="birthday-msg" class="hidden text-center relative z-10">
-        <h2 id="birthday-msg-text" class="font-digital text-4xl sm:text-5xl md:text-6xl shimmer-text mb-5 tracking-wider">Happy Birthday!</h2>
-        <p class="font-body text-lg text-white/60 font-bold">Make a wish!</p>
+    <!-- ==================== PHASE 2: PHOTO STORY ==================== -->
+    <div id="phase2" class="phase flex-col items-center justify-center px-4" style="background:#000000">
+        <button class="skip-btn" onclick="skipPhase(2)">SKIP &#8594;</button>
+        <div class="slide-container relative w-full max-w-4xl mx-auto">
+            <!-- Progress bar -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-white/10 rounded-full overflow-hidden z-20">
+                <div id="slide-progress" class="h-full bg-gradient-to-r from-white/30 to-white/60 transition-all duration-500" style="width:0%"></div>
+            </div>
+
+            <!-- Image counter -->
+            <div class="absolute top-4 left-4 z-20">
+                <span id="slide-counter" class="font-body text-xs text-white/40 bg-black/50 px-3 py-1 rounded-full">1 / 35</span>
+            </div>
+
+            <!-- Image container -->
+            <div class="relative flex items-center justify-center" style="min-height: 60vh;">
+                <img id="slide-image" class="slide-image" src="" alt="">
+                <div id="slide-caption" class="slide-caption absolute bottom-0 left-0 right-0 p-6">
+                    <p id="slide-text" class="font-body text-sm sm:text-base text-white/90 text-center"></p>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex items-center justify-between mt-4">
+                <button onclick="prevSlide()" class="quiz-option px-5 py-2 rounded-lg font-body text-sm text-white/70 hover:text-white">
+                    &#8592; Prev
+                </button>
+                <div id="slide-dots" class="flex gap-2"></div>
+                <button onclick="nextSlide()" class="quiz-option px-5 py-2 rounded-lg font-body text-sm text-white/70 hover:text-white">
+                    Next &#8594;
+                </button>
+            </div>
+        </div>
     </div>
+
+    <!-- ==================== PHASE 3: LOVE QUIZ ==================== -->
+    <div id="phase3" class="phase flex-col items-center justify-center px-4" style="background:#000000">
+        <button class="skip-btn" onclick="skipPhase(3)">SKIP &#8594;</button>
+        <div class="max-w-2xl w-full mx-auto">
+            <div id="quiz-container" class="text-center">
+                <p id="quiz-progress" class="font-body text-sm text-white/40 mb-4"></p>
+                <h2 id="quiz-question" class="font-digital text-xl sm:text-2xl md:text-3xl text-white mb-8 tracking-wider"></h2>
+                <div id="quiz-options" class="grid gap-3"></div>
+                <p id="quiz-feedback" class="font-body text-sm text-white/60 mt-6 hidden"></p>
+            </div>
+            <div id="quiz-result" class="text-center hidden">
+                <h2 class="font-digital text-3xl sm:text-4xl text-white mb-4 tracking-wider glow-text"></h2>
+                <p id="quiz-score" class="font-body text-lg text-white/70 mb-6"></p>
+                <p id="quiz-message" class="font-body text-base text-white/50"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PHASE 3.5: MEMORY MATCH GAME ==================== -->
+    <div id="phase3-5" class="phase flex-col items-center justify-center px-4" style="background:#000000">
+        <button class="skip-btn" onclick="skipPhase('3-5')">SKIP &#8594;</button>
+        <div class="max-w-3xl w-full mx-auto text-center">
+            <h2 id="memory-title" class="font-digital text-2xl sm:text-3xl text-white mb-4 tracking-wider glow-text">Memory Match</h2>
+            <p id="memory-instructions" class="font-body text-sm text-white/50 mb-6">Match the pairs to reveal special moments!</p>
+            <div id="memory-stats" class="flex justify-center gap-8 mb-6">
+                <div class="text-center">
+                    <p class="font-body text-xs text-white/40">Moves</p>
+                    <p id="memory-moves" class="font-digital text-2xl text-white">0</p>
+                </div>
+                <div class="text-center">
+                    <p class="font-body text-xs text-white/40">Matches</p>
+                    <p id="memory-matches" class="font-digital text-2xl text-white">0/6</p>
+                </div>
+            </div>
+            <div id="memory-board" class="grid grid-cols-4 gap-3 justify-items-center mb-6"></div>
+            <div id="memory-complete" class="hidden">
+                <p id="memory-complete-msg" class="font-body text-lg text-white/70 mb-4"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PHASE 4: SPIN THE WHEEL ==================== -->
+    <div id="phase4" class="phase flex-col items-center justify-center px-4" style="background:#000000">
+        <button class="skip-btn" onclick="skipPhase(4)">SKIP &#8594;</button>
+        <div class="max-w-2xl w-full mx-auto text-center">
+            <h2 class="font-digital text-2xl sm:text-3xl text-white mb-2 tracking-wider glow-text">Spin the Wheel of Love</h2>
+            <p class="font-body text-sm text-white/50 mb-8">Spin to reveal a special message!</p>
+            <div class="spin-wheel-container mx-auto mb-8">
+                <div class="spin-pointer"></div>
+                <div id="spin-wheel" class="spin-wheel"></div>
+            </div>
+            <button id="spin-btn" class="spin-btn mb-6" onclick="spinWheel()">SPIN</button>
+            <div id="spin-result" class="hidden">
+                <p id="spin-message" class="font-body text-lg text-white/80 mb-4"></p>
+                <p id="spin-nickname" class="font-digital text-xl text-white/50"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PHASE 5: REASONS I LOVE YOU ==================== -->
+    <div id="phase5" class="phase flex-col items-start justify-start px-4 overflow-y-auto" style="background:#000000">
+        <button class="skip-btn" onclick="skipPhase(5)">SKIP &#8594;</button>
+        <div class="max-w-4xl mx-auto py-8 w-full">
+            <h2 class="font-digital text-2xl sm:text-3xl md:text-4xl text-white text-center mb-12 tracking-wider glow-text">Reasons I Love You</h2>
+            <div id="reasons-container" class="grid gap-8"></div>
+        </div>
+    </div>
+
+    <!-- ==================== PHASE 6: FINAL SURPRISE ==================== -->
+    <div id="phase6" class="phase flex-col items-center justify-center px-4" style="background:#000000">
+        <div class="max-w-5xl w-full mx-auto text-center">
+            <!-- Mosaic grid -->
+            <div id="mosaic-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 mb-8"></div>
+
+            <!-- Birthday letter -->
+            <div id="birthday-letter" class="hidden max-w-2xl mx-auto bg-black/50 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+                <h2 class="font-digital text-2xl sm:text-3xl text-white mb-6 tracking-wider glow-text">Happy Birthday!</h2>
+                <div id="letter-content" class="font-body text-sm sm:text-base text-white/70 leading-relaxed text-left space-y-4"></div>
+                <div class="mt-8 pt-6 border-t border-white/10">
+                    <p class="font-body text-xs text-white/40">With all my love, always</p>
+                </div>
+            </div>
+
+            <!-- Replay button -->
+            <button id="replay-btn" class="hidden mt-8 quiz-option px-6 py-3 rounded-lg font-body text-white/70 hover:text-white" onclick="location.reload()">
+                &#8634; Watch Again
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== AUDIO ==================== -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        let target;
+        // ==================== CONFIGURATION ====================
+        const NICKNAMES = ['Paki', 'Monu', 'Fahu', 'Sonamoni', 'Baby', 'My Pet', 'My Sajna'];
+        const TOTAL_IMAGES = 59;
+        const STORY_IMAGES = Array.from({length: 35}, (_, i) => i + 1);
+        const MEMORY_IMAGES = [1, 8, 15, 22, 29, 36]; // 6 pairs
+        const REASON_IMAGES = Array.from({length: 15}, (_, i) => i + 36);
+        const FINALE_IMAGES = Array.from({length: 9}, (_, i) => i + 51);
 
+        const SPIN_MESSAGES = [
+            "You are the most beautiful person I know, {nickname}!",
+            "Your smile makes my heart melt, {nickname}!",
+            "I am so lucky to have you, {nickname}!",
+            "You are my sunshine, {nickname}!",
+            "Your beauty takes my breath away, {nickname}!",
+            "I cherish every moment with you, {nickname}!",
+            "You make my world complete, {nickname}!",
+            "Happy birthday to my favorite person, {nickname}!"
+        ];
+
+        const STORY_CAPTIONS = [
+            "You are the most beautiful soul I know, {nickname}",
+            "Your smile lights up my entire world, {nickname}",
+            "Every moment with you is a gift, {nickname}",
+            "You make my heart skip a beat, {nickname}",
+            "Your eyes shine brighter than any star, {nickname}",
+            "I am so lucky to have you in my life, {nickname}",
+            "You are my sunshine on cloudy days, {nickname}",
+            "Your laughter is my favorite melody, {nickname}",
+            "You make everything better just by being you, {nickname}",
+            "I fall in love with you more every day, {nickname}",
+            "You are the reason I believe in magic, {nickname}",
+            "Your kindness touches everyone around you, {nickname}",
+            "You are my happy place, {nickname}",
+            "I cherish every second with you, {nickname}",
+            "You are stronger than you know, {nickname}",
+            "Your beauty takes my breath away, {nickname}",
+            "You are my dream come true, {nickname}",
+            "I am so grateful for you, {nickname}",
+            "You make ordinary moments extraordinary, {nickname}",
+            "Your heart is pure gold, {nickname}",
+            "I love the way you smile, {nickname}",
+            "You are my inspiration, {nickname}",
+            "You are everything I ever wished for, {nickname}",
+            "Your presence makes my world complete, {nickname}",
+            "I am blessed to know you, {nickname}",
+            "You are my forever and always, {nickname}",
+            "Your smile is contagious, {nickname}",
+            "You make life worth living, {nickname}",
+            "I treasure you more than words can say, {nickname}",
+            "You are my heart and soul, {nickname}",
+            "Your beauty radiates from within, {nickname}",
+            "I am yours, completely and forever, {nickname}",
+            "You are my everything, {nickname}",
+            "Happy birthday to the most amazing person, {nickname}",
+            "Today we celebrate YOU, {nickname}"
+        ];
+
+        const REASONS = [
+            "Your smile lights up my entire world",
+            "The way you laugh makes everything better",
+            "Your kindness touches everyone around you",
+            "You are so strong and brave",
+            "Your eyes sparkle like stars",
+            "You make me a better person",
+            "Your voice is my favorite sound",
+            "You always know how to make me smile",
+            "Your hugs feel like home",
+            "You are incredibly beautiful inside and out",
+            "Your passion for life inspires me",
+            "You are my best friend and soulmate",
+            "Your gentle heart amazes me every day",
+            "You make ordinary moments extraordinary",
+            "You are my happily ever after"
+        ];
+
+        const QUIZ_QUESTIONS = [
+            {
+                question: "What do I love most about you, {nickname}?",
+                options: ["Your beautiful smile", "Your kind heart", "Your amazing spirit", "All of you, always"],
+                correct: 3,
+                feedback: "I love ALL of you, {nickname}! Every single part!"
+            },
+            {
+                question: "How does my heart feel when I see you, {nickname}?",
+                options: ["It skips a beat", "It sings with joy", "It feels complete", "All of these"],
+                correct: 3,
+                feedback: "My heart dances with joy every time I see you, {nickname}!"
+            },
+            {
+                question: "What makes you so special, {nickname}?",
+                options: ["Your beauty", "Your kindness", "Your spirit", "Everything about you"],
+                correct: 3,
+                feedback: "Everything about you is special, {nickname}!"
+            },
+            {
+                question: "How would I describe you, {nickname}?",
+                options: ["Beautiful", "Amazing", "Perfect", "All of the above"],
+                correct: 3,
+                feedback: "You are all of these and more, {nickname}!"
+            },
+            {
+                question: "How long will I love you, {nickname}?",
+                options: ["Forever and always", "Until the end of time", "For all eternity", "All of these"],
+                correct: 3,
+                feedback: "I will love you forever and always, {nickname}! That's a promise!"
+            }
+        ];
+
+        const LETTER_LINES = [
+            "My dearest {nickname},",
+            "",
+            "Today is YOUR special day, and I want you to know just how incredible you are.",
+            "",
+            "You light up every room you walk into with your beautiful smile.",
+            "Your kindness and warmth touch everyone lucky enough to know you.",
+            "",
+            "From the moment I met you, I knew you were someone truly special.",
+            "Your beauty, inside and out, is something I admire every single day.",
+            "",
+            "Thank you for being YOU - the amazing, beautiful, wonderful person you are.",
+            "Thank you for making the world a brighter place just by being in it.",
+            "",
+            "On this birthday, I wish you all the happiness you deserve.",
+            "May all your dreams come true, because you deserve nothing less than the best.",
+            "",
+            "You are stronger, braver, and more beautiful than you will ever know.",
+            "I am so grateful to have you in my life.",
+            "",
+            "Happy Birthday, {nickname}. You are one of a kind.",
+            "",
+            "With all my love and admiration,",
+            "Yours always"
+        ];
+
+        // ==================== STATE ====================
+        let target;
+        let birthdayName;
+        let currentPhase = 0;
+        let currentSlide = 0;
+        let quizIndex = 0;
+        let quizScore = 0;
+        let musicPlaying = false;
+        let slideInterval;
+        let nickname;
+
+        // Memory game state
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let memoryMoves = 0;
+        let canFlip = true;
+
+        // Spin wheel state
+        let spinAngle = 0;
+        let canSpin = true;
+
+        // Transition guard
+        let isTransitioning = false;
+
+        // ==================== INITIALIZATION ====================
         async function loadBirthday() {
             try {
                 const res = await fetch('birthday.json');
                 const data = await res.json();
                 target = new Date(data.birthday + 'T00:00:00').getTime();
+                birthdayName = data.name;
+                nickname = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
+
                 document.getElementById('title-name').textContent = data.name + "'s Birthday";
-                document.getElementById('birthday-msg-text').textContent = "Happy Birthday " + data.name + "!";
+                document.getElementById('reveal-name').textContent = "Happy Birthday " + data.name + "!";
+                document.getElementById('reveal-nickname').textContent = "Hey " + nickname + ", this is for you!";
+
                 updateCountdown();
                 setInterval(updateCountdown, 1000);
             } catch (e) {
                 console.error('Could not load birthday.json', e);
+                // Fallback
+                birthdayName = "Fahamida";
+                nickname = "Baby";
+                document.getElementById('title-name').textContent = "Fahamida's Birthday";
+                document.getElementById('reveal-name').textContent = "Happy Birthday Fahamida!";
+                document.getElementById('reveal-nickname').textContent = "Hey Baby, this is for you!";
+                target = new Date('2026-07-20T00:00:00').getTime();
+                updateCountdown();
+                setInterval(updateCountdown, 1000);
             }
         }
 
@@ -153,7 +753,7 @@
 
             if (diff <= 0) {
                 ['days','hours','minutes','seconds'].forEach(id => document.getElementById(id).textContent = '00');
-                document.getElementById('birthday-msg').classList.remove('hidden');
+                startSurprise();
                 return;
             }
 
@@ -176,8 +776,517 @@
             }
         }
 
-        loadBirthday();
-    </script>
+        // ==================== SURPRISE START ====================
+        function startSurprise() {
+            // Hide countdown
+            document.getElementById('countdown-phase').style.display = 'none';
 
+            // Start music
+            const music = document.getElementById('bg-music');
+            music.volume = 0.5;
+            music.play().then(() => {
+                musicPlaying = true;
+                document.getElementById('music-btn').classList.remove('hidden');
+            }).catch(() => {
+                // Autoplay blocked, show button for user to click
+                document.getElementById('music-btn').classList.remove('hidden');
+                document.getElementById('music-icon').textContent = '🔇';
+            });
+
+            // Start Phase 1
+            setTimeout(() => startPhase1(), 500);
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const icon = document.getElementById('music-icon');
+            if (musicPlaying) {
+                music.pause();
+                icon.textContent = '🔇';
+                musicPlaying = false;
+            } else {
+                music.play().then(() => {
+                    icon.textContent = '♫';
+                    musicPlaying = true;
+                }).catch(() => {
+                    icon.textContent = '🔇';
+                });
+            }
+        }
+
+        // ==================== PHASE 1: DRAMATIC REVEAL ====================
+        function startPhase1() {
+            isTransitioning = true;
+            document.getElementById('phase1').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('phase1-content').classList.add('fade-in');
+                createConfetti();
+            }, 500);
+
+            setTimeout(() => {
+                document.getElementById('phase1').classList.add('fade-out');
+                setTimeout(() => {
+                    document.getElementById('phase1').classList.remove('active', 'fade-out');
+                    isTransitioning = false;
+                    startPhase2();
+                }, 1000);
+            }, 4000);
+        }
+
+        function createConfetti() {
+            const colors = ['#FBBF24', '#F87171', '#A78BFA', '#34D399', '#60A5FA', '#F472B6'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        // ==================== PHASE 2: PHOTO STORY ====================
+        function startPhase2() {
+            document.getElementById('phase2').classList.add('active');
+            initSlideshow();
+        }
+
+        function initSlideshow() {
+            const dotsContainer = document.getElementById('slide-dots');
+            dotsContainer.innerHTML = '';
+            currentSlide = 0;
+
+            STORY_IMAGES.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+                dot.onclick = () => goToSlide(i);
+                dotsContainer.appendChild(dot);
+            });
+
+            showSlide(0);
+            slideInterval = setInterval(() => nextSlide(), 8000);
+        }
+
+        function showSlide(index) {
+            const img = document.getElementById('slide-image');
+            const caption = document.getElementById('slide-text');
+            const progress = document.getElementById('slide-progress');
+            const counter = document.getElementById('slide-counter');
+
+            img.classList.add('fade-out');
+            setTimeout(() => {
+                img.src = 'Fahamida/' + STORY_IMAGES[index] + '.png';
+                const randomNick = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
+                caption.textContent = STORY_CAPTIONS[index].replace('{nickname}', randomNick);
+                progress.style.width = ((index + 1) / STORY_IMAGES.length * 100) + '%';
+                counter.textContent = `${index + 1} / ${STORY_IMAGES.length}`;
+
+                document.querySelectorAll('#slide-dots .progress-dot').forEach((d, i) => {
+                    d.classList.toggle('active', i === index);
+                });
+
+                img.classList.remove('fade-out');
+                img.classList.add('fade-in');
+                setTimeout(() => img.classList.remove('fade-in'), 1000);
+            }, 400);
+        }
+
+        function nextSlide() {
+            if (isTransitioning) return;
+            const nextIndex = currentSlide + 1;
+            if (nextIndex >= STORY_IMAGES.length) {
+                // Completed all slides
+                isTransitioning = true;
+                clearInterval(slideInterval);
+                setTimeout(() => {
+                    document.getElementById('phase2').classList.add('fade-out');
+                    setTimeout(() => {
+                        document.getElementById('phase2').classList.remove('active', 'fade-out');
+                        isTransitioning = false;
+                        startPhase3();
+                    }, 1000);
+                }, 2000);
+                return;
+            }
+            currentSlide = nextIndex;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + STORY_IMAGES.length) % STORY_IMAGES.length;
+            showSlide(currentSlide);
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            showSlide(index);
+        }
+
+        // ==================== PHASE 3: LOVE QUIZ ====================
+        let quizAnswered = false;
+
+        function startPhase3() {
+            isTransitioning = true;
+            document.getElementById('phase3').classList.add('active');
+            quizIndex = 0;
+            quizScore = 0;
+            quizAnswered = false;
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('quiz-result').classList.add('hidden');
+            showQuizQuestion();
+        }
+
+        function showQuizQuestion() {
+            if (quizIndex >= QUIZ_QUESTIONS.length) {
+                showQuizResult();
+                return;
+            }
+
+            quizAnswered = false;
+            const q = QUIZ_QUESTIONS[quizIndex];
+            document.getElementById('quiz-progress').textContent = `Question ${quizIndex + 1} of ${QUIZ_QUESTIONS.length}`;
+            document.getElementById('quiz-question').textContent = q.question.replace('{nickname}', nickname);
+            document.getElementById('quiz-feedback').classList.add('hidden');
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-option p-4 rounded-xl font-body text-sm sm:text-base text-white/80 text-left';
+                btn.textContent = opt;
+                btn.onclick = () => selectAnswer(i);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(index) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const q = QUIZ_QUESTIONS[quizIndex];
+            const options = document.querySelectorAll('#quiz-options .quiz-option');
+
+            options.forEach((opt, i) => {
+                opt.onclick = null;
+                if (i === q.correct) {
+                    opt.classList.add('selected');
+                }
+            });
+
+            if (index === q.correct) {
+                quizScore++;
+            }
+
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.textContent = q.feedback.replace('{nickname}', nickname);
+            feedback.classList.remove('hidden');
+
+            setTimeout(() => {
+                quizIndex++;
+                showQuizQuestion();
+            }, 2000);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            const result = document.getElementById('quiz-result');
+            result.classList.remove('hidden');
+
+            const nickname2 = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
+            result.querySelector('h2').textContent = quizScore === QUIZ_QUESTIONS.length
+                ? "Perfect Score, " + nickname2 + "!"
+                : "You're Amazing, " + nickname2 + "!";
+            document.getElementById('quiz-score').textContent = `You got ${quizScore} out of ${QUIZ_QUESTIONS.length}`;
+            document.getElementById('quiz-message').textContent = quizScore === QUIZ_QUESTIONS.length
+                ? "You know exactly how much I love you!"
+                : "Every answer proves how special we are!";
+
+            setTimeout(() => {
+                document.getElementById('phase3').classList.add('fade-out');
+                setTimeout(() => {
+                    document.getElementById('phase3').classList.remove('active', 'fade-out');
+                    isTransitioning = false;
+                    startPhase3_5();
+                }, 1000);
+            }, 3000);
+        }
+
+        // ==================== PHASE 3.5: MEMORY MATCH GAME ====================
+        function startPhase3_5() {
+            isTransitioning = true;
+            document.getElementById('phase3-5').classList.add('active');
+            initMemoryGame();
+        }
+
+        function initMemoryGame() {
+            const board = document.getElementById('memory-board');
+            board.innerHTML = '';
+            matchedPairs = 0;
+            memoryMoves = 0;
+            flippedCards = [];
+            canFlip = true;
+
+            // Create pairs
+            memoryCards = [];
+            MEMORY_IMAGES.forEach((imgNum, i) => {
+                memoryCards.push({ id: i, img: imgNum });
+                memoryCards.push({ id: i, img: imgNum });
+            });
+
+            // Shuffle
+            for (let i = memoryCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [memoryCards[i], memoryCards[j]] = [memoryCards[j], memoryCards[i]];
+            }
+
+            // Create cards
+            memoryCards.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'memory-card';
+                cardEl.dataset.index = index;
+                cardEl.innerHTML = `
+                    <div class="memory-card-inner">
+                        <div class="memory-card-front"></div>
+                        <div class="memory-card-back">
+                            <img src="Fahamida/${card.img}.png" alt="Memory">
+                        </div>
+                    </div>
+                `;
+                cardEl.onclick = () => flipCard(index);
+                board.appendChild(cardEl);
+            });
+
+            updateMemoryStats();
+        }
+
+        function flipCard(index) {
+            if (!canFlip) return;
+            if (flippedCards.length >= 2) return;
+
+            const card = document.querySelector(`.memory-card[data-index="${index}"]`);
+            if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+            card.classList.add('flipped');
+            flippedCards.push({ index, id: memoryCards[index].id, element: card });
+
+            if (flippedCards.length === 2) {
+                memoryMoves++;
+                updateMemoryStats();
+                canFlip = false;
+
+                if (flippedCards[0].id === flippedCards[1].id) {
+                    // Match!
+                    matchedPairs++;
+                    flippedCards[0].element.classList.add('matched');
+                    flippedCards[1].element.classList.add('matched');
+                    flippedCards = [];
+                    canFlip = true;
+                    updateMemoryStats();
+
+                    if (matchedPairs === MEMORY_IMAGES.length) {
+                        // Game complete
+                        setTimeout(() => {
+                            const nick = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
+                            document.getElementById('memory-complete-msg').textContent = 
+                                `Amazing, ${nick}! You found all the memories!`;
+                            document.getElementById('memory-complete').classList.remove('hidden');
+                            createConfetti();
+                            setTimeout(() => {
+                                document.getElementById('phase3-5').classList.add('fade-out');
+                                setTimeout(() => {
+                                    document.getElementById('phase3-5').classList.remove('active', 'fade-out');
+                                    isTransitioning = false;
+                                    startPhase4();
+                                }, 1000);
+                            }, 3000);
+                        }, 500);
+                    }
+                } else {
+                    // No match
+                    setTimeout(() => {
+                        flippedCards[0].element.classList.remove('flipped');
+                        flippedCards[1].element.classList.remove('flipped');
+                        flippedCards = [];
+                        canFlip = true;
+                    }, 1000);
+                }
+            }
+        }
+
+        function updateMemoryStats() {
+            document.getElementById('memory-moves').textContent = memoryMoves;
+            document.getElementById('memory-matches').textContent = `${matchedPairs}/${MEMORY_IMAGES.length}`;
+        }
+
+        // ==================== PHASE 4: SPIN THE WHEEL ====================
+        function startPhase4() {
+            isTransitioning = true;
+            document.getElementById('phase4').classList.add('active');
+            initSpinWheel();
+        }
+
+        function initSpinWheel() {
+            const wheel = document.getElementById('spin-wheel');
+            wheel.innerHTML = '';
+            const colors = ['#FBBF24', '#F87171', '#A78BFA', '#34D399', '#60A5FA', '#F472B6', '#FCD34D', '#FB923C'];
+            const segmentAngle = 360 / SPIN_MESSAGES.length;
+
+            SPIN_MESSAGES.forEach((msg, i) => {
+                const segment = document.createElement('div');
+                segment.className = 'spin-segment';
+                segment.style.transform = `rotate(${i * segmentAngle}deg)`;
+                segment.style.background = colors[i % colors.length];
+                wheel.appendChild(segment);
+            });
+        }
+
+        function spinWheel() {
+            if (!canSpin) return;
+            canSpin = false;
+            document.getElementById('spin-btn').disabled = true;
+            document.getElementById('spin-result').classList.add('hidden');
+
+            const segmentAngle = 360 / SPIN_MESSAGES.length;
+            const randomSegment = Math.floor(Math.random() * SPIN_MESSAGES.length);
+            spinAngle = 360 * 5 + (360 - randomSegment * segmentAngle - segmentAngle / 2);
+
+            const wheel = document.getElementById('spin-wheel');
+            wheel.style.transform = `rotate(${spinAngle}deg)`;
+
+            setTimeout(() => {
+                const nick = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
+                document.getElementById('spin-message').textContent = SPIN_MESSAGES[randomSegment].replace('{nickname}', nick);
+                document.getElementById('spin-nickname').textContent = `For you, ${nick}!`;
+                document.getElementById('spin-result').classList.remove('hidden');
+                createConfetti();
+
+                setTimeout(() => {
+                    document.getElementById('phase4').classList.add('fade-out');
+                    setTimeout(() => {
+                        document.getElementById('phase4').classList.remove('active', 'fade-out');
+                        isTransitioning = false;
+                        startPhase5();
+                    }, 1000);
+                }, 4000);
+            }, 4500);
+        }
+
+        // ==================== PHASE 5: REASONS I LOVE YOU ====================
+        function startPhase5() {
+            isTransitioning = true;
+            document.getElementById('phase5').classList.add('active');
+            const container = document.getElementById('reasons-container');
+            container.innerHTML = '';
+
+            REASON_IMAGES.forEach((imgNum, i) => {
+                const card = document.createElement('div');
+                card.className = 'reason-card rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 opacity-0';
+                card.style.animationDelay = (i * 0.2) + 's';
+
+                const img = document.createElement('img');
+                img.src = 'Fahamida/' + imgNum + '.png';
+                img.className = 'w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-xl';
+                img.alt = 'Reason ' + (i + 1);
+
+                const textDiv = document.createElement('div');
+                textDiv.className = 'text-center sm:text-left';
+                textDiv.innerHTML = `
+                    <span class="font-digital text-3xl sm:text-4xl text-white/20">${String(i + 1).padStart(2, '0')}</span>
+                    <p class="font-body text-sm sm:text-base text-white/80 mt-2">${REASONS[i]}, ${NICKNAMES[i % NICKNAMES.length]}!</p>
+                `;
+
+                card.appendChild(img);
+                card.appendChild(textDiv);
+                container.appendChild(card);
+
+                setTimeout(() => card.classList.add('slide-up'), i * 200);
+            });
+
+            // Auto-advance after all reasons shown
+            setTimeout(() => {
+                document.getElementById('phase5').classList.add('fade-out');
+                setTimeout(() => {
+                    document.getElementById('phase5').classList.remove('active', 'fade-out');
+                    isTransitioning = false;
+                    startPhase6();
+                }, 1000);
+            }, 6000);
+        }
+
+        // ==================== PHASE 6: FINAL SURPRISE ====================
+        function startPhase6() {
+            isTransitioning = true;
+            document.getElementById('phase6').classList.add('active');
+            createConfetti();
+
+            // Build mosaic grid
+            const grid = document.getElementById('mosaic-grid');
+            grid.innerHTML = '';
+            FINALE_IMAGES.forEach((imgNum, i) => {
+                const item = document.createElement('div');
+                item.className = 'mosaic-item opacity-0';
+                item.innerHTML = `<img src="Fahamida/${imgNum}.png" class="w-full h-24 sm:h-32 object-cover rounded-lg" alt="">`;
+                grid.appendChild(item);
+                setTimeout(() => {
+                    item.classList.add('scale-in');
+                }, i * 200);
+            });
+
+            // Show letter after mosaic
+            setTimeout(() => {
+                const letter = document.getElementById('birthday-letter');
+                letter.classList.remove('hidden');
+                letter.classList.add('slide-up');
+
+                const content = document.getElementById('letter-content');
+                const randomNick = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
+                content.innerHTML = LETTER_LINES.map(line => {
+                    if (line === "") return '<br>';
+                    return `<p>${line.replace('{nickname}', randomNick)}</p>`;
+                }).join('');
+
+                document.getElementById('replay-btn').classList.remove('hidden');
+                isTransitioning = false;
+            }, 3000);
+        }
+
+        // ==================== START ====================
+        loadBirthday();
+
+        // ==================== SKIP FUNCTION ====================
+        function skipPhase(phase) {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            // Clear any intervals
+            if (slideInterval) clearInterval(slideInterval);
+
+            // Hide current phase
+            const phaseId = phase === '3-5' ? 'phase3-5' : 'phase' + phase;
+            const phaseEl = document.getElementById(phaseId);
+            if (phaseEl) {
+                phaseEl.classList.add('fade-out');
+                setTimeout(() => {
+                    phaseEl.classList.remove('active', 'fade-out');
+
+                    // Start next phase
+                    switch(phase) {
+                        case 1: startPhase2(); break;
+                        case 2: startPhase3(); break;
+                        case 3: startPhase3_5(); break;
+                        case '3-5': startPhase4(); break;
+                        case 4: startPhase5(); break;
+                        case 5: startPhase6(); break;
+                        default: isTransitioning = false; break;
+                    }
+                }, 500);
+            } else {
+                isTransitioning = false;
+            }
+        }
+    </script>
 </body>
 </html>
