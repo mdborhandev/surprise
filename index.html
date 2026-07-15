@@ -1,1377 +1,765 @@
 <!DOCTYPE html>
-<html lang="en" style="background:#000000">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fahamida's Birthday Surprise</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        surface: '#000000',
-                        card: '#0F0F0F',
-                        accent: '#FBBF24',
-                    },
-                    fontFamily: {
-                        digital: ['"Orbitron"', 'monospace'],
-                        body: ['"Orbitron"', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); }
-            50% { box-shadow: 0 0 40px rgba(255,255,255,0.2), 0 0 60px rgba(251,191,36,0.1); }
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        @keyframes star-twinkle {
-            0%, 100% { opacity: 0.1; transform: scale(0.8); }
-            50% { opacity: 0.7; transform: scale(1.1); }
-        }
-        @keyframes tick {
-            0%, 80%, 100% { transform: scale(1); }
-            40% { transform: scale(1.1); }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes confetti-fall {
-            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-        @keyframes glow-pulse {
-            0%, 100% { text-shadow: 0 0 20px rgba(251,191,36,0.5), 0 0 40px rgba(251,191,36,0.3); }
-            50% { text-shadow: 0 0 40px rgba(251,191,36,0.8), 0 0 80px rgba(251,191,36,0.5), 0 0 120px rgba(251,191,36,0.3); }
-        }
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            14% { transform: scale(1.1); }
-            28% { transform: scale(1); }
-            42% { transform: scale(1.1); }
-            70% { transform: scale(1); }
-        }
-        .card-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
-        .float-anim { animation: float 3s ease-in-out infinite; }
-        .shimmer-text { color: #FFFFFF; }
-        .countdown-digit { transition: transform 0.3s ease; }
-        .countdown-digit:hover { transform: scale(1.06); }
-        .tick-anim { animation: tick 0.4s ease; }
-        .star {
-            position: fixed;
-            width: 2px;
-            height: 2px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 50%;
-            animation: star-twinkle ease-in-out infinite;
-        }
-        body { font-family: 'Orbitron', system-ui, sans-serif; font-weight: 700; }
-        .font-digital { font-family: 'Orbitron', monospace; font-weight: 700; }
-        .font-body { font-family: 'Orbitron', system-ui, sans-serif; font-weight: 700; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Orbitron', sans-serif; background: #000; color: #fff; min-height: 100vh; overflow-x: hidden; }
+        .hidden { display: none; }
 
-        /* Surprise phases */
-        .phase { display: none; position: fixed; inset: 0; z-index: 100; }
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes pulse { 0%,100% { box-shadow: 0 0 20px rgba(251,191,36,0.2); } 50% { box-shadow: 0 0 40px rgba(251,191,36,0.4); } }
+        @keyframes glow { 0%,100% { text-shadow: 0 0 20px rgba(251,191,36,0.5); } 50% { text-shadow: 0 0 40px rgba(251,191,36,0.8), 0 0 80px rgba(251,191,36,0.4); } }
+        @keyframes heartbeat { 0%,70%,100% { transform: scale(1); } 14%,28%,42% { transform: scale(1.1); } }
+        @keyframes confetti { 0% { transform: translateY(-100vh) rotate(0); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        @keyframes tick { 0%,80%,100% { transform: scale(1); } 40% { transform: scale(1.1); } }
+        @keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+        @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+        .fade-in { animation: fadeIn 0.8s ease forwards; }
+        .fade-out { animation: fadeOut 0.5s ease forwards; }
+        .slide-up { animation: slideUp 0.6s ease forwards; }
+        .scale-in { animation: scaleIn 0.5s ease forwards; }
+
+        /* Stars */
+        .star { position: fixed; width: 2px; height: 2px; background: #fff; border-radius: 50%; animation: twinkle ease-in-out infinite; pointer-events: none; }
+
+        /* Status Bar */
+        #status-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; background: rgba(0,0,0,0.9); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 8px 10px; }
+        .status-steps { display: flex; justify-content: center; gap: 4px; flex-wrap: wrap; }
+        .status-step { display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 10px; font-size: 9px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); transition: all 0.3s; }
+        .status-step.active { background: rgba(251,191,36,0.2); border-color: rgba(251,191,36,0.5); color: #FBBF24; }
+        .status-step.done { background: rgba(52,211,153,0.2); border-color: rgba(52,211,153,0.5); color: #34D399; }
+
+        /* Music Button */
+        #music-btn { position: fixed; top: 50px; right: 10px; z-index: 201; width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        /* Skip Button */
+        .skip-btn { position: fixed; bottom: 15px; right: 15px; z-index: 201; padding: 8px 16px; border-radius: 20px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6); font-family: 'Orbitron', sans-serif; font-size: 11px; cursor: pointer; transition: all 0.3s; }
+        .skip-btn:hover { background: rgba(251,191,36,0.3); color: #fff; }
+
+        /* Phase container */
+        .phase { position: fixed; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; background: #000; z-index: 100; padding: 50px 15px 60px; overflow-y: auto; }
         .phase.active { display: flex; }
-        .fade-in { animation: fadeIn 1s ease forwards; }
-        .fade-out { animation: fadeOut 1s ease forwards; }
-        .slide-up { animation: slideUp 0.8s ease forwards; }
-        .scale-in { animation: scaleIn 0.6s ease forwards; }
-        .glow-text { animation: glow-pulse 2s ease-in-out infinite; }
-        .heartbeat { animation: heartbeat 1.5s ease-in-out infinite; }
 
-        /* Confetti */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            top: -10px;
-            animation: confetti-fall linear forwards;
-        }
+        /* Countdown */
+        #countdown-phase { text-align: center; }
+        .countdown-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 400px; margin: 20px auto; }
+        @media (min-width: 640px) { .countdown-grid { grid-template-columns: repeat(4, 1fr); max-width: 700px; } }
+        .count-box { background: #0F0F0F; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px 10px; text-align: center; animation: pulse 2.5s ease-in-out infinite; }
+        .count-num { font-size: 2.5rem; font-weight: 700; color: #fff; }
+        @media (min-width: 640px) { .count-num { font-size: 3.5rem; } }
+        .count-label { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 8px; }
 
         /* Slideshow */
-        .slide-image {
-            max-width: 90vw;
-            max-height: 65vh;
-            object-fit: contain;
-            border-radius: 16px;
-            box-shadow: 0 0 60px rgba(255,255,255,0.15), 0 20px 40px rgba(0,0,0,0.5);
-            transition: all 0.5s ease;
-        }
-        .slide-image:hover {
-            transform: scale(1.02);
-        }
-        .slide-caption {
-            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5), transparent);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 0 0 16px 16px;
-        }
-        .slide-container {
-            position: relative;
-            background: linear-gradient(135deg, rgba(15,15,15,0.8), rgba(0,0,0,0.9));
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 0 80px rgba(251,191,36,0.1);
-        }
+        .slide-wrap { position: relative; width: 100%; max-width: 600px; margin: 0 auto; background: rgba(15,15,15,0.8); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 15px; }
+        .slide-img { width: 100%; max-height: 55vh; object-fit: contain; border-radius: 12px; transition: opacity 0.4s; }
+        .slide-caption { text-align: center; padding: 12px; font-size: 13px; color: rgba(255,255,255,0.8); }
+        .slide-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .slide-nav button { padding: 8px 16px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-family: 'Orbitron', sans-serif; font-size: 12px; cursor: pointer; }
+        .slide-nav button:hover { background: rgba(251,191,36,0.2); }
+        .slide-counter { position: absolute; top: 20px; left: 20px; font-size: 11px; color: rgba(255,255,255,0.4); background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 10px; }
+        .slide-progress { position: absolute; top: 15px; left: 15px; right: 15px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; z-index: 5; }
+        .slide-progress-bar { height: 100%; background: rgba(251,191,36,0.6); border-radius: 2px; transition: width 0.5s; }
+        .dots { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s; }
+        .dot.active { background: #FBBF24; transform: scale(1.3); }
 
         /* Quiz */
-        .quiz-option {
-            background: rgba(255,255,255,0.05);
-            border: 2px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .quiz-option:hover {
-            background: rgba(251,191,36,0.2);
-            border-color: rgba(251,191,36,0.5);
-            transform: translateY(-2px);
-        }
-        .quiz-option.selected {
-            background: rgba(251,191,36,0.3);
-            border-color: #FBBF24;
-        }
+        .quiz-box { max-width: 500px; width: 100%; text-align: center; }
+        .quiz-q { font-size: 1.2rem; margin-bottom: 20px; line-height: 1.4; }
+        @media (min-width: 640px) { .quiz-q { font-size: 1.5rem; } }
+        .quiz-opt { display: block; width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); font-family: 'Orbitron', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.3s; text-align: left; }
+        .quiz-opt:hover { background: rgba(251,191,36,0.15); border-color: rgba(251,191,36,0.4); }
+        .quiz-opt.correct { background: rgba(52,211,153,0.3); border-color: #34D399; }
+        .quiz-feedback { margin-top: 15px; font-size: 13px; color: rgba(255,255,255,0.7); }
+        .quiz-progress-text { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
 
-        /* Reasons gallery */
-        .reason-card {
-            background: rgba(15,15,15,0.9);
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-        }
+        /* Memory Game */
+        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 360px; margin: 0 auto; }
+        .mem-card { aspect-ratio: 1; perspective: 800px; cursor: pointer; }
+        .mem-inner { position: relative; width: 100%; height: 100%; transition: transform 0.5s; transform-style: preserve-3d; }
+        .mem-card.flipped .mem-inner { transform: rotateY(180deg); }
+        .mem-front, .mem-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .mem-front { background: linear-gradient(135deg, rgba(251,191,36,0.3), rgba(251,191,36,0.1)); border: 2px solid rgba(251,191,36,0.3); }
+        .mem-front::after { content: '?'; font-size: 1.5rem; color: rgba(255,255,255,0.4); }
+        .mem-back { transform: rotateY(180deg); overflow: hidden; }
+        .mem-back img { width: 100%; height: 100%; object-fit: cover; }
+        .mem-card.matched { animation: heartbeat 0.5s ease; }
+        .mem-card.matched .mem-inner { transform: rotateY(180deg); }
+        .mem-stats { display: flex; justify-content: center; gap: 30px; margin-bottom: 15px; font-size: 12px; color: rgba(255,255,255,0.5); }
+        .mem-stats span { font-size: 1.2rem; color: #fff; display: block; margin-top: 4px; }
 
-        /* Mosaic grid */
-        .mosaic-item {
-            transition: all 0.5s ease;
-        }
-        .mosaic-item:hover {
-            transform: scale(1.05);
-            z-index: 10;
-        }
+        /* Spin Wheel */
+        .wheel-wrap { position: relative; width: 250px; height: 250px; margin: 0 auto 20px; }
+        @media (min-width: 640px) { .wheel-wrap { width: 300px; height: 300px; } }
+        .wheel { width: 100%; height: 100%; border-radius: 50%; position: relative; transition: transform 4s cubic-bezier(0.17,0.67,0.12,0.99); box-shadow: 0 0 30px rgba(251,191,36,0.3); overflow: hidden; }
+        .wheel-seg { position: absolute; width: 50%; height: 50%; transform-origin: 100% 100%; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+        .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 24px solid #FBBF24; z-index: 10; filter: drop-shadow(0 0 8px rgba(251,191,36,0.5)); }
+        .spin-btn { padding: 12px 36px; border-radius: 30px; background: linear-gradient(135deg, #FBBF24, #F59E0B); color: #000; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 20px rgba(251,191,36,0.4); }
+        .spin-btn:hover { transform: scale(1.05); }
+        .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .spin-result { margin-top: 15px; font-size: 14px; color: rgba(255,255,255,0.8); }
 
-        /* Progress dots */
-        .progress-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transition: all 0.3s ease;
-        }
-        .progress-dot.active {
-            background: #FBBF24;
-            transform: scale(1.3);
-        }
+        /* Reasons */
+        .reasons-list { max-width: 600px; width: 100%; }
+        .reason-card { display: flex; align-items: center; gap: 15px; background: rgba(15,15,15,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px; margin-bottom: 12px; }
+        .reason-card img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+        @media (min-width: 640px) { .reason-card img { width: 100px; height: 100px; } }
+        .reason-num { font-size: 1.5rem; color: rgba(255,255,255,0.15); }
+        .reason-text { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.4; }
+        @media (min-width: 640px) { .reason-text { font-size: 14px; } }
 
-        /* Memory game */
-        .memory-card {
-            width: 80px;
-            height: 80px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-        .memory-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease;
-        }
-        .memory-card.flipped .memory-card-inner {
-            transform: rotateY(180deg);
-        }
-        .memory-card-front, .memory-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .memory-card-front {
-            background: linear-gradient(135deg, rgba(251,191,36,0.3), rgba(251,191,36,0.1));
-            border: 2px solid rgba(251,191,36,0.4);
-        }
-        .memory-card-front::after {
-            content: '?';
-            font-size: 24px;
-            color: rgba(255,255,255,0.5);
-            font-family: 'Orbitron', monospace;
-        }
-        .memory-card-back {
-            transform: rotateY(180deg);
-            overflow: hidden;
-        }
-        .memory-card-back img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .memory-card.matched .memory-card-inner {
-            transform: rotateY(180deg);
-        }
-        .memory-card.matched {
-            animation: heartbeat 0.5s ease;
-        }
+        /* Finale */
+        .mosaic { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 400px; margin: 0 auto 20px; }
+        @media (min-width: 640px) { .mosaic { grid-template-columns: repeat(4, 1fr); max-width: 500px; } }
+        .mosaic img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; transition: transform 0.3s; }
+        .mosaic img:hover { transform: scale(1.05); }
+        .letter { max-width: 500px; width: 100%; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 25px; margin: 0 auto; }
+        .letter h2 { text-align: center; margin-bottom: 15px; font-size: 1.3rem; animation: glow 2s ease-in-out infinite; }
+        .letter p { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 8px; }
+        @media (min-width: 640px) { .letter p { font-size: 14px; } }
+        .replay-btn { display: block; margin: 20px auto 0; padding: 12px 28px; border-radius: 25px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-family: 'Orbitron', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.3s; }
+        .replay-btn:hover { background: rgba(251,191,36,0.2); color: #fff; }
 
-        /* Spin wheel */
-        .spin-wheel-container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-        }
-        .spin-wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            position: relative;
-            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-            box-shadow: 0 0 30px rgba(251,191,36,0.3);
-        }
-        .spin-segment {
-            position: absolute;
-            width: 50%;
-            height: 50%;
-            transform-origin: 100% 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            clip-path: polygon(0 0, 100% 0, 100% 100%);
-        }
-        .spin-pointer {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-top: 30px solid #FBBF24;
-            z-index: 10;
-            filter: drop-shadow(0 0 10px rgba(251,191,36,0.5));
-        }
-        .spin-btn {
-            background: linear-gradient(135deg, #FBBF24, #F59E0B);
-            color: #000;
-            font-weight: bold;
-            padding: 12px 32px;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Orbitron', monospace;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(251,191,36,0.4);
-        }
-        .spin-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 30px rgba(251,191,36,0.6);
-        }
-        .spin-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Scratch card */
-        .scratch-card {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .scratch-card canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            border-radius: 16px;
-        }
-        .scratch-message {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(251,191,36,0.05));
-            border: 2px solid rgba(251,191,36,0.3);
-            border-radius: 16px;
-        }
-
-        /* Music control */
-        .music-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        /* Skip button */
-        .skip-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1001;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            color: rgba(255,255,255,0.6);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-family: 'Orbitron', monospace;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .skip-btn:hover {
-            background: rgba(251,191,36,0.3);
-            border-color: rgba(251,191,36,0.5);
-            color: white;
-        }
-
-        /* Status bar */
-        .status-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1002;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding: 10px 20px;
-        }
-        .status-steps {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .status-step {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-family: 'Orbitron', monospace;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.3);
-            transition: all 0.3s ease;
-        }
-        .status-step.active {
-            background: rgba(251,191,36,0.2);
-            border-color: rgba(251,191,36,0.5);
-            color: #FBBF24;
-        }
-        .status-step.completed {
-            background: rgba(52,211,153,0.2);
-            border-color: rgba(52,211,153,0.5);
-            color: #34D399;
-        }
-        .status-step .icon {
-            font-size: 12px;
-        }
+        /* Confetti */
+        .confetti-piece { position: fixed; width: 8px; height: 8px; top: -10px; animation: confetti linear forwards; pointer-events: none; z-index: 300; }
     </style>
 </head>
-<body style="background:#000000" class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-hidden">
+<body>
 
     <!-- Stars -->
-    <div id="stars" class="fixed inset-0 pointer-events-none"></div>
-
-    <!-- Music Control -->
-    <button id="music-btn" class="music-btn rounded-full w-12 h-12 flex items-center justify-center text-white/70 hover:text-white transition-colors hidden" onclick="toggleMusic()">
-        <span id="music-icon">&#9835;</span>
-    </button>
+    <div id="stars"></div>
 
     <!-- Status Bar -->
-    <div id="status-bar" class="status-bar hidden">
+    <div id="status-bar" class="hidden">
         <div class="status-steps">
-            <div id="step-reveal" class="status-step">
-                <span class="icon">&#127874;</span>
-                <span>Reveal</span>
-            </div>
-            <div id="step-story" class="status-step">
-                <span class="icon">&#128247;</span>
-                <span>Story</span>
-            </div>
-            <div id="step-quiz" class="status-step">
-                <span class="icon">&#10067;</span>
-                <span>Quiz</span>
-            </div>
-            <div id="step-memory" class="status-step">
-                <span class="icon">&#129504;</span>
-                <span>Memory</span>
-            </div>
-            <div id="step-spin" class="status-step">
-                <span class="icon">&#127905;</span>
-                <span>Spin</span>
-            </div>
-            <div id="step-reasons" class="status-step">
-                <span class="icon">&#10084;&#65039;</span>
-                <span>Reasons</span>
-            </div>
-            <div id="step-finale" class="status-step">
-                <span class="icon">&#127881;</span>
-                <span>Finale</span>
+            <div class="status-step" data-phase="reveal"><span>&#127874;</span><span>Reveal</span></div>
+            <div class="status-step" data-phase="story"><span>&#128247;</span><span>Story</span></div>
+            <div class="status-step" data-phase="quiz"><span>&#10067;</span><span>Quiz</span></div>
+            <div class="status-step" data-phase="memory"><span>&#129504;</span><span>Memory</span></div>
+            <div class="status-step" data-phase="spin"><span>&#127905;</span><span>Spin</span></div>
+            <div class="status-step" data-phase="reasons"><span>&#10084;&#65039;</span><span>Reasons</span></div>
+            <div class="status-step" data-phase="finale"><span>&#127881;</span><span>Finale</span></div>
+        </div>
+    </div>
+
+    <!-- Music Button -->
+    <button id="music-btn" class="hidden" onclick="toggleMusic()">&#9835;</button>
+
+    <!-- COUNTDOWN -->
+    <div id="countdown-phase" class="phase active" style="display:flex;">
+        <div style="text-align:center; animation: float 3s ease-in-out infinite;">
+            <p style="font-size:11px; color:rgba(255,255,255,0.5); letter-spacing:0.3em; text-transform:uppercase; margin-bottom:15px;">Counting down to</p>
+            <h1 id="title-name" style="font-size:2rem; animation: glow 2s ease-in-out infinite; letter-spacing:0.1em;"></h1>
+            <div style="width:50px; height:2px; background:rgba(255,255,255,0.2); margin:15px auto;"></div>
+            <p style="font-size:13px; color:rgba(255,255,255,0.4);">Something beautiful is on its way</p>
+        </div>
+        <div class="countdown-grid" style="margin-top:30px;">
+            <div class="count-box"><div id="cd-days" class="count-num">00</div><div class="count-label">Days</div></div>
+            <div class="count-box"><div id="cd-hours" class="count-num">00</div><div class="count-label">Hours</div></div>
+            <div class="count-box"><div id="cd-mins" class="count-num">00</div><div class="count-label">Minutes</div></div>
+            <div class="count-box"><div id="cd-secs" class="count-num">00</div><div class="count-label">Seconds</div></div>
+        </div>
+    </div>
+
+    <!-- PHASE 1: REVEAL -->
+    <div id="phase1" class="phase">
+        <button class="skip-btn" onclick="skip(1)">SKIP &#8594;</button>
+        <div id="p1-content" style="text-align:center; opacity:0;">
+            <h1 id="reveal-title" style="font-size:2rem; animation: glow 2s ease-in-out infinite; margin-bottom:15px;"></h1>
+            <p id="reveal-sub" style="font-size:1rem; color:rgba(255,255,255,0.6); margin-bottom:20px;"></p>
+            <div style="width:80px; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent); margin:0 auto 20px;"></div>
+            <p style="font-size:14px; color:rgba(255,255,255,0.4);">Your surprise awaits...</p>
+        </div>
+    </div>
+
+    <!-- PHASE 2: STORY -->
+    <div id="phase2" class="phase">
+        <button class="skip-btn" onclick="skip(2)">SKIP &#8594;</button>
+        <div class="slide-wrap">
+            <div class="slide-progress"><div id="slide-bar" class="slide-progress-bar"></div></div>
+            <div class="slide-counter" id="slide-counter">1 / 14</div>
+            <img id="slide-img" class="slide-img" src="" alt="">
+            <div class="slide-caption" id="slide-text"></div>
+            <div class="slide-nav">
+                <button onclick="prevSlide()">&#8592; Prev</button>
+                <div class="dots" id="slide-dots"></div>
+                <button onclick="nextSlide()">Next &#8594;</button>
             </div>
         </div>
     </div>
 
-    <!-- ==================== COUNTDOWN PHASE ==================== -->
-    <div id="countdown-phase">
-        <!-- Title -->
-        <div class="text-center mb-10 float-anim relative z-10">
-            <p class="text-white/60 text-xs sm:text-sm font-body font-bold uppercase tracking-[0.35em] mb-4">Counting down to</p>
-            <h1 id="title-name" class="font-digital text-4xl sm:text-5xl md:text-6xl lg:text-7xl shimmer-text leading-tight tracking-wider">
-                Birthday
-            </h1>
-            <div class="w-16 h-0.5 bg-white/20 mx-auto mt-5 rounded-full"></div>
-            <p class="text-white/50 text-sm sm:text-base font-body font-bold mt-5">Something beautiful is on its way</p>
-        </div>
-
-        <!-- Countdown Cards -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 max-w-3xl w-full mb-12 relative z-10">
-            <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F">
-                <span id="days" class="font-digital text-5xl sm:text-6xl md:text-7xl text-white countdown-digit tracking-wider">00</span>
-                <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Days</span>
+    <!-- PHASE 3: QUIZ -->
+    <div id="phase3" class="phase">
+        <button class="skip-btn" onclick="skip(3)">SKIP &#8594;</button>
+        <div class="quiz-box">
+            <div id="quiz-area">
+                <div class="quiz-progress-text" id="quiz-progress"></div>
+                <div class="quiz-q" id="quiz-q"></div>
+                <div id="quiz-opts"></div>
+                <div class="quiz-feedback hidden" id="quiz-fb"></div>
             </div>
-            <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F; animation-delay: 0.3s">
-                <span id="hours" class="font-digital text-5xl sm:text-6xl md:text-7xl countdown-digit tracking-wider" style="color:#FFFFFF !important">00</span>
-                <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Hours</span>
-            </div>
-            <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F; animation-delay: 0.6s">
-                <span id="minutes" class="font-digital text-5xl sm:text-6xl md:text-7xl text-white countdown-digit tracking-wider">00</span>
-                <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Minutes</span>
-            </div>
-            <div class="card-glow rounded-2xl p-5 sm:p-7 flex flex-col items-center border border-white/10" style="background:#0F0F0F; animation-delay: 0.9s">
-                <span id="seconds" class="font-digital text-5xl sm:text-6xl md:text-7xl countdown-digit tracking-wider" style="color:#FFFFFF !important">00</span>
-                <span class="font-body text-[10px] sm:text-xs font-bold text-white/50 uppercase tracking-[0.2em] mt-3">Seconds</span>
+            <div id="quiz-result" class="hidden" style="text-align:center;">
+                <h2 id="quiz-result-title" style="font-size:1.5rem; animation:glow 2s ease-in-out infinite; margin-bottom:15px;"></h2>
+                <p id="quiz-score" style="color:rgba(255,255,255,0.6); margin-bottom:8px;"></p>
+                <p id="quiz-msg" style="color:rgba(255,255,255,0.4);"></p>
             </div>
         </div>
     </div>
 
-    <!-- ==================== PHASE 1: DRAMATIC REVEAL ==================== -->
-    <div id="phase1" class="phase flex-col items-center justify-center text-center px-4" style="background:#000000">
-        <button class="skip-btn" onclick="skipPhase(1)">SKIP &#8594;</button>
-        <div id="phase1-content" class="opacity-0">
-            <h1 id="reveal-name" class="font-digital text-4xl sm:text-5xl md:text-6xl lg:text-8xl glow-text mb-6 tracking-wider"></h1>
-            <p id="reveal-nickname" class="font-body text-xl sm:text-2xl text-white/70 mb-8"></p>
-            <div class="w-32 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent mx-auto mb-8"></div>
-            <p class="font-body text-lg text-white/50">Your surprise awaits...</p>
+    <!-- PHASE 4: MEMORY -->
+    <div id="phase4" class="phase">
+        <button class="skip-btn" onclick="skip(4)">SKIP &#8594;</button>
+        <h2 style="font-size:1.3rem; animation:glow 2s ease-in-out infinite; margin-bottom:10px;">Memory Match</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.4); margin-bottom:15px;">Match the pairs!</p>
+        <div class="mem-stats">
+            <div><p style="font-size:11px;">Moves</p><span id="mem-moves">0</span></div>
+            <div><p style="font-size:11px;">Matches</p><span id="mem-matches">0/6</span></div>
+        </div>
+        <div class="memory-grid" id="mem-board"></div>
+        <div id="mem-done" class="hidden" style="text-align:center; margin-top:15px;">
+            <p id="mem-msg" style="color:rgba(255,255,255,0.7);"></p>
         </div>
     </div>
 
-    <!-- ==================== PHASE 2: PHOTO STORY ==================== -->
-    <div id="phase2" class="phase flex-col items-center justify-center px-4" style="background:#000000">
-        <button class="skip-btn" onclick="skipPhase(2)">SKIP &#8594;</button>
-        <div class="slide-container relative w-full max-w-4xl mx-auto">
-            <!-- Progress bar -->
-            <div class="absolute top-0 left-0 right-0 h-1 bg-white/10 rounded-full overflow-hidden z-20">
-                <div id="slide-progress" class="h-full bg-gradient-to-r from-white/30 to-white/60 transition-all duration-500" style="width:0%"></div>
-            </div>
-
-            <!-- Image counter -->
-            <div class="absolute top-4 left-4 z-20">
-                <span id="slide-counter" class="font-body text-xs text-white/40 bg-black/50 px-3 py-1 rounded-full">1 / 35</span>
-            </div>
-
-            <!-- Image container -->
-            <div class="relative flex items-center justify-center" style="min-height: 60vh;">
-                <img id="slide-image" class="slide-image" src="" alt="">
-                <div id="slide-caption" class="slide-caption absolute bottom-0 left-0 right-0 p-6">
-                    <p id="slide-text" class="font-body text-sm sm:text-base text-white/90 text-center"></p>
-                </div>
-            </div>
-
-            <!-- Navigation -->
-            <div class="flex items-center justify-between mt-4">
-                <button onclick="prevSlide()" class="quiz-option px-5 py-2 rounded-lg font-body text-sm text-white/70 hover:text-white">
-                    &#8592; Prev
-                </button>
-                <div id="slide-dots" class="flex gap-2"></div>
-                <button onclick="nextSlide()" class="quiz-option px-5 py-2 rounded-lg font-body text-sm text-white/70 hover:text-white">
-                    Next &#8594;
-                </button>
-            </div>
+    <!-- PHASE 5: SPIN -->
+    <div id="phase5" class="phase">
+        <button class="skip-btn" onclick="skip(5)">SKIP &#8594;</button>
+        <h2 style="font-size:1.3rem; animation:glow 2s ease-in-out infinite; margin-bottom:5px;">Spin the Wheel of Love</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.4); margin-bottom:20px;">Spin to reveal a message!</p>
+        <div class="wheel-wrap">
+            <div class="wheel-pointer"></div>
+            <div class="wheel" id="wheel"></div>
         </div>
+        <button class="spin-btn" id="spin-btn" onclick="spinWheel()">SPIN</button>
+        <div class="spin-result hidden" id="spin-result"></div>
     </div>
 
-    <!-- ==================== PHASE 3: LOVE QUIZ ==================== -->
-    <div id="phase3" class="phase flex-col items-center justify-center px-4" style="background:#000000">
-        <button class="skip-btn" onclick="skipPhase(3)">SKIP &#8594;</button>
-        <div class="max-w-2xl w-full mx-auto">
-            <div id="quiz-container" class="text-center">
-                <p id="quiz-progress" class="font-body text-sm text-white/40 mb-4"></p>
-                <h2 id="quiz-question" class="font-digital text-xl sm:text-2xl md:text-3xl text-white mb-8 tracking-wider"></h2>
-                <div id="quiz-options" class="grid gap-3"></div>
-                <p id="quiz-feedback" class="font-body text-sm text-white/60 mt-6 hidden"></p>
-            </div>
-            <div id="quiz-result" class="text-center hidden">
-                <h2 class="font-digital text-3xl sm:text-4xl text-white mb-4 tracking-wider glow-text"></h2>
-                <p id="quiz-score" class="font-body text-lg text-white/70 mb-6"></p>
-                <p id="quiz-message" class="font-body text-base text-white/50"></p>
-            </div>
-        </div>
+    <!-- PHASE 6: REASONS -->
+    <div id="phase6" class="phase" style="justify-content:flex-start; padding-top:70px;">
+        <button class="skip-btn" onclick="skip(6)">SKIP &#8594;</button>
+        <h2 style="font-size:1.3rem; animation:glow 2s ease-in-out infinite; margin-bottom:20px;">Reasons I Love You</h2>
+        <div class="reasons-list" id="reasons-list"></div>
     </div>
 
-    <!-- ==================== PHASE 3.5: MEMORY MATCH GAME ==================== -->
-    <div id="phase3-5" class="phase flex-col items-center justify-center px-4" style="background:#000000">
-        <button class="skip-btn" onclick="skipPhase('3-5')">SKIP &#8594;</button>
-        <div class="max-w-3xl w-full mx-auto text-center">
-            <h2 id="memory-title" class="font-digital text-2xl sm:text-3xl text-white mb-4 tracking-wider glow-text">Memory Match</h2>
-            <p id="memory-instructions" class="font-body text-sm text-white/50 mb-6">Match the pairs to reveal special moments!</p>
-            <div id="memory-stats" class="flex justify-center gap-8 mb-6">
-                <div class="text-center">
-                    <p class="font-body text-xs text-white/40">Moves</p>
-                    <p id="memory-moves" class="font-digital text-2xl text-white">0</p>
-                </div>
-                <div class="text-center">
-                    <p class="font-body text-xs text-white/40">Matches</p>
-                    <p id="memory-matches" class="font-digital text-2xl text-white">0/6</p>
-                </div>
-            </div>
-            <div id="memory-board" class="grid grid-cols-4 gap-3 justify-items-center mb-6"></div>
-            <div id="memory-complete" class="hidden">
-                <p id="memory-complete-msg" class="font-body text-lg text-white/70 mb-4"></p>
-            </div>
+    <!-- PHASE 7: FINALE -->
+    <div id="phase7" class="phase">
+        <div class="mosaic" id="mosaic"></div>
+        <div class="letter hidden" id="letter">
+            <h2>Happy Birthday!</h2>
+            <div id="letter-text"></div>
         </div>
+        <button class="replay-btn hidden" id="replay-btn" onclick="location.reload()">&#8634; Watch Again</button>
     </div>
 
-    <!-- ==================== PHASE 4: SPIN THE WHEEL ==================== -->
-    <div id="phase4" class="phase flex-col items-center justify-center px-4" style="background:#000000">
-        <button class="skip-btn" onclick="skipPhase(4)">SKIP &#8594;</button>
-        <div class="max-w-2xl w-full mx-auto text-center">
-            <h2 class="font-digital text-2xl sm:text-3xl text-white mb-2 tracking-wider glow-text">Spin the Wheel of Love</h2>
-            <p class="font-body text-sm text-white/50 mb-8">Spin to reveal a special message!</p>
-            <div class="spin-wheel-container mx-auto mb-8">
-                <div class="spin-pointer"></div>
-                <div id="spin-wheel" class="spin-wheel"></div>
-            </div>
-            <button id="spin-btn" class="spin-btn mb-6" onclick="spinWheel()">SPIN</button>
-            <div id="spin-result" class="hidden">
-                <p id="spin-message" class="font-body text-lg text-white/80 mb-4"></p>
-                <p id="spin-nickname" class="font-digital text-xl text-white/50"></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== PHASE 5: REASONS I LOVE YOU ==================== -->
-    <div id="phase5" class="phase flex-col items-start justify-start px-4 overflow-y-auto" style="background:#000000">
-        <button class="skip-btn" onclick="skipPhase(5)">SKIP &#8594;</button>
-        <div class="max-w-4xl mx-auto py-8 w-full">
-            <h2 class="font-digital text-2xl sm:text-3xl md:text-4xl text-white text-center mb-12 tracking-wider glow-text">Reasons I Love You</h2>
-            <div id="reasons-container" class="grid gap-8"></div>
-        </div>
-    </div>
-
-    <!-- ==================== PHASE 6: FINAL SURPRISE ==================== -->
-    <div id="phase6" class="phase flex-col items-center justify-center px-4" style="background:#000000">
-        <div class="max-w-5xl w-full mx-auto text-center">
-            <!-- Mosaic grid -->
-            <div id="mosaic-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 mb-8"></div>
-
-            <!-- Birthday letter -->
-            <div id="birthday-letter" class="hidden max-w-2xl mx-auto bg-black/50 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
-                <h2 class="font-digital text-2xl sm:text-3xl text-white mb-6 tracking-wider glow-text">Happy Birthday!</h2>
-                <div id="letter-content" class="font-body text-sm sm:text-base text-white/70 leading-relaxed text-left space-y-4"></div>
-                <div class="mt-8 pt-6 border-t border-white/10">
-                    <p class="font-body text-xs text-white/40">With all my love, always</p>
-                </div>
-            </div>
-
-            <!-- Replay button -->
-            <button id="replay-btn" class="hidden mt-8 quiz-option px-6 py-3 rounded-lg font-body text-white/70 hover:text-white" onclick="location.reload()">
-                &#8634; Watch Again
-            </button>
-        </div>
-    </div>
-
-    <!-- ==================== AUDIO ==================== -->
+    <!-- Audio -->
     <audio id="bg-music" loop preload="auto">
         <source src="Fahamida/Happy Birthday To You Ji - Funny Hindi Birthday Song (Part 1) - Funzoa Mimi Teddy, Krsna Solo.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // ==================== CONFIGURATION ====================
-        const NICKNAMES = ['Paki', 'Monu', 'Fahu', 'Sonamoni', 'Baby', 'My Pet', 'My Sajna'];
-        const TOTAL_IMAGES = 28;
-        const IMAGE_FILES = ['Paki', 'Monu', 'Fahu', 'Sonamoni', 'Baby', 'My Pet', 'My Sajna', 'Jaan', 'Jaanu', 'Sweetheart', 'Princess', 'Darling', 'Honey', 'My Queen', 'Angel', 'Beautiful', 'Cutie', 'Babu', 'Shona', 'Gudiya', 'Rani', 'Mere Dil', 'Meri Jaan', 'Pyaari', 'Choti', 'Jaane Jaan', 'Dil Ki Dhadkan', 'Meri Zindagi'];
-        const STORY_IMAGES = IMAGE_FILES.slice(0, 14);
-        const MEMORY_IMAGES = ['Beautiful', 'Cutie', 'Babu', 'Shona', 'Gudiya', 'Rani'];
-        const REASON_IMAGES = IMAGE_FILES.slice(14, 22);
-        const FINALE_IMAGES = IMAGE_FILES.slice(22, 28);
+    // ========== CONFIG ==========
+    const NICKNAMES = ['Paki','Monu','Fahu','Sonamoni','Baby','My Pet','My Sajna'];
+    const IMAGES = ['Paki','Monu','Fahu','Sonamoni','Baby','My Pet','My Sajna','Jaan','Jaanu','Sweetheart','Princess','Darling','Honey','My Queen','Angel','Beautiful','Cutie','Babu','Shona','Gudiya','Rani','Mere Dil','Meri Jaan','Pyaari','Choti','Jaane Jaan','Dil Ki Dhadkan','Meri Zindagi'];
 
-        const SPIN_MESSAGES = [
-            "You are the most beautiful person I know, {nickname}!",
-            "Your smile makes my heart melt, {nickname}!",
-            "I am so lucky to have you, {nickname}!",
-            "You are my sunshine, {nickname}!",
-            "Your beauty takes my breath away, {nickname}!",
-            "I cherish every moment with you, {nickname}!",
-            "You make my world complete, {nickname}!",
-            "Happy birthday to my favorite person, {nickname}!"
-        ];
+    const STORY_IMGS = IMAGES.slice(0, 28);
+    const STORY_TXT = [
+        "You are the most beautiful soul I know, {n}",
+        "Your smile lights up my entire world, {n}",
+        "Every moment with you is a gift, {n}",
+        "You make my heart skip a beat, {n}",
+        "Your eyes shine brighter than stars, {n}",
+        "I am so lucky to have you, {n}",
+        "You are my sunshine, {n}",
+        "Your laughter is my favorite sound, {n}",
+        "You make everything better, {n}",
+        "I fall in love with you more each day, {n}",
+        "You are magic, {n}",
+        "Your kindness is beautiful, {n}",
+        "You are my happy place, {n}",
+        "I cherish every second with you, {n}",
+        "You are stronger than you know, {n}",
+        "Your beauty takes my breath away, {n}",
+        "You are my dream come true, {n}",
+        "I am so grateful for you, {n}",
+        "You make ordinary moments extraordinary, {n}",
+        "Your heart is pure gold, {n}",
+        "I love the way you smile, {n}",
+        "You are my inspiration, {n}",
+        "You are everything I ever wished for, {n}",
+        "Your presence makes my world complete, {n}",
+        "I am blessed to know you, {n}",
+        "You are my forever and always, {n}",
+        "Your smile is contagious, {n}",
+        "Happy birthday to the most amazing person, {n}"
+    ];
 
-        const STORY_CAPTIONS = [
-            "You are the most beautiful soul I know, {nickname}",
-            "Your smile lights up my entire world, {nickname}",
-            "Every moment with you is a gift, {nickname}",
-            "You make my heart skip a beat, {nickname}",
-            "Your eyes shine brighter than any star, {nickname}",
-            "I am so lucky to have you in my life, {nickname}",
-            "You are my sunshine on cloudy days, {nickname}",
-            "Your laughter is my favorite melody, {nickname}",
-            "You make everything better just by being you, {nickname}",
-            "I fall in love with you more every day, {nickname}",
-            "You are the reason I believe in magic, {nickname}",
-            "Your kindness touches everyone around you, {nickname}",
-            "You are my happy place, {nickname}",
-            "Happy birthday to the most amazing person, {nickname}"
-        ];
+    const MEM_IMGS = ['Beautiful','Cutie','Babu','Shona','Gudiya','Rani'];
+    const REASON_IMGS = IMAGES.slice(14, 22);
+    const REASON_TXT = [
+        "Your smile lights up my world",
+        "Your laugh makes everything better",
+        "Your kindness touches everyone",
+        "You are so strong and brave",
+        "Your eyes sparkle like stars",
+        "You make me a better person",
+        "Your voice is my favorite sound",
+        "You always make me smile"
+    ];
+    const FINALE_IMGS = IMAGES.slice(22, 28);
 
-        const REASONS = [
-            "Your smile lights up my entire world",
-            "The way you laugh makes everything better",
-            "Your kindness touches everyone around you",
-            "You are so strong and brave",
-            "Your eyes sparkle like stars",
-            "You make me a better person",
-            "Your voice is my favorite sound",
-            "You always know how to make me smile",
-            "Your hugs feel like home",
-            "You are incredibly beautiful inside and out",
-            "Your gentle heart amazes me every day"
-        ];
+    const QUIZ = [
+        { q: "What do I love most about you, {n}?", o: ["Your smile","Your heart","Your spirit","All of you"], a: 3, f: "I love ALL of you, {n}!" },
+        { q: "How does my heart feel when I see you, {n}?", o: ["Skips a beat","Sings with joy","Feels complete","All of these"], a: 3, f: "My heart dances with joy, {n}!" },
+        { q: "What makes you special, {n}?", o: ["Your beauty","Your kindness","Your spirit","Everything"], a: 3, f: "Everything about you is special, {n}!" },
+        { q: "How would I describe you, {n}?", o: ["Beautiful","Amazing","Perfect","All of the above"], a: 3, f: "You are all of these and more, {n}!" },
+        { q: "How long will I love you, {n}?", o: ["Forever","Until end of time","For eternity","All of these"], a: 3, f: "Forever and always, {n}!" }
+    ];
 
-        const QUIZ_QUESTIONS = [
-            {
-                question: "What do I love most about you, {nickname}?",
-                options: ["Your beautiful smile", "Your kind heart", "Your amazing spirit", "All of you, always"],
-                correct: 3,
-                feedback: "I love ALL of you, {nickname}! Every single part!"
-            },
-            {
-                question: "How does my heart feel when I see you, {nickname}?",
-                options: ["It skips a beat", "It sings with joy", "It feels complete", "All of these"],
-                correct: 3,
-                feedback: "My heart dances with joy every time I see you, {nickname}!"
-            },
-            {
-                question: "What makes you so special, {nickname}?",
-                options: ["Your beauty", "Your kindness", "Your spirit", "Everything about you"],
-                correct: 3,
-                feedback: "Everything about you is special, {nickname}!"
-            },
-            {
-                question: "How would I describe you, {nickname}?",
-                options: ["Beautiful", "Amazing", "Perfect", "All of the above"],
-                correct: 3,
-                feedback: "You are all of these and more, {nickname}!"
-            },
-            {
-                question: "How long will I love you, {nickname}?",
-                options: ["Forever and always", "Until the end of time", "For all eternity", "All of these"],
-                correct: 3,
-                feedback: "I will love you forever and always, {nickname}! That's a promise!"
-            }
-        ];
+    const SPIN_MSG = [
+        "You are the most beautiful person I know, {n}!",
+        "Your smile makes my heart melt, {n}!",
+        "I am so lucky to have you, {n}!",
+        "You are my sunshine, {n}!",
+        "Your beauty takes my breath away, {n}!",
+        "I cherish every moment with you, {n}!",
+        "You make my world complete, {n}!",
+        "Happy birthday, {n}!"
+    ];
 
-        const LETTER_LINES = [
-            "My dearest {nickname},",
-            "",
-            "Today is YOUR special day, and I want you to know just how incredible you are.",
-            "",
-            "You light up every room you walk into with your beautiful smile.",
-            "Your kindness and warmth touch everyone lucky enough to know you.",
-            "",
-            "From the moment I met you, I knew you were someone truly special.",
-            "Your beauty, inside and out, is something I admire every single day.",
-            "",
-            "Thank you for being YOU - the amazing, beautiful, wonderful person you are.",
-            "Thank you for making the world a brighter place just by being in it.",
-            "",
-            "On this birthday, I wish you all the happiness you deserve.",
-            "May all your dreams come true, because you deserve nothing less than the best.",
-            "",
-            "You are stronger, braver, and more beautiful than you will ever know.",
-            "I am so grateful to have you in my life.",
-            "",
-            "Happy Birthday, {nickname}. You are one of a kind.",
-            "",
-            "With all my love and admiration,",
-            "Yours always"
-        ];
+    const LETTER = [
+        "My dearest {n},",
+        "",
+        "Today is YOUR special day. I want you to know how incredible you are.",
+        "",
+        "You light up every room with your beautiful smile.",
+        "Your kindness touches everyone lucky enough to know you.",
+        "",
+        "From the moment I met you, I knew you were special.",
+        "Your beauty, inside and out, amazes me every day.",
+        "",
+        "Thank you for being YOU.",
+        "Thank you for making the world brighter.",
+        "",
+        "On this birthday, I wish you all the happiness you deserve.",
+        "May all your dreams come true.",
+        "",
+        "You are stronger and more beautiful than you know.",
+        "I am so grateful to have you in my life.",
+        "",
+        "Happy Birthday, {n}. You are one of a kind.",
+        "",
+        "With all my love,",
+        "Yours always"
+    ];
 
-        // ==================== STATE ====================
-        let target;
-        let birthdayName;
-        let currentPhase = 0;
-        let currentSlide = 0;
-        let quizIndex = 0;
-        let quizScore = 0;
-        let musicPlaying = false;
-        let slideInterval;
-        let nickname;
+    // ========== STATE ==========
+    let target, nickname, musicPlaying = false, slideTimer, countdownTimer;
+    let currentSlide = 0, quizIdx = 0, quizScore = 0, quizLocked = false;
+    let memCards = [], memFlipped = [], memMatched = 0, memMoves = 0, memCanFlip = true;
+    let canSpin = true, busy = false, quizActive = false, surpriseStarted = false;
 
-        // Memory game state
-        let memoryCards = [];
-        let flippedCards = [];
-        let matchedPairs = 0;
-        let memoryMoves = 0;
-        let canFlip = true;
-
-        // Spin wheel state
-        let spinAngle = 0;
-        let canSpin = true;
-
-        // Transition guard
-        let isTransitioning = false;
-
-        // ==================== INITIALIZATION ====================
-        async function loadBirthday() {
-            try {
-                const res = await fetch('birthday.json');
-                const data = await res.json();
-                target = new Date(data.birthday + 'T00:00:00').getTime();
-                birthdayName = data.name;
-                nickname = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
-
-                document.getElementById('title-name').textContent = data.name + "'s Birthday";
-                document.getElementById('reveal-name').textContent = "Happy Birthday " + data.name + "!";
-                document.getElementById('reveal-nickname').textContent = "Hey " + nickname + ", this is for you!";
-
-                updateCountdown();
-                setInterval(updateCountdown, 1000);
-            } catch (e) {
-                console.error('Could not load birthday.json', e);
-                // Fallback
-                birthdayName = "Fahamida";
-                nickname = "Baby";
-                document.getElementById('title-name').textContent = "Fahamida's Birthday";
-                document.getElementById('reveal-name').textContent = "Happy Birthday Fahamida!";
-                document.getElementById('reveal-nickname').textContent = "Hey Baby, this is for you!";
-                target = new Date('2026-07-20T00:00:00').getTime();
-                updateCountdown();
-                setInterval(updateCountdown, 1000);
-            }
+    // ========== INIT ==========
+    async function init() {
+        createStars();
+        try {
+            const r = await fetch('birthday.json');
+            const d = await r.json();
+            target = new Date(d.birthday + 'T00:00:00').getTime();
+            nickname = rand(NICKNAMES);
+            document.getElementById('title-name').textContent = d.name + "'s Birthday";
+            document.getElementById('reveal-title').textContent = "Happy Birthday " + d.name + "!";
+            document.getElementById('reveal-sub').textContent = "Hey " + nickname + ", this is for you!";
+        } catch(e) {
+            target = new Date('2026-07-10T00:00:00').getTime();
+            nickname = 'Baby';
+            document.getElementById('title-name').textContent = "Fahamida's Birthday";
+            document.getElementById('reveal-title').textContent = "Happy Birthday Fahamida!";
+            document.getElementById('reveal-sub').textContent = "Hey Baby, this is for you!";
         }
+        updateCD();
+        countdownTimer = setInterval(updateCD, 1000);
+    }
 
-        // Stars
-        (function() {
-            const c = document.getElementById('stars');
-            for (let i = 0; i < 60; i++) {
-                const s = document.createElement('div');
-                s.className = 'star';
-                s.style.left = Math.random() * 100 + '%';
-                s.style.top = Math.random() * 100 + '%';
-                const size = (Math.random() * 2 + 1) + 'px';
-                s.style.width = size;
-                s.style.height = size;
-                s.style.animationDuration = (Math.random() * 4 + 3) + 's';
-                s.style.animationDelay = Math.random() * 4 + 's';
-                c.appendChild(s);
-            }
-        })();
+    function createStars() {
+        const c = document.getElementById('stars');
+        for (let i = 0; i < 50; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()*4}s;`;
+            c.appendChild(s);
+        }
+    }
 
-        let prevSeconds = -1;
+    function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const diff = target - now;
-
-            if (diff <= 0) {
-                ['days','hours','minutes','seconds'].forEach(id => document.getElementById(id).textContent = '00');
+    // ========== COUNTDOWN ==========
+    function updateCD() {
+        const diff = target - Date.now();
+        if (diff <= 0) {
+            clearInterval(countdownTimer);
+            if (!surpriseStarted) {
+                surpriseStarted = true;
+                showPhase('countdown-phase', false);
                 startSurprise();
+            }
+            return;
+        }
+        const d = Math.floor(diff / 864e5);
+        const h = Math.floor((diff % 864e5) / 36e5);
+        const m = Math.floor((diff % 36e5) / 6e4);
+        const s = Math.floor((diff % 6e4) / 1e3);
+        document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+        document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+        document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+    }
+
+    // ========== PHASE MANAGEMENT ==========
+    function showPhase(id, show) {
+        const el = document.getElementById(id);
+        if (show) { el.classList.add('active'); el.style.display = 'flex'; }
+        else { el.classList.remove('active'); el.style.display = 'none'; }
+    }
+
+    function updateStatus(phase) {
+        const order = ['reveal','story','quiz','memory','spin','reasons','finale'];
+        const idx = order.indexOf(phase);
+        document.querySelectorAll('.status-step').forEach((el, i) => {
+            el.classList.remove('active','done');
+            if (i < idx) el.classList.add('done');
+            else if (i === idx) el.classList.add('active');
+        });
+    }
+
+    function startSurprise() {
+        document.getElementById('status-bar').classList.remove('hidden');
+        document.getElementById('music-btn').classList.remove('hidden');
+        const music = document.getElementById('bg-music');
+        music.volume = 0.5;
+        music.play().then(() => { musicPlaying = true; document.getElementById('music-btn').innerHTML = '&#9835;'; })
+        .catch(() => { document.getElementById('music-btn').innerHTML = '&#128263;'; });
+        setTimeout(() => startPhase1(), 300);
+    }
+
+    function toggleMusic() {
+        const m = document.getElementById('bg-music');
+        const btn = document.getElementById('music-btn');
+        if (musicPlaying) { m.pause(); btn.innerHTML = '&#128263;'; musicPlaying = false; }
+        else { m.play().then(() => { btn.innerHTML = '&#9835;'; musicPlaying = true; }).catch(() => {}); }
+    }
+
+    // ========== CONFETTI ==========
+    function confetti() {
+        const colors = ['#FBBF24','#F87171','#A78BFA','#34D399','#60A5FA','#F472B6'];
+        for (let i = 0; i < 40; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti-piece';
+            c.style.cssText = `left:${Math.random()*100}vw;background:${rand(colors)};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*2}s;`;
+            document.body.appendChild(c);
+            setTimeout(() => c.remove(), 5000);
+        }
+    }
+
+    // ========== PHASE 1: REVEAL ==========
+    function startPhase1() {
+        busy = true;
+        updateStatus('reveal');
+        showPhase('phase1', true);
+        setTimeout(() => { document.getElementById('p1-content').classList.add('fade-in'); confetti(); }, 200);
+        setTimeout(() => {
+            showPhase('phase1', false);
+            busy = false;
+            startPhase2();
+        }, 4000);
+    }
+
+    // ========== PHASE 2: STORY ==========
+    function startPhase2() {
+        busy = true;
+        updateStatus('story');
+        showPhase('phase2', true);
+        currentSlide = 0;
+        buildDots();
+        showSlide(0);
+        slideTimer = setInterval(() => {
+            if (currentSlide >= STORY_IMGS.length - 1) {
+                clearInterval(slideTimer);
+                setTimeout(() => { showPhase('phase2', false); busy = false; startPhase3(); }, 1500);
                 return;
             }
-
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('days').textContent = String(d).padStart(2, '0');
-            document.getElementById('hours').textContent = String(h).padStart(2, '0');
-            document.getElementById('minutes').textContent = String(m).padStart(2, '0');
-            document.getElementById('seconds').textContent = String(s).padStart(2, '0');
-
-            if (s !== prevSeconds) {
-                const el = document.getElementById('seconds');
-                el.classList.remove('tick-anim');
-                void el.offsetWidth;
-                el.classList.add('tick-anim');
-                prevSeconds = s;
-            }
-        }
-
-        // ==================== SURPRISE START ====================
-        function startSurprise() {
-            // Hide countdown
-            document.getElementById('countdown-phase').style.display = 'none';
-            showStatusBar();
-
-            // Start music
-            const music = document.getElementById('bg-music');
-            music.volume = 0.5;
-            music.play().then(() => {
-                musicPlaying = true;
-                document.getElementById('music-btn').classList.remove('hidden');
-            }).catch(() => {
-                // Autoplay blocked, show button for user to click
-                document.getElementById('music-btn').classList.remove('hidden');
-                document.getElementById('music-icon').textContent = '🔇';
-            });
-
-            // Start Phase 1
-            setTimeout(() => startPhase1(), 500);
-        }
-
-        function toggleMusic() {
-            const music = document.getElementById('bg-music');
-            const icon = document.getElementById('music-icon');
-            if (musicPlaying) {
-                music.pause();
-                icon.textContent = '🔇';
-                musicPlaying = false;
-            } else {
-                music.play().then(() => {
-                    icon.textContent = '♫';
-                    musicPlaying = true;
-                }).catch(() => {
-                    icon.textContent = '🔇';
-                });
-            }
-        }
-
-        // ==================== PHASE 1: DRAMATIC REVEAL ====================
-        function startPhase1() {
-            isTransitioning = true;
-            updateStatusBar('reveal');
-            document.getElementById('phase1').classList.add('active');
-            setTimeout(() => {
-                document.getElementById('phase1-content').classList.add('fade-in');
-                createConfetti();
-            }, 500);
-
-            setTimeout(() => {
-                document.getElementById('phase1').classList.add('fade-out');
-                setTimeout(() => {
-                    document.getElementById('phase1').classList.remove('active', 'fade-out');
-                    isTransitioning = false;
-                    startPhase2();
-                }, 1000);
-            }, 4000);
-        }
-
-        function createConfetti() {
-            const colors = ['#FBBF24', '#F87171', '#A78BFA', '#34D399', '#60A5FA', '#F472B6'];
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                document.body.appendChild(confetti);
-                setTimeout(() => confetti.remove(), 5000);
-            }
-        }
-
-        // ==================== PHASE 2: PHOTO STORY ====================
-        function startPhase2() {
-            updateStatusBar('story');
-            document.getElementById('phase2').classList.add('active');
-            initSlideshow();
-        }
-
-        function initSlideshow() {
-            const dotsContainer = document.getElementById('slide-dots');
-            dotsContainer.innerHTML = '';
-            currentSlide = 0;
-
-            STORY_IMAGES.forEach((_, i) => {
-                const dot = document.createElement('div');
-                dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
-                dot.onclick = () => goToSlide(i);
-                dotsContainer.appendChild(dot);
-            });
-
-            showSlide(0);
-            slideInterval = setInterval(() => nextSlide(), 8000);
-        }
-
-        function showSlide(index) {
-            const img = document.getElementById('slide-image');
-            const caption = document.getElementById('slide-text');
-            const progress = document.getElementById('slide-progress');
-            const counter = document.getElementById('slide-counter');
-
-            img.classList.add('fade-out');
-            setTimeout(() => {
-                img.src = 'Fahamida/' + STORY_IMAGES[index] + '.png';
-                const randomNick = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
-                caption.textContent = STORY_CAPTIONS[index].replace('{nickname}', randomNick);
-                progress.style.width = ((index + 1) / STORY_IMAGES.length * 100) + '%';
-                counter.textContent = `${index + 1} / ${STORY_IMAGES.length}`;
-
-                document.querySelectorAll('#slide-dots .progress-dot').forEach((d, i) => {
-                    d.classList.toggle('active', i === index);
-                });
-
-                img.classList.remove('fade-out');
-                img.classList.add('fade-in');
-                setTimeout(() => img.classList.remove('fade-in'), 1000);
-            }, 400);
-        }
-
-        function nextSlide() {
-            if (isTransitioning) return;
-            const nextIndex = currentSlide + 1;
-            if (nextIndex >= STORY_IMAGES.length) {
-                // Completed all slides
-                isTransitioning = true;
-                clearInterval(slideInterval);
-                setTimeout(() => {
-                    document.getElementById('phase2').classList.add('fade-out');
-                    setTimeout(() => {
-                        document.getElementById('phase2').classList.remove('active', 'fade-out');
-                        isTransitioning = false;
-                        startPhase3();
-                    }, 1000);
-                }, 2000);
-                return;
-            }
-            currentSlide = nextIndex;
+            currentSlide++;
             showSlide(currentSlide);
-        }
+        }, 3000);
+    }
 
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + STORY_IMAGES.length) % STORY_IMAGES.length;
-            showSlide(currentSlide);
-        }
+    function buildDots() {
+        const c = document.getElementById('slide-dots');
+        c.innerHTML = '';
+        STORY_IMGS.forEach((_, i) => {
+            const d = document.createElement('div');
+            d.className = 'dot' + (i === 0 ? ' active' : '');
+            d.onclick = () => { currentSlide = i; showSlide(i); };
+            c.appendChild(d);
+        });
+    }
 
-        function goToSlide(index) {
-            currentSlide = index;
-            showSlide(index);
-        }
+    function showSlide(i) {
+        const img = document.getElementById('slide-img');
+        img.style.opacity = '0';
+        setTimeout(() => {
+            img.src = 'Fahamida/' + STORY_IMGS[i] + '.png';
+            img.style.opacity = '1';
+            document.getElementById('slide-text').textContent = STORY_TXT[i].replace('{n}', rand(NICKNAMES));
+            document.getElementById('slide-counter').textContent = (i+1) + ' / ' + STORY_IMGS.length;
+            document.getElementById('slide-bar').style.width = ((i+1)/STORY_IMGS.length*100) + '%';
+            document.querySelectorAll('.dot').forEach((d, j) => d.classList.toggle('active', j === i));
+        }, 200);
+    }
 
-        // ==================== PHASE 3: LOVE QUIZ ====================
-        let quizAnswered = false;
+    function prevSlide() { if (currentSlide > 0) { currentSlide--; showSlide(currentSlide); } }
+    function nextSlide() { if (currentSlide < STORY_IMGS.length - 1) { currentSlide++; showSlide(currentSlide); } }
 
-        function startPhase3() {
-            isTransitioning = true;
-            updateStatusBar('quiz');
-            document.getElementById('phase3').classList.add('active');
-            quizIndex = 0;
-            quizScore = 0;
-            quizAnswered = false;
-            document.getElementById('quiz-container').classList.remove('hidden');
-            document.getElementById('quiz-result').classList.add('hidden');
-            showQuizQuestion();
-        }
+    // ========== PHASE 3: QUIZ ==========
+    function startPhase3() {
+        if (quizActive) return;
+        quizActive = true;
+        busy = true;
+        updateStatus('quiz');
+        showPhase('phase3', true);
+        quizIdx = 0; quizScore = 0; quizLocked = false;
+        document.getElementById('quiz-area').classList.remove('hidden');
+        document.getElementById('quiz-result').classList.add('hidden');
+        showQuizQ();
+    }
 
-        function showQuizQuestion() {
-            if (quizIndex >= QUIZ_QUESTIONS.length) {
-                showQuizResult();
-                return;
-            }
+    function showQuizQ() {
+        if (quizIdx >= QUIZ.length) { showQuizEnd(); return; }
+        quizLocked = false;
+        const q = QUIZ[quizIdx];
+        document.getElementById('quiz-progress').textContent = 'Question ' + (quizIdx+1) + ' of ' + QUIZ.length;
+        document.getElementById('quiz-q').textContent = q.q.replace('{n}', nickname);
+        document.getElementById('quiz-fb').classList.add('hidden');
+        const box = document.getElementById('quiz-opts');
+        box.innerHTML = '';
+        q.o.forEach((o, i) => {
+            const b = document.createElement('button');
+            b.className = 'quiz-opt';
+            b.textContent = o;
+            b.onclick = () => pickAnswer(i);
+            box.appendChild(b);
+        });
+    }
 
-            quizAnswered = false;
-            const q = QUIZ_QUESTIONS[quizIndex];
-            document.getElementById('quiz-progress').textContent = `Question ${quizIndex + 1} of ${QUIZ_QUESTIONS.length}`;
-            document.getElementById('quiz-question').textContent = q.question.replace('{nickname}', nickname);
-            document.getElementById('quiz-feedback').classList.add('hidden');
+    function pickAnswer(i) {
+        if (quizLocked || !quizActive) return;
+        quizLocked = true;
+        const q = QUIZ[quizIdx];
+        const btns = document.querySelectorAll('.quiz-opt');
+        btns.forEach((b, j) => { b.onclick = null; if (j === q.a) b.classList.add('correct'); });
+        if (i === q.a) quizScore++;
+        const fb = document.getElementById('quiz-fb');
+        fb.textContent = q.f.replace('{n}', nickname);
+        fb.classList.remove('hidden');
+        setTimeout(() => {
+            if (!quizActive) return;
+            quizIdx++;
+            showQuizQ();
+        }, 2000);
+    }
 
-            const optionsContainer = document.getElementById('quiz-options');
-            optionsContainer.innerHTML = '';
+    function showQuizEnd() {
+        document.getElementById('quiz-area').classList.add('hidden');
+        const r = document.getElementById('quiz-result');
+        r.classList.remove('hidden');
+        const n = rand(NICKNAMES);
+        document.getElementById('quiz-result-title').textContent = quizScore === QUIZ.length ? "Perfect Score, " + n + "!" : "You're Amazing, " + n + "!";
+        document.getElementById('quiz-score').textContent = quizScore + ' / ' + QUIZ.length;
+        document.getElementById('quiz-msg').textContent = "Every answer proves how special you are!";
+        setTimeout(() => {
+            quizActive = false;
+            showPhase('phase3', false);
+            busy = false;
+            startPhase4();
+        }, 3000);
+    }
 
-            q.options.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'quiz-option p-4 rounded-xl font-body text-sm sm:text-base text-white/80 text-left';
-                btn.textContent = opt;
-                btn.onclick = () => selectAnswer(i);
-                optionsContainer.appendChild(btn);
-            });
-        }
+    // ========== PHASE 4: MEMORY ==========
+    function startPhase4() {
+        busy = true;
+        updateStatus('memory');
+        showPhase('phase4', true);
+        memMatched = 0; memMoves = 0; memFlipped = []; memCanFlip = true;
+        document.getElementById('mem-done').classList.add('hidden');
+        memCards = [];
+        MEM_IMGS.forEach((name, i) => { memCards.push({id:i, img:name}); memCards.push({id:i, img:name}); });
+        for (let i = memCards.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [memCards[i],memCards[j]]=[memCards[j],memCards[i]]; }
+        const board = document.getElementById('mem-board');
+        board.innerHTML = '';
+        memCards.forEach((c, idx) => {
+            const el = document.createElement('div');
+            el.className = 'mem-card';
+            el.dataset.idx = idx;
+            el.innerHTML = '<div class="mem-inner"><div class="mem-front"></div><div class="mem-back"><img src="Fahamida/'+c.img+'.png" alt=""></div></div>';
+            el.onclick = () => flipMem(idx);
+            board.appendChild(el);
+        });
+        updMemStats();
+    }
 
-        function selectAnswer(index) {
-            if (quizAnswered) return;
-            quizAnswered = true;
-
-            const q = QUIZ_QUESTIONS[quizIndex];
-            const options = document.querySelectorAll('#quiz-options .quiz-option');
-
-            options.forEach((opt, i) => {
-                opt.onclick = null;
-                if (i === q.correct) {
-                    opt.classList.add('selected');
-                }
-            });
-
-            if (index === q.correct) {
-                quizScore++;
-            }
-
-            const feedback = document.getElementById('quiz-feedback');
-            feedback.textContent = q.feedback.replace('{nickname}', nickname);
-            feedback.classList.remove('hidden');
-
-            setTimeout(() => {
-                quizIndex++;
-                showQuizQuestion();
-            }, 2000);
-        }
-
-        function showQuizResult() {
-            document.getElementById('quiz-container').classList.add('hidden');
-            const result = document.getElementById('quiz-result');
-            result.classList.remove('hidden');
-
-            const nickname2 = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
-            result.querySelector('h2').textContent = quizScore === QUIZ_QUESTIONS.length
-                ? "Perfect Score, " + nickname2 + "!"
-                : "You're Amazing, " + nickname2 + "!";
-            document.getElementById('quiz-score').textContent = `You got ${quizScore} out of ${QUIZ_QUESTIONS.length}`;
-            document.getElementById('quiz-message').textContent = quizScore === QUIZ_QUESTIONS.length
-                ? "You know exactly how much I love you!"
-                : "Every answer proves how special we are!";
-
-            setTimeout(() => {
-                document.getElementById('phase3').classList.add('fade-out');
-                setTimeout(() => {
-                    document.getElementById('phase3').classList.remove('active', 'fade-out');
-                    isTransitioning = false;
-                    startPhase3_5();
-                }, 1000);
-            }, 3000);
-        }
-
-        // ==================== PHASE 3.5: MEMORY MATCH GAME ====================
-        function startPhase3_5() {
-            isTransitioning = true;
-            updateStatusBar('memory');
-            document.getElementById('phase3-5').classList.add('active');
-            initMemoryGame();
-        }
-
-        function initMemoryGame() {
-            const board = document.getElementById('memory-board');
-            board.innerHTML = '';
-            matchedPairs = 0;
-            memoryMoves = 0;
-            flippedCards = [];
-            canFlip = true;
-
-            // Create pairs
-            memoryCards = [];
-            MEMORY_IMAGES.forEach((imgName, i) => {
-                memoryCards.push({ id: i, img: imgName });
-                memoryCards.push({ id: i, img: imgName });
-            });
-
-            // Shuffle
-            for (let i = memoryCards.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [memoryCards[i], memoryCards[j]] = [memoryCards[j], memoryCards[i]];
-            }
-
-            // Create cards
-            memoryCards.forEach((card, index) => {
-                const cardEl = document.createElement('div');
-                cardEl.className = 'memory-card';
-                cardEl.dataset.index = index;
-                cardEl.innerHTML = `
-                    <div class="memory-card-inner">
-                        <div class="memory-card-front"></div>
-                        <div class="memory-card-back">
-                            <img src="Fahamida/${card.img}.png" alt="Memory">
-                        </div>
-                    </div>
-                `;
-                cardEl.onclick = () => flipCard(index);
-                board.appendChild(cardEl);
-            });
-
-            updateMemoryStats();
-        }
-
-        function flipCard(index) {
-            if (!canFlip) return;
-            if (flippedCards.length >= 2) return;
-
-            const card = document.querySelector(`.memory-card[data-index="${index}"]`);
-            if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
-
-            card.classList.add('flipped');
-            flippedCards.push({ index, id: memoryCards[index].id, element: card });
-
-            if (flippedCards.length === 2) {
-                memoryMoves++;
-                updateMemoryStats();
-                canFlip = false;
-
-                if (flippedCards[0].id === flippedCards[1].id) {
-                    // Match!
-                    matchedPairs++;
-                    flippedCards[0].element.classList.add('matched');
-                    flippedCards[1].element.classList.add('matched');
-                    flippedCards = [];
-                    canFlip = true;
-                    updateMemoryStats();
-
-                    if (matchedPairs === MEMORY_IMAGES.length) {
-                        // Game complete
-                        setTimeout(() => {
-                            const nick = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
-                            document.getElementById('memory-complete-msg').textContent = 
-                                `Amazing, ${nick}! You found all the memories!`;
-                            document.getElementById('memory-complete').classList.remove('hidden');
-                            createConfetti();
-                            setTimeout(() => {
-                                document.getElementById('phase3-5').classList.add('fade-out');
-                                setTimeout(() => {
-                                    document.getElementById('phase3-5').classList.remove('active', 'fade-out');
-                                    isTransitioning = false;
-                                    startPhase4();
-                                }, 1000);
-                            }, 3000);
-                        }, 500);
-                    }
-                } else {
-                    // No match
+    function flipMem(i) {
+        if (!memCanFlip || memFlipped.length >= 2) return;
+        const card = document.querySelector('.mem-card[data-idx="'+i+'"]');
+        if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+        card.classList.add('flipped');
+        memFlipped.push({idx:i, id:memCards[i].id, el:card});
+        if (memFlipped.length === 2) {
+            memMoves++; memCanFlip = false; updMemStats();
+            if (memFlipped[0].id === memFlipped[1].id) {
+                memMatched++;
+                memFlipped[0].el.classList.add('matched');
+                memFlipped[1].el.classList.add('matched');
+                memFlipped = []; memCanFlip = true; updMemStats();
+                if (memMatched === MEM_IMGS.length) {
                     setTimeout(() => {
-                        flippedCards[0].element.classList.remove('flipped');
-                        flippedCards[1].element.classList.remove('flipped');
-                        flippedCards = [];
-                        canFlip = true;
-                    }, 1000);
+                        document.getElementById('mem-msg').textContent = "Amazing, " + rand(NICKNAMES) + "! You matched them all!";
+                        document.getElementById('mem-done').classList.remove('hidden');
+                        confetti();
+                        setTimeout(() => { showPhase('phase4', false); busy = false; startPhase5(); }, 3000);
+                    }, 500);
                 }
-            }
-        }
-
-        function updateMemoryStats() {
-            document.getElementById('memory-moves').textContent = memoryMoves;
-            document.getElementById('memory-matches').textContent = `${matchedPairs}/${MEMORY_IMAGES.length}`;
-        }
-
-        // ==================== PHASE 4: SPIN THE WHEEL ====================
-        function startPhase4() {
-            isTransitioning = true;
-            updateStatusBar('spin');
-            document.getElementById('phase4').classList.add('active');
-            initSpinWheel();
-        }
-
-        function initSpinWheel() {
-            const wheel = document.getElementById('spin-wheel');
-            wheel.innerHTML = '';
-            const colors = ['#FBBF24', '#F87171', '#A78BFA', '#34D399', '#60A5FA', '#F472B6', '#FCD34D', '#FB923C'];
-            const segmentAngle = 360 / SPIN_MESSAGES.length;
-
-            SPIN_MESSAGES.forEach((msg, i) => {
-                const segment = document.createElement('div');
-                segment.className = 'spin-segment';
-                segment.style.transform = `rotate(${i * segmentAngle}deg)`;
-                segment.style.background = colors[i % colors.length];
-                wheel.appendChild(segment);
-            });
-        }
-
-        function spinWheel() {
-            if (!canSpin) return;
-            canSpin = false;
-            document.getElementById('spin-btn').disabled = true;
-            document.getElementById('spin-result').classList.add('hidden');
-
-            const segmentAngle = 360 / SPIN_MESSAGES.length;
-            const randomSegment = Math.floor(Math.random() * SPIN_MESSAGES.length);
-            spinAngle = 360 * 5 + (360 - randomSegment * segmentAngle - segmentAngle / 2);
-
-            const wheel = document.getElementById('spin-wheel');
-            wheel.style.transform = `rotate(${spinAngle}deg)`;
-
-            setTimeout(() => {
-                const nick = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
-                document.getElementById('spin-message').textContent = SPIN_MESSAGES[randomSegment].replace('{nickname}', nick);
-                document.getElementById('spin-nickname').textContent = `For you, ${nick}!`;
-                document.getElementById('spin-result').classList.remove('hidden');
-                createConfetti();
-
-                setTimeout(() => {
-                    document.getElementById('phase4').classList.add('fade-out');
-                    setTimeout(() => {
-                        document.getElementById('phase4').classList.remove('active', 'fade-out');
-                        isTransitioning = false;
-                        startPhase5();
-                    }, 1000);
-                }, 4000);
-            }, 4500);
-        }
-
-        // ==================== PHASE 5: REASONS I LOVE YOU ====================
-        function startPhase5() {
-            isTransitioning = true;
-            updateStatusBar('reasons');
-            document.getElementById('phase5').classList.add('active');
-            const container = document.getElementById('reasons-container');
-            container.innerHTML = '';
-
-            REASON_IMAGES.forEach((imgName, i) => {
-                const card = document.createElement('div');
-                card.className = 'reason-card rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 opacity-0';
-                card.style.animationDelay = (i * 0.2) + 's';
-
-                const img = document.createElement('img');
-                img.src = 'Fahamida/' + imgName + '.png';
-                img.className = 'w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-xl';
-                img.alt = imgName;
-
-                const textDiv = document.createElement('div');
-                textDiv.className = 'text-center sm:text-left';
-                textDiv.innerHTML = `
-                    <span class="font-digital text-3xl sm:text-4xl text-white/20">${String(i + 1).padStart(2, '0')}</span>
-                    <p class="font-body text-sm sm:text-base text-white/80 mt-2">${REASONS[i]}, ${NICKNAMES[i % NICKNAMES.length]}!</p>
-                `;
-
-                card.appendChild(img);
-                card.appendChild(textDiv);
-                container.appendChild(card);
-
-                setTimeout(() => card.classList.add('slide-up'), i * 200);
-            });
-
-            // Auto-advance after all reasons shown
-            setTimeout(() => {
-                document.getElementById('phase5').classList.add('fade-out');
-                setTimeout(() => {
-                    document.getElementById('phase5').classList.remove('active', 'fade-out');
-                    isTransitioning = false;
-                    startPhase6();
-                }, 1000);
-            }, 6000);
-        }
-
-        // ==================== PHASE 6: FINAL SURPRISE ====================
-        function startPhase6() {
-            isTransitioning = true;
-            updateStatusBar('finale');
-            document.getElementById('phase6').classList.add('active');
-            createConfetti();
-
-            // Build mosaic grid
-            const grid = document.getElementById('mosaic-grid');
-            grid.innerHTML = '';
-            FINALE_IMAGES.forEach((imgName, i) => {
-                const item = document.createElement('div');
-                item.className = 'mosaic-item opacity-0';
-                item.innerHTML = `<img src="Fahamida/${imgName}.png" class="w-full h-24 sm:h-32 object-cover rounded-lg" alt="${imgName}">`;
-                grid.appendChild(item);
-                setTimeout(() => {
-                    item.classList.add('scale-in');
-                }, i * 200);
-            });
-
-            // Show letter after mosaic
-            setTimeout(() => {
-                const letter = document.getElementById('birthday-letter');
-                letter.classList.remove('hidden');
-                letter.classList.add('slide-up');
-
-                const content = document.getElementById('letter-content');
-                const randomNick = NICKNAMES[Math.floor(Math.random() * NICKNAMES.length)];
-                content.innerHTML = LETTER_LINES.map(line => {
-                    if (line === "") return '<br>';
-                    return `<p>${line.replace('{nickname}', randomNick)}</p>`;
-                }).join('');
-
-                document.getElementById('replay-btn').classList.remove('hidden');
-                isTransitioning = false;
-            }, 3000);
-        }
-
-        // ==================== STATUS BAR ====================
-        function updateStatusBar(activePhase) {
-            const phases = ['reveal', 'story', 'quiz', 'memory', 'spin', 'reasons', 'finale'];
-            const activeIndex = phases.indexOf(activePhase);
-
-            phases.forEach((phase, index) => {
-                const el = document.getElementById('step-' + phase);
-                if (!el) return;
-
-                el.classList.remove('active', 'completed');
-                if (index < activeIndex) {
-                    el.classList.add('completed');
-                } else if (index === activeIndex) {
-                    el.classList.add('active');
-                }
-            });
-        }
-
-        function showStatusBar() {
-            document.getElementById('status-bar').classList.remove('hidden');
-        }
-
-        // ==================== START ====================
-        loadBirthday();
-
-        // ==================== SKIP FUNCTION ====================
-        function skipPhase(phase) {
-            if (isTransitioning) return;
-            isTransitioning = true;
-
-            // Clear any intervals
-            if (slideInterval) clearInterval(slideInterval);
-
-            // Hide current phase
-            const phaseId = phase === '3-5' ? 'phase3-5' : 'phase' + phase;
-            const phaseEl = document.getElementById(phaseId);
-            if (phaseEl) {
-                phaseEl.classList.add('fade-out');
-                setTimeout(() => {
-                    phaseEl.classList.remove('active', 'fade-out');
-
-                    // Start next phase
-                    switch(phase) {
-                        case 1: startPhase2(); break;
-                        case 2: startPhase3(); break;
-                        case 3: startPhase3_5(); break;
-                        case '3-5': startPhase4(); break;
-                        case 4: startPhase5(); break;
-                        case 5: startPhase6(); break;
-                        default: isTransitioning = false; break;
-                    }
-                }, 500);
             } else {
-                isTransitioning = false;
+                setTimeout(() => {
+                    memFlipped[0].el.classList.remove('flipped');
+                    memFlipped[1].el.classList.remove('flipped');
+                    memFlipped = []; memCanFlip = true;
+                }, 1000);
             }
         }
+    }
+
+    function updMemStats() {
+        document.getElementById('mem-moves').textContent = memMoves;
+        document.getElementById('mem-matches').textContent = memMatched + '/' + MEM_IMGS.length;
+    }
+
+    // ========== PHASE 5: SPIN ==========
+    function startPhase5() {
+        busy = true;
+        updateStatus('spin');
+        showPhase('phase5', true);
+        canSpin = true;
+        document.getElementById('spin-btn').disabled = false;
+        document.getElementById('spin-result').classList.add('hidden');
+        buildWheel();
+    }
+
+    function buildWheel() {
+        const w = document.getElementById('wheel');
+        w.innerHTML = '';
+        w.style.transform = 'rotate(0deg)';
+        const colors = ['#FBBF24','#F87171','#A78BFA','#34D399','#60A5FA','#F472B6','#FCD34D','#FB923C'];
+        const angle = 360 / SPIN_MSG.length;
+        SPIN_MSG.forEach((_, i) => {
+            const seg = document.createElement('div');
+            seg.className = 'wheel-seg';
+            seg.style.transform = 'rotate('+i*angle+'deg)';
+            seg.style.background = colors[i % colors.length];
+            w.appendChild(seg);
+        });
+    }
+
+    function spinWheel() {
+        if (!canSpin) return;
+        canSpin = false;
+        document.getElementById('spin-btn').disabled = true;
+        const angle = 360 / SPIN_MSG.length;
+        const pick = Math.floor(Math.random() * SPIN_MSG.length);
+        const deg = 360 * 5 + (360 - pick * angle - angle/2);
+        document.getElementById('wheel').style.transform = 'rotate('+deg+'deg)';
+        setTimeout(() => {
+            const n = rand(NICKNAMES);
+            const res = document.getElementById('spin-result');
+            res.textContent = SPIN_MSG[pick].replace('{n}', n) + ' For you, ' + n + '!';
+            res.classList.remove('hidden');
+            confetti();
+            setTimeout(() => { showPhase('phase5', false); busy = false; startPhase6(); }, 4000);
+        }, 4500);
+    }
+
+    // ========== PHASE 6: REASONS ==========
+    function startPhase6() {
+        busy = true;
+        updateStatus('reasons');
+        showPhase('phase6', true);
+        const list = document.getElementById('reasons-list');
+        list.innerHTML = '';
+        REASON_IMGS.forEach((name, i) => {
+            const card = document.createElement('div');
+            card.className = 'reason-card';
+            card.style.opacity = '0';
+            card.innerHTML = '<img src="Fahamida/'+name+'.png" alt=""><div><div class="reason-num">'+String(i+1).padStart(2,'0')+'</div><div class="reason-text">'+REASON_TXT[i]+', '+NICKNAMES[i%NICKNAMES.length]+'!</div></div>';
+            list.appendChild(card);
+            setTimeout(() => { card.style.opacity = '1'; card.classList.add('slide-up'); }, i * 250);
+        });
+        setTimeout(() => { showPhase('phase6', false); busy = false; startPhase7(); }, REASON_IMGS.length * 250 + 2000);
+    }
+
+    // ========== PHASE 7: FINALE ==========
+    function startPhase7() {
+        busy = true;
+        updateStatus('finale');
+        showPhase('phase7', true);
+        confetti();
+        const grid = document.getElementById('mosaic');
+        grid.innerHTML = '';
+        FINALE_IMGS.forEach((name, i) => {
+            const img = document.createElement('img');
+            img.src = 'Fahamida/'+name+'.png';
+            img.style.opacity = '0';
+            grid.appendChild(img);
+            setTimeout(() => { img.style.opacity = '1'; img.classList.add('scale-in'); }, i * 200);
+        });
+        setTimeout(() => {
+            const letter = document.getElementById('letter');
+            letter.classList.remove('hidden');
+            letter.classList.add('slide-up');
+            const n = rand(NICKNAMES);
+            document.getElementById('letter-text').innerHTML = LETTER.map(l => l === '' ? '<br>' : '<p>'+l.replace('{n}',n)+'</p>').join('');
+            document.getElementById('replay-btn').classList.remove('hidden');
+            busy = false;
+        }, FINALE_IMGS.length * 200 + 1500);
+    }
+
+    // ========== SKIP ==========
+    function skip(phase) {
+        if (busy) return;
+        if (slideTimer) clearInterval(slideTimer);
+        const id = 'phase' + phase;
+        showPhase(id, false);
+        switch(phase) {
+            case 1: startPhase2(); break;
+            case 2: startPhase3(); break;
+            case 3: startPhase4(); break;
+            case 4: startPhase5(); break;
+            case 5: startPhase6(); break;
+            case 6: startPhase7(); break;
+        }
+    }
+
+    // ========== START ==========
+    init();
     </script>
 </body>
 </html>
