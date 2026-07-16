@@ -62,6 +62,7 @@
         .countdown-header { margin-bottom: 48px; }
         .countdown-tag { font-size: 14px; color: rgba(255,255,255,0.9); letter-spacing: 0.35em; text-transform: uppercase; margin-bottom: 24px; }
         .countdown-name { font-size: clamp(2.6rem, 10vw, 5rem); font-weight: 900; color: #fff; letter-spacing: 0.02em; margin-bottom: 24px; }
+        .countdown-name .golden-name { color: #FBBF24; }
         .countdown-divider { width: 50px; height: 2px; background: rgba(251,191,36,0.5); margin: 0 auto 24px; }
         .countdown-sub { font-size: 15px; color: rgba(255,255,255,0.9); letter-spacing: 0.05em; }
         .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 600px; margin: 0 auto; }
@@ -78,6 +79,7 @@
         .reveal-ring:nth-child(2) { animation-delay: 0.6s; }
         .reveal-ring:nth-child(3) { animation-delay: 1.2s; }
         .reveal-emoji { font-size: clamp(5rem, 15vw, 8rem); margin-bottom: 16px; display: block; animation: floatUp 3s ease-in-out infinite; }
+        .golden-name { color: #FBBF24; }
         .reveal-happy { font-size: clamp(2rem, 7vw, 3.5rem); font-weight: 900; color: #fff; margin-bottom: 8px; line-height: 1.2; }
         .reveal-title { font-size: clamp(2rem, 7vw, 3.5rem); font-weight: 900; color: #fff; margin-bottom: 10px; line-height: 1.2; }
         .reveal-sub { font-size: clamp(14px, 3.5vw, 18px); color: rgba(255,255,255,0.5); margin-bottom: 20px; line-height: 1.5; }
@@ -171,6 +173,7 @@
         .letter-ornament { font-size: 24px; color: rgba(139,115,85,0.5); margin-bottom: 12px; letter-spacing: 0.3em; text-align: left; }
         .letter-greeting { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 6vw, 3rem); color: #5a3a1a; margin-bottom: 4px; line-height: 1.3; }
         .letter-dear { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px, 4vw, 24px); color: #5a3a1a; font-weight: 600; margin-bottom: 24px; }
+        .letter-dear .golden-name { color: #8B4513; }
         .letter-opening { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); color: #3d2b15; line-height: 1.9; margin-bottom: 20px; font-style: italic; }
         .letter-closing { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); color: #3d2b15; line-height: 1.9; margin-top: 20px; font-style: italic; }
         .letter-line { display: block; }
@@ -180,6 +183,7 @@
         .letter-body p { margin-bottom: 14px; }
         .letter-sign { text-align: right; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(139,115,85,0.2); }
         .letter-sign-text { font-family: 'Great Vibes', cursive; font-size: clamp(1.4rem, 4vw, 2rem); color: #5a3a1a; }
+        .letter-sign-text .golden-name { color: #8B4513; }
         .letter-sign-sub { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: rgba(90,58,26,0.5); font-style: italic; margin-top: 4px; }
         .letter-seal { text-align: center; margin-top: 24px; }
         .letter-seal-circle { width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #8b4513, #654321); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
@@ -281,6 +285,7 @@
         .finale-card-title { font-family: 'Great Vibes', cursive; font-size: clamp(1.8rem, 6vw, 2.8rem); color: #FBBF24; margin-bottom: 16px; }
         .finale-card-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3.5vw, 17px); color: rgba(255,255,255,0.7); line-height: 1.8; font-style: italic; margin-bottom: 8px; }
         .finale-card-sign { font-family: 'Great Vibes', cursive; font-size: clamp(1.2rem, 4vw, 1.8rem); color: rgba(255,255,255,0.5); margin-top: 20px; }
+        .finale-card-sign .golden-name { color: #FBBF24; }
         .balloon { position: absolute; bottom: -60px; font-size: 32px; animation: balloonRise 5s ease-in forwards; pointer-events: none; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); }
         @keyframes balloonRise { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; } 25% { transform: translateY(-25vh) translateX(15px) rotate(5deg); } 50% { transform: translateY(-50vh) translateX(-10px) rotate(-3deg); } 75% { transform: translateY(-75vh) translateX(20px) rotate(4deg); } 100% { transform: translateY(-110vh) translateX(-5px) rotate(-2deg); opacity: 0; } }
         .finale-made { font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 12px; }
@@ -632,14 +637,14 @@
             if (d.nicknames && d.nicknames.length) NICKNAMES = d.nicknames;
             if (d.password !== undefined) passwordOn = d.password;
             nickname = NICKNAMES[0];
-            document.getElementById('title-name').textContent = d.name + "'s Birthday";
-            document.getElementById('reveal-title').textContent = "My Dear " + d.name;
+            document.getElementById('title-name').innerHTML = '<span class="golden-name">' + d.name + '</span>\'s Birthday';
+            document.getElementById('reveal-title').innerHTML = 'My Dear <span class="golden-name">' + d.name + '</span>';
             document.getElementById('reveal-sub').textContent = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
         } catch(e) {
             target = new Date('2026-07-10T00:00:00').getTime();
             nickname = NICKNAMES[0];
-            document.getElementById('title-name').textContent = "Fahamida's Birthday";
-            document.getElementById('reveal-title').textContent = "My Dear Fahamida";
+            document.getElementById('title-name').innerHTML = '<span class="golden-name">Fahamida</span>\'s Birthday';
+            document.getElementById('reveal-title').innerHTML = 'My Dear <span class="golden-name">Fahamida</span>';
             document.getElementById('reveal-sub').textContent = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
         }
         updateCD();
@@ -910,10 +915,11 @@
         const titleEl = document.getElementById('reveal-title');
         const subEl = document.getElementById('reveal-sub');
         const happyText = happyEl.textContent;
+        const titleHTML = titleEl.innerHTML;
         const titleText = titleEl.textContent;
         const subText = subEl.textContent;
         happyEl.textContent = '';
-        titleEl.textContent = '';
+        titleEl.innerHTML = '';
         subEl.textContent = '';
 
         setTimeout(() => {
@@ -925,8 +931,8 @@
             spawnBalloons(document.getElementById('phase1'), 15);
             // Type "Happy Birthday" first
             typeText(happyEl, happyText, 70, () => {
-                // Then type "My Dear Fahamida"
-                typeText(titleEl, titleText, 80, () => {
+                // Then type "My Dear Fahamida" with golden name
+                typeHTML(titleEl, titleHTML, 80, () => {
                     // Then type subtitle
                     typeText(subEl, subText, 50);
                 });
@@ -941,6 +947,35 @@
             el.textContent = text.substring(0, i + 1);
             i++;
             if (i >= text.length) {
+                clearInterval(interval);
+                setTimeout(() => { el.classList.remove('typing-cursor'); }, 800);
+                if (callback) callback();
+            }
+        }, speed);
+    }
+
+    function typeHTML(el, html, speed, callback) {
+        el.classList.add('typing-cursor');
+        // Strip tags for plain text length, but preserve full HTML
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        const plainText = tmp.textContent;
+        let i = 0;
+        const interval = setInterval(() => {
+            // Build partial HTML by character count
+            let count = 0;
+            let j = 0;
+            let inTag = false;
+            while (j < html.length && count <= i) {
+                if (html[j] === '<') inTag = true;
+                if (!inTag) count++;
+                if (html[j] === '>') inTag = false;
+                j++;
+            }
+            el.innerHTML = html.substring(0, j) + '<span class="typing-cursor">|</span>';
+            i++;
+            if (i > plainText.length) {
+                el.innerHTML = html;
                 clearInterval(interval);
                 setTimeout(() => { el.classList.remove('typing-cursor'); }, 800);
                 if (callback) callback();
@@ -1005,10 +1040,10 @@
         showPhase('phase2', true);
         const n = nextNick();
         document.getElementById('letter-happy').textContent = 'Happy Birthday';
-        document.getElementById('letter-dear').textContent = 'My Dear ' + n;
+        document.getElementById('letter-dear').innerHTML = 'My Dear <span class="golden-name">' + n + '</span>';
         document.getElementById('letter-opening').textContent = 'To my dearest ' + n + ',';
         document.getElementById('letter-closing').textContent = 'With all my love and devotion, always and forever.';
-        document.getElementById('letter-sign-name').textContent = n;
+        document.getElementById('letter-sign-name').innerHTML = '<span class="golden-name">' + n + '</span>';
 
         // Build letter body paragraphs
         const body = document.getElementById('letter-body');
@@ -1298,7 +1333,7 @@
             card.classList.remove('hidden');
             const n = nextNick();
             document.getElementById('finale-card-text').innerHTML = LETTER.map(l => '<p>' + l.replace('{n}', n) + '</p>').join('');
-            document.getElementById('finale-card-sign').textContent = '— ' + n;
+            document.getElementById('finale-card-sign').innerHTML = '— <span class="golden-name">' + n + '</span>';
             document.getElementById('replay-btn').classList.remove('hidden');
 
             // Balloons & fireworks
@@ -1420,7 +1455,7 @@
 
     function showWelcomeScreen() {
         const n = nextNick();
-        document.getElementById('welcome-nick').textContent = n;
+        document.getElementById('welcome-nick').innerHTML = '<span class="golden-name">' + n + '</span>';
         showPhase('welcome-phase', true);
         confetti();
     }
