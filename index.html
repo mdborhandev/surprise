@@ -1026,6 +1026,7 @@
         const grid = document.getElementById('coupons-grid');
         grid.innerHTML = '';
 
+        const FACE_EMOJIS = ['😊','🥰','😍','😘','🤗','😋','🤭','😌','😇'];
         LOVE_COUPONS.forEach((coupon, i) => {
             const card = document.createElement('div');
             card.className = 'coupon-card';
@@ -1033,7 +1034,7 @@
             card.innerHTML = `
                 <div class="coupon-inner">
                     <div class="coupon-front">
-                        <div class="coupon-mystery">🎁</div>
+                        <div class="coupon-mystery">🎁 ${FACE_EMOJIS[i]}</div>
                         <div class="coupon-hint">Tap to pick</div>
                     </div>
                     <div class="coupon-back">
