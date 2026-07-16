@@ -570,6 +570,7 @@
     let currentSlide = 0;
     let canSpin = true, busy = false, surpriseStarted = false;
     let nicknameIdx = 0;
+    let passwordOn = 1;
     const isMobile = window.innerWidth <= 640;
 
     // ========== INIT ==========
@@ -580,6 +581,7 @@
             const d = await r.json();
             target = new Date(d.birthday + 'T00:00:00').getTime();
             if (d.nicknames && d.nicknames.length) NICKNAMES = d.nicknames;
+            if (d.password !== undefined) passwordOn = d.password;
             nickname = NICKNAMES[0];
             document.getElementById('title-name').textContent = d.name + "'s Birthday";
             document.getElementById('reveal-title').textContent = "My Dear " + d.name;
@@ -1234,7 +1236,7 @@
         const id = 'phase' + phase;
         showPhase(id, false);
         switch(phase) {
-            case 1: showPasswordGate(); break;
+            case 1: passwordOn ? showPasswordGate() : showWelcomeScreen(); break;
             case 2: startPhase3(); break;
             case 3: startPhase4(); break;
             case 4: startPhase5(); break;
@@ -1333,7 +1335,7 @@
         const id = 'phase' + phase;
         showPhase(id, false);
         switch(phase) {
-            case 2: showPasswordGate(); break;
+            case 2: passwordOn ? showPasswordGate() : showWelcomeScreen(); break;
             case 3: startPhase2(); break;
             case 4: startPhase3(); break;
             case 5: startPhase4(); break;
