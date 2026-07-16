@@ -1490,17 +1490,18 @@
             showPhase('countdown-phase', false);
         }
 
+        // Hide all phases first
+        document.querySelectorAll('.phase').forEach(p => {
+            p.classList.remove('active');
+            p.style.display = 'none';
+        });
+        stopCelebration();
+
         if (target === 'password') {
             showPasswordGate();
         } else if (target === 'welcome') {
             showWelcomeScreen();
         } else if (typeof target === 'number') {
-            // Jump to the right start function based on phase
-            document.querySelectorAll('.phase').forEach(p => {
-                p.classList.remove('active');
-                p.style.display = 'none';
-            });
-            stopCelebration();
             switch(target) {
                 case 1: startPhase1(); break;
                 case 2: startPhase2(); break;
