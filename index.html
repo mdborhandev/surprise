@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Fahamida's Birthday Surprise</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -537,7 +540,7 @@
             <span></span>
         </div>
         <div class="finale-hero">
-            <img src="Fahamida/Jaanu.png" alt="">
+            <img src="Fahamida/Jaanu.png" alt="" id="finale-hero-img">
             <div class="finale-hero-overlay">
                 <div class="finale-hero-title">Happy Birthday!</div>
                 <div class="finale-hero-sub">To the most beautiful soul in my life</div>
@@ -660,7 +663,7 @@
     async function init() {
         createStars();
         try {
-            const r = await fetch('birthday.json');
+            const r = await fetch('birthday.json?t=' + Date.now());
             const d = await r.json();
             target = new Date(d.birthday + 'T00:00:00').getTime();
             if (d.nicknames && d.nicknames.length) NICKNAMES = d.nicknames;
@@ -1225,7 +1228,7 @@
             card.className = 'story-card';
             card.style.opacity = '0';
             const nick = nextNick();
-            card.innerHTML = '<img src="Fahamida/'+name+'.png" alt=""><div class="story-overlay"><div class="story-text">'+REASON_TXT[i]+', <span class="story-nick">'+nick+'</span>!</div><div class="story-tag">'+String(i+1).padStart(2,'0')+' / '+String(REASON_IMGS.length).padStart(2,'0')+'</div></div>';
+            card.innerHTML = '<img src="Fahamida/'+name+'.png?t='+Date.now()+'" alt=""><div class="story-overlay"><div class="story-text">'+REASON_TXT[i]+', <span class="story-nick">'+nick+'</span>!</div><div class="story-tag">'+String(i+1).padStart(2,'0')+' / '+String(REASON_IMGS.length).padStart(2,'0')+'</div></div>';
             list.appendChild(card);
             setTimeout(() => { card.style.opacity = '1'; card.classList.add('slide-up'); }, i * 200);
 
@@ -1646,6 +1649,13 @@
         }
         return true;
     }
+
+    // ========== CACHE BUST ==========
+    const _cb = '?v=' + Date.now();
+    const _heroImg = document.getElementById('finale-hero-img');
+    if (_heroImg) _heroImg.src = _heroImg.src.split('?')[0] + _cb;
+    const _audioSrc = document.querySelector('#bg-music source');
+    if (_audioSrc) _audioSrc.src = _audioSrc.src.split('?')[0] + _cb;
 
     // ========== START ==========
     init();
