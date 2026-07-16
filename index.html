@@ -85,21 +85,6 @@
         .quiz-feedback { margin-top: 15px; font-size: 13px; color: rgba(255,255,255,0.7); }
         .quiz-progress-text { font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 10px; }
 
-        /* Memory Game */
-        .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 360px; margin: 0 auto; }
-        .mem-card { aspect-ratio: 1; perspective: 800px; cursor: pointer; }
-        .mem-inner { position: relative; width: 100%; height: 100%; transition: transform 0.5s; transform-style: preserve-3d; }
-        .mem-card.flipped .mem-inner { transform: rotateY(180deg); }
-        .mem-front, .mem-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .mem-front { background: linear-gradient(135deg, rgba(251,191,36,0.3), rgba(251,191,36,0.1)); border: 2px solid rgba(251,191,36,0.3); }
-        .mem-front::after { content: '?'; font-size: 1.5rem; color: rgba(255,255,255,0.4); }
-        .mem-back { transform: rotateY(180deg); overflow: hidden; }
-        .mem-back img { width: 100%; height: 100%; object-fit: cover; }
-        .mem-card.matched { animation: heartbeat 0.5s ease; }
-        .mem-card.matched .mem-inner { transform: rotateY(180deg); }
-        .mem-stats { display: flex; justify-content: center; gap: 30px; margin-bottom: 15px; font-size: 12px; color: rgba(255,255,255,0.5); }
-        .mem-stats span { font-size: 1.2rem; color: #fff; display: block; margin-top: 4px; }
-
         /* Spin Wheel */
         .wheel-wrap { position: relative; width: 250px; height: 250px; margin: 0 auto 20px; }
         @media (min-width: 640px) { .wheel-wrap { width: 300px; height: 300px; } }
@@ -147,7 +132,6 @@
             <div class="status-step" data-phase="reveal"><span>&#127874;</span><span>Reveal</span></div>
             <div class="status-step" data-phase="story"><span>&#128247;</span><span>Story</span></div>
             <div class="status-step" data-phase="quiz"><span>&#10067;</span><span>Quiz</span></div>
-            <div class="status-step" data-phase="memory"><span>&#129504;</span><span>Memory</span></div>
             <div class="status-step" data-phase="spin"><span>&#127905;</span><span>Spin</span></div>
             <div class="status-step" data-phase="reasons"><span>&#10084;&#65039;</span><span>Reasons</span></div>
             <div class="status-step" data-phase="finale"><span>&#127881;</span><span>Finale</span></div>
@@ -218,24 +202,9 @@
         </div>
     </div>
 
-    <!-- PHASE 4: MEMORY -->
+    <!-- PHASE 4: SPIN -->
     <div id="phase4" class="phase">
         <button class="skip-btn" onclick="skip(4)">SKIP &#8594;</button>
-        <h2 style="font-size:1.3rem; animation:glow 2s ease-in-out infinite; margin-bottom:10px;">Memory Match</h2>
-        <p style="font-size:12px; color:rgba(255,255,255,0.4); margin-bottom:15px;">Match the pairs!</p>
-        <div class="mem-stats">
-            <div><p style="font-size:11px;">Moves</p><span id="mem-moves">0</span></div>
-            <div><p style="font-size:11px;">Matches</p><span id="mem-matches">0/6</span></div>
-        </div>
-        <div class="memory-grid" id="mem-board"></div>
-        <div id="mem-done" class="hidden" style="text-align:center; margin-top:15px;">
-            <p id="mem-msg" style="color:rgba(255,255,255,0.7);"></p>
-        </div>
-    </div>
-
-    <!-- PHASE 5: SPIN -->
-    <div id="phase5" class="phase">
-        <button class="skip-btn" onclick="skip(5)">SKIP &#8594;</button>
         <h2 style="font-size:1.3rem; animation:glow 2s ease-in-out infinite; margin-bottom:5px;">Spin the Wheel of Love</h2>
         <p style="font-size:12px; color:rgba(255,255,255,0.4); margin-bottom:20px;">Spin to reveal a message!</p>
         <div class="wheel-wrap">
@@ -246,15 +215,15 @@
         <div class="spin-result hidden" id="spin-result"></div>
     </div>
 
-    <!-- PHASE 6: REASONS -->
-    <div id="phase6" class="phase" style="justify-content:flex-start; padding-top:70px;">
-        <button class="skip-btn" onclick="skip(6)">SKIP &#8594;</button>
+    <!-- PHASE 5: REASONS -->
+    <div id="phase5" class="phase" style="justify-content:flex-start; padding-top:70px;">
+        <button class="skip-btn" onclick="skip(5)">SKIP &#8594;</button>
         <h2 style="font-size:1.3rem; animation:glow 2s ease-in-out infinite; margin-bottom:20px;">Reasons I Love You</h2>
         <div class="reasons-list" id="reasons-list"></div>
     </div>
 
-    <!-- PHASE 7: FINALE -->
-    <div id="phase7" class="phase">
+    <!-- PHASE 6: FINALE -->
+    <div id="phase6" class="phase">
         <div class="mosaic" id="mosaic"></div>
         <div class="letter hidden" id="letter">
             <h2>Happy Birthday!</h2>
@@ -305,7 +274,6 @@
         "Happy birthday to the most amazing person, {n}"
     ];
 
-    const MEM_IMGS = ['Beautiful','Cutie','Babu','Shona','Gudiya','Rani'];
     const REASON_IMGS = IMAGES.slice(14, 22);
     const REASON_TXT = [
         "Your smile lights up my world",
@@ -367,7 +335,6 @@
     // ========== STATE ==========
     let target, nickname, musicPlaying = false, slideTimer, countdownTimer;
     let currentSlide = 0, quizIdx = 0, quizScore = 0, quizLocked = false;
-    let memCards = [], memFlipped = [], memMatched = 0, memMoves = 0, memCanFlip = true;
     let canSpin = true, busy = false, quizActive = false, surpriseStarted = false;
 
     // ========== INIT ==========
@@ -434,7 +401,7 @@
     }
 
     function updateStatus(phase) {
-        const order = ['reveal','story','quiz','memory','spin','reasons','finale'];
+        const order = ['reveal','story','quiz','spin','reasons','finale'];
         const idx = order.indexOf(phase);
         document.querySelectorAll('.status-step').forEach((el, i) => {
             el.classList.remove('active','done');
@@ -595,70 +562,11 @@
         }, 3000);
     }
 
-    // ========== PHASE 4: MEMORY ==========
+    // ========== PHASE 4: SPIN ==========
     function startPhase4() {
         busy = true;
-        updateStatus('memory');
-        showPhase('phase4', true);
-        memMatched = 0; memMoves = 0; memFlipped = []; memCanFlip = true;
-        document.getElementById('mem-done').classList.add('hidden');
-        memCards = [];
-        MEM_IMGS.forEach((name, i) => { memCards.push({id:i, img:name}); memCards.push({id:i, img:name}); });
-        for (let i = memCards.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [memCards[i],memCards[j]]=[memCards[j],memCards[i]]; }
-        const board = document.getElementById('mem-board');
-        board.innerHTML = '';
-        memCards.forEach((c, idx) => {
-            const el = document.createElement('div');
-            el.className = 'mem-card';
-            el.dataset.idx = idx;
-            el.innerHTML = '<div class="mem-inner"><div class="mem-front"></div><div class="mem-back"><img src="Fahamida/'+c.img+'.png" alt=""></div></div>';
-            el.onclick = () => flipMem(idx);
-            board.appendChild(el);
-        });
-        updMemStats();
-    }
-
-    function flipMem(i) {
-        if (!memCanFlip || memFlipped.length >= 2) return;
-        const card = document.querySelector('.mem-card[data-idx="'+i+'"]');
-        if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
-        card.classList.add('flipped');
-        memFlipped.push({idx:i, id:memCards[i].id, el:card});
-        if (memFlipped.length === 2) {
-            memMoves++; memCanFlip = false; updMemStats();
-            if (memFlipped[0].id === memFlipped[1].id) {
-                memMatched++;
-                memFlipped[0].el.classList.add('matched');
-                memFlipped[1].el.classList.add('matched');
-                memFlipped = []; memCanFlip = true; updMemStats();
-                if (memMatched === MEM_IMGS.length) {
-                    setTimeout(() => {
-                        document.getElementById('mem-msg').textContent = "Amazing, " + rand(NICKNAMES) + "! You matched them all!";
-                        document.getElementById('mem-done').classList.remove('hidden');
-                        confetti();
-                        setTimeout(() => { showPhase('phase4', false); busy = false; startPhase5(); }, 3000);
-                    }, 500);
-                }
-            } else {
-                setTimeout(() => {
-                    memFlipped[0].el.classList.remove('flipped');
-                    memFlipped[1].el.classList.remove('flipped');
-                    memFlipped = []; memCanFlip = true;
-                }, 1000);
-            }
-        }
-    }
-
-    function updMemStats() {
-        document.getElementById('mem-moves').textContent = memMoves;
-        document.getElementById('mem-matches').textContent = memMatched + '/' + MEM_IMGS.length;
-    }
-
-    // ========== PHASE 5: SPIN ==========
-    function startPhase5() {
-        busy = true;
         updateStatus('spin');
-        showPhase('phase5', true);
+        showPhase('phase4', true);
         canSpin = true;
         document.getElementById('spin-btn').disabled = false;
         document.getElementById('spin-result').classList.add('hidden');
@@ -694,15 +602,15 @@
             res.textContent = SPIN_MSG[pick].replace('{n}', n) + ' For you, ' + n + '!';
             res.classList.remove('hidden');
             confetti();
-            setTimeout(() => { showPhase('phase5', false); busy = false; startPhase6(); }, 4000);
+            setTimeout(() => { showPhase('phase4', false); busy = false; startPhase5(); }, 4000);
         }, 4500);
     }
 
-    // ========== PHASE 6: REASONS ==========
-    function startPhase6() {
+    // ========== PHASE 5: REASONS ==========
+    function startPhase5() {
         busy = true;
         updateStatus('reasons');
-        showPhase('phase6', true);
+        showPhase('phase5', true);
         const list = document.getElementById('reasons-list');
         list.innerHTML = '';
         REASON_IMGS.forEach((name, i) => {
@@ -713,14 +621,14 @@
             list.appendChild(card);
             setTimeout(() => { card.style.opacity = '1'; card.classList.add('slide-up'); }, i * 250);
         });
-        setTimeout(() => { showPhase('phase6', false); busy = false; startPhase7(); }, REASON_IMGS.length * 250 + 2000);
+        setTimeout(() => { showPhase('phase5', false); busy = false; startPhase6(); }, REASON_IMGS.length * 250 + 2000);
     }
 
-    // ========== PHASE 7: FINALE ==========
-    function startPhase7() {
+    // ========== PHASE 6: FINALE ==========
+    function startPhase6() {
         busy = true;
         updateStatus('finale');
-        showPhase('phase7', true);
+        showPhase('phase6', true);
         confetti();
         const grid = document.getElementById('mosaic');
         grid.innerHTML = '';
@@ -754,7 +662,6 @@
             case 3: startPhase4(); break;
             case 4: startPhase5(); break;
             case 5: startPhase6(); break;
-            case 6: startPhase7(); break;
         }
     }
 
