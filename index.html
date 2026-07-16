@@ -290,6 +290,9 @@
         .welcome-msg { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 360px; margin: 0 auto; }
         .welcome-line { width: 50px; height: 2px; background: rgba(251,191,36,0.4); margin: 20px auto; }
         .welcome-sub { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.15em; }
+        /* Floating Nicknames */
+        .floating-nick { position: absolute; font-size: clamp(12px, 3vw, 16px); color: rgba(255,255,255,0.15); font-weight: 500; letter-spacing: 0.1em; white-space: nowrap; pointer-events: none; animation: floatNick 4s ease-in-out forwards; }
+        @keyframes floatNick { 0% { opacity: 0; transform: translateY(20px); } 15% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; transform: translateY(-60px); } }
 
         /* Confetti */
         .confetti-piece { position: fixed; width: 8px; height: 8px; top: -10px; animation: confetti linear forwards; pointer-events: none; z-index: 300; }
@@ -850,6 +853,7 @@
             confetti();
             createSparkles();
             startCelebration();
+            createFloatingNicks();
             // Type "Happy Birthday" first
             typeText(happyEl, happyText, 70, () => {
                 // Then type "My Dear Fahamida"
@@ -901,6 +905,26 @@
         for (let i = 0; i < 15; i++) {
             setTimeout(() => spawnParticle(), i * 400);
         }
+    }
+
+    function createFloatingNicks() {
+        const layer = document.getElementById('celebration-layer');
+        if (!layer) return;
+        let nickIdx = 0;
+        function spawnNick() {
+            const el = document.createElement('div');
+            el.className = 'floating-nick';
+            el.textContent = NICKNAMES[nickIdx % NICKNAMES.length];
+            nickIdx++;
+            el.style.left = (10 + Math.random() * 80) + '%';
+            el.style.top = (30 + Math.random() * 50) + '%';
+            layer.appendChild(el);
+            setTimeout(() => el.remove(), 4200);
+        }
+        // Spawn first batch with stagger
+        NICKNAMES.forEach((_, i) => { setTimeout(spawnNick, i * 500); });
+        // Then keep spawning every 800ms
+        setInterval(spawnNick, 800);
     }
 
     // ========== PHASE 2: STORY ==========
