@@ -19,6 +19,19 @@
         @keyframes scaleIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
         @keyframes confetti { 0% { transform: translateY(-100vh) rotate(0); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
         @keyframes twinkle { 0%,100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+        @keyframes revealPulse { 0%,100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.5); opacity: 0; } }
+        @keyframes sparkle { 0%,100% { opacity: 0; transform: scale(0) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(180deg); } }
+        @keyframes floatUp { 0% { opacity: 0; transform: translateY(20px) scale(0.8); } 20% { opacity: 1; transform: translateY(0) scale(1); } 80% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-30px) scale(0.6); } }
+        @keyframes ring { 0% { transform: scale(0.5); opacity: 1; border-width: 3px; } 100% { transform: scale(2.5); opacity: 0; border-width: 0.5px; } }
+        @keyframes drift { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100vh) translateX(40px) rotate(360deg); opacity: 0; } }
+        @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg) translateX(0); opacity: 1; } 50% { transform: translateY(50vh) rotate(180deg) translateX(30px); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; } }
+        @keyframes petalFall { 0% { transform: translateY(-10vh) rotate(0deg) scale(1); opacity: 1; } 50% { opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg) scale(0.5); opacity: 0; } }
+        @keyframes crackerBurst { 0% { transform: scale(0) rotate(0); opacity: 1; } 50% { transform: scale(1.2) rotate(180deg); opacity: 1; } 100% { transform: scale(0.8) rotate(360deg); opacity: 0; } }
+        @keyframes rocketLaunch { 0% { bottom: -5%; opacity: 1; } 70% { opacity: 1; } 100% { bottom: 65%; opacity: 0; } }
+        @keyframes rocketGlow { 0%,100% { box-shadow: 0 0 8px #FBBF24, 0 0 20px rgba(251,191,36,0.5); } 50% { box-shadow: 0 0 15px #FBBF24, 0 0 40px rgba(251,191,36,0.8); } }
+        @keyframes burstDot { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
+        @keyframes burstRing { 0% { transform: scale(0); opacity: 1; border-width: 3px; } 100% { transform: scale(3); opacity: 0; border-width: 0.5px; } }
 
         .fade-in { animation: fadeIn 0.8s ease forwards; }
         .fade-out { animation: fadeOut 0.5s ease forwards; }
@@ -55,11 +68,43 @@
         .count-label { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.2em; margin-top: 12px; }
 
         /* Reveal */
-        .reveal-box { text-align: center; max-width: 500px; }
-        .reveal-title { font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 12px; line-height: 1.2; }
-        .reveal-sub { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 24px; }
-        .reveal-divider { width: 60px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); margin: 0 auto 24px; }
-        .reveal-hint { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; }
+        .reveal-box { text-align: center; max-width: 520px; position: relative; }
+        .reveal-rings { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+        .reveal-ring { position: absolute; width: 200px; height: 200px; border: 2px solid rgba(255,255,255,0.15); border-radius: 50%; top: 50%; left: 50%; margin: -100px 0 0 -100px; animation: ring 2s ease-out infinite; }
+        .reveal-ring:nth-child(2) { animation-delay: 0.6s; }
+        .reveal-ring:nth-child(3) { animation-delay: 1.2s; }
+        .reveal-emoji { font-size: clamp(3rem, 10vw, 5rem); margin-bottom: 16px; display: block; animation: floatUp 3s ease-in-out infinite; }
+        .reveal-title { font-size: clamp(2rem, 7vw, 3.5rem); font-weight: 900; color: #fff; margin-bottom: 10px; line-height: 1.2; }
+        .reveal-sub { font-size: clamp(14px, 3.5vw, 18px); color: rgba(255,255,255,0.5); margin-bottom: 20px; line-height: 1.5; }
+        .reveal-divider { width: 80px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); margin: 0 auto 20px; }
+        .reveal-hint { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.15em; text-transform: uppercase; }
+        .reveal-sparkle { position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%; animation: sparkle 1.5s ease-in-out infinite; pointer-events: none; }
+        .reveal-anim-1 { opacity: 0; transform: translateY(20px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal-anim-2 { opacity: 0; transform: translateY(20px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s; }
+        .reveal-anim-3 { opacity: 0; transform: translateY(20px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; }
+        .reveal-anim-4 { opacity: 0; transform: translateY(20px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s; }
+        .reveal-anim-5 { opacity: 0; transform: translateY(20px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.6s; }
+        .reveal-show { opacity: 1 !important; transform: translateY(0) !important; }
+        .typing-cursor::after { content: '|'; animation: blink 0.7s step-end infinite; color: rgba(255,255,255,0.5); font-weight: 300; }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+        .reveal-continue { margin-top: 36px; opacity: 0; transition: opacity 0.6s ease 0.5s; }
+        .reveal-continue.show { opacity: 1; }
+        .reveal-continue button { padding: 14px 40px; border-radius: 30px; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; transition: all 0.3s ease; }
+        .reveal-continue button:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: #fff; }
+        .reveal-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+        .reveal-particle { position: absolute; bottom: -10px; width: 3px; height: 3px; background: rgba(255,255,255,0.4); border-radius: 50%; animation: drift linear infinite; }
+        .reveal-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: pulse 3s ease-in-out infinite; pointer-events: none; }
+        .reveal-title { position: relative; }
+        .reveal-sub { position: relative; }
+        .celebration-layer { position: fixed; inset: 0; pointer-events: none; z-index: 101; overflow: hidden; }
+        .confetti-continuous { position: absolute; top: -10px; animation: fall linear forwards; pointer-events: none; }
+        .petal { position: absolute; top: -20px; font-size: 20px; animation: petalFall linear forwards; pointer-events: none; }
+        .cracker-burst { position: absolute; font-size: 28px; animation: crackerBurst ease-out forwards; pointer-events: none; }
+        .skyrocket { position: absolute; width: 5px; height: 24px; background: linear-gradient(to top, #F59E0B, #fff); border-radius: 3px 3px 0 0; animation: rocketLaunch var(--dur) cubic-bezier(0.4, 0, 0.2, 1) forwards; pointer-events: none; }
+        .skyrocket::after { content: ''; position: absolute; bottom: -10px; left: -4px; width: 14px; height: 14px; background: radial-gradient(circle, #FBBF24, #F59E0B, transparent); border-radius: 50%; animation: rocketGlow 0.15s ease-in-out infinite; }
+        .skyrocket-trail { position: absolute; width: 2px; background: linear-gradient(to top, rgba(251,191,36,0.6), transparent); border-radius: 1px; pointer-events: none; }
+        .firework-dot { position: absolute; border-radius: 50%; animation: burstDot 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; pointer-events: none; }
+        .firework-ring { position: absolute; border: 2px solid rgba(255,255,255,0.5); border-radius: 50%; animation: burstRing 1s ease-out forwards; pointer-events: none; }
 
         /* Slideshow */
         .slide-wrap { position: relative; width: 100%; max-width: 520px; margin: 0 auto; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 20px; }
@@ -147,12 +192,24 @@
 
     <!-- PHASE 1: REVEAL -->
     <div id="phase1" class="phase">
-        <button class="skip-btn" onclick="skip(1)">SKIP &#8594;</button>
-        <div id="p1-content" class="reveal-box" style="opacity:0;">
-            <h1 id="reveal-title" class="reveal-title"></h1>
-            <p id="reveal-sub" class="reveal-sub"></p>
-            <div class="reveal-divider"></div>
-            <p class="reveal-hint">Your surprise awaits...</p>
+        <div class="celebration-layer" id="celebration-layer"></div>
+        <div id="p1-content" class="reveal-box">
+            <div class="reveal-glow"></div>
+            <div class="reveal-particles" id="reveal-particles"></div>
+            <div class="reveal-rings">
+                <div class="reveal-ring"></div>
+                <div class="reveal-ring"></div>
+                <div class="reveal-ring"></div>
+            </div>
+            <div id="reveal-sparkles"></div>
+            <span id="reveal-emoji" class="reveal-emoji reveal-anim-1">🎂</span>
+            <h1 id="reveal-title" class="reveal-title reveal-anim-2"></h1>
+            <p id="reveal-sub" class="reveal-sub reveal-anim-3"></p>
+            <div class="reveal-divider reveal-anim-4"></div>
+            <p class="reveal-hint reveal-anim-5">Your surprise awaits...</p>
+            <div class="reveal-continue reveal-anim-5" id="reveal-continue">
+                <button onclick="skip(1)">CONTINUE &#8594;</button>
+            </div>
         </div>
     </div>
 
@@ -227,7 +284,7 @@
 
     <script>
     // ========== CONFIG ==========
-    const NICKNAMES = ['Paki','Monu','Fahu','Sonamoni','Baby','My Pet','My Sajna'];
+    let NICKNAMES = ['My Paki','My Monu','My Fahu','My Sonamoni','My Baby','My Pet','My Sajna'];
     const IMAGES = ['Paki','Monu','Fahu','Sonamoni','Baby','My Pet','My Sajna','Jaan','Jaanu','Sweetheart','Princess','Darling','Honey','My Queen','Angel','Beautiful','Cutie','Babu','Shona','Gudiya','Rani','Mere Dil','Meri Jaan','Pyaari','Choti','Jaane Jaan','Dil Ki Dhadkan','Meri Zindagi'];
 
     const STORY_IMGS = IMAGES.slice(0, 28);
@@ -324,6 +381,7 @@
     let target, nickname, musicPlaying = false, slideTimer, countdownTimer;
     let currentSlide = 0, quizIdx = 0, quizScore = 0, quizLocked = false;
     let canSpin = true, busy = false, quizActive = false, surpriseStarted = false;
+    let nicknameIdx = 0;
 
     // ========== INIT ==========
     async function init() {
@@ -332,16 +390,17 @@
             const r = await fetch('birthday.json');
             const d = await r.json();
             target = new Date(d.birthday + 'T00:00:00').getTime();
-            nickname = rand(NICKNAMES);
+            if (d.nicknames && d.nicknames.length) NICKNAMES = d.nicknames;
+            nickname = NICKNAMES[0];
             document.getElementById('title-name').textContent = d.name + "'s Birthday";
             document.getElementById('reveal-title').textContent = "Happy Birthday " + d.name + "!";
             document.getElementById('reveal-sub').textContent = "Hey " + nickname + ", this is for you!";
         } catch(e) {
             target = new Date('2026-07-10T00:00:00').getTime();
-            nickname = 'Baby';
+            nickname = NICKNAMES[0];
             document.getElementById('title-name').textContent = "Fahamida's Birthday";
             document.getElementById('reveal-title').textContent = "Happy Birthday Fahamida!";
-            document.getElementById('reveal-sub').textContent = "Hey Baby, this is for you!";
+            document.getElementById('reveal-sub').textContent = "Hey " + nickname + ", this is for you!";
         }
         updateCD();
         countdownTimer = setInterval(updateCD, 1000);
@@ -358,6 +417,7 @@
     }
 
     function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function nextNick() { const n = NICKNAMES[nicknameIdx % NICKNAMES.length]; nicknameIdx++; return n; }
 
     // ========== COUNTDOWN ==========
     function updateCD() {
@@ -385,7 +445,12 @@
     function showPhase(id, show) {
         const el = document.getElementById(id);
         if (show) { el.classList.add('active'); el.style.display = 'flex'; }
-        else { el.classList.remove('active'); el.style.display = 'none'; }
+        else {
+            el.classList.remove('active'); el.style.display = 'none';
+            // Clean up celebration layer
+            const layer = el.querySelector('.celebration-layer');
+            if (layer) layer.innerHTML = '';
+        }
     }
 
     function startSurprise() {
@@ -416,17 +481,233 @@
         }
     }
 
+    // ========== CELEBRATION LAYER ==========
+    let celebrationTimer = null;
+    function startCelebration() {
+        const layer = document.getElementById('celebration-layer');
+        if (!layer) return;
+        const petals = ['🌸','🌺','💮','🪷','🏵️','✨','💖','🎀','🎊'];
+        const crackers = ['🎉','🎊','🎆','🎇','🥳'];
+
+        function spawnConfetti() {
+            const colors = ['#FBBF24','#F87171','#A78BFA','#34D399','#60A5FA','#F472B6','#FB923C','#FCD34D'];
+            for (let i = 0; i < 8; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti-continuous';
+                const size = 4 + Math.random() * 6;
+                const dur = 3 + Math.random() * 4;
+                c.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${rand(colors)};border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${dur}s;animation-delay:${Math.random()*1}s;`;
+                layer.appendChild(c);
+                setTimeout(() => c.remove(), (dur + 1) * 1000);
+            }
+        }
+
+        function spawnPetal() {
+            const p = document.createElement('div');
+            p.className = 'petal';
+            const dur = 4 + Math.random() * 5;
+            p.textContent = rand(petals);
+            p.style.cssText = `left:${Math.random()*100}%;font-size:${16+Math.random()*14}px;animation-duration:${dur}s;animation-delay:${Math.random()*1}s;`;
+            layer.appendChild(p);
+            setTimeout(() => p.remove(), (dur + 1) * 1000);
+        }
+
+        function spawnCracker() {
+            const c = document.createElement('div');
+            c.className = 'cracker-burst';
+            const dur = 1.5 + Math.random();
+            c.textContent = rand(crackers);
+            c.style.cssText = `left:${10+Math.random()*80}%;top:${10+Math.random()*80}%;animation-duration:${dur}s;`;
+            layer.appendChild(c);
+            setTimeout(() => c.remove(), (dur + 0.5) * 1000);
+        }
+
+        function spawnRocket() {
+            const rocket = document.createElement('div');
+            rocket.className = 'skyrocket';
+            const xPos = 8 + Math.random() * 84;
+            const dur = 0.6 + Math.random() * 0.5;
+            rocket.style.cssText = `left:${xPos}%;--dur:${dur}s;`;
+            layer.appendChild(rocket);
+
+            // Trailing sparks
+            const trailInterval = setInterval(() => {
+                const spark = document.createElement('div');
+                spark.className = 'skyrocket-trail';
+                const h = 10 + Math.random() * 25;
+                spark.style.cssText = `left:${xPos + (Math.random()-0.5)*0.8}%;bottom:${3 + Math.random()*65}%;height:${h}px;opacity:${0.4+Math.random()*0.5};`;
+                layer.appendChild(spark);
+                setTimeout(() => spark.remove(), 350);
+            }, 40);
+
+            // Explode at top
+            setTimeout(() => {
+                clearInterval(trailInterval);
+                rocket.remove();
+                burstFirework(xPos);
+            }, dur * 1000 + 100);
+        }
+
+        function burstFirework(xPos) {
+            const colors = ['#FBBF24','#F87171','#A78BFA','#34D399','#60A5FA','#F472B6','#FB923C','#FCD34D','#fff'];
+            const burstTop = 15 + Math.random() * 40;
+
+            // Big ring burst
+            const ring = document.createElement('div');
+            ring.className = 'firework-ring';
+            ring.style.cssText = `left:${xPos}%;top:${burstTop}%;width:10px;height:10px;margin-left:-5px;margin-top:-5px;`;
+            layer.appendChild(ring);
+            setTimeout(() => ring.remove(), 1100);
+
+            // Second ring
+            setTimeout(() => {
+                const ring2 = document.createElement('div');
+                ring2.className = 'firework-ring';
+                ring2.style.cssText = `left:${xPos}%;top:${burstTop}%;width:10px;height:10px;margin-left:-5px;margin-top:-5px;border-color:${rand(colors)};`;
+                layer.appendChild(ring2);
+                setTimeout(() => ring2.remove(), 1100);
+            }, 100);
+
+            // Main burst — 36 dots
+            for (let i = 0; i < 36; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'firework-dot';
+                const angle = (i / 36) * 360 + Math.random() * 10;
+                const dist = 50 + Math.random() * 120;
+                const rad = angle * Math.PI / 180;
+                const tx = Math.cos(rad) * dist;
+                const ty = Math.sin(rad) * dist - 30;
+                const size = 4 + Math.random() * 8;
+                dot.style.cssText = `left:${xPos}%;top:${burstTop}%;width:${size}px;height:${size}px;background:${rand(colors)};--tx:${tx}px;--ty:${ty}px;animation-delay:${Math.random()*0.15}s;`;
+                layer.appendChild(dot);
+                setTimeout(() => dot.remove(), 1400);
+            }
+
+            // Secondary burst — 16 smaller dots
+            setTimeout(() => {
+                for (let i = 0; i < 16; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'firework-dot';
+                    const angle = (i / 16) * 360 + Math.random() * 20;
+                    const dist = 25 + Math.random() * 60;
+                    const rad = angle * Math.PI / 180;
+                    const tx = Math.cos(rad) * dist;
+                    const ty = Math.sin(rad) * dist;
+                    const size = 3 + Math.random() * 4;
+                    dot.style.cssText = `left:${xPos}%;top:${burstTop}%;width:${size}px;height:${size}px;background:${rand(colors)};--tx:${tx}px;--ty:${ty}px;animation-duration:0.8s;`;
+                    layer.appendChild(dot);
+                    setTimeout(() => dot.remove(), 900);
+                }
+            }, 120);
+
+            // Triple burst — tiny sparkles
+            setTimeout(() => {
+                for (let i = 0; i < 10; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'firework-dot';
+                    const angle = Math.random() * 360;
+                    const dist = 15 + Math.random() * 30;
+                    const rad = angle * Math.PI / 180;
+                    dot.style.cssText = `left:${xPos}%;top:${burstTop}%;width:2px;height:2px;background:#fff;--tx:${Math.cos(rad)*dist}px;--ty:${Math.sin(rad)*dist}px;animation-duration:0.5s;`;
+                    layer.appendChild(dot);
+                    setTimeout(() => dot.remove(), 600);
+                }
+            }, 250);
+        }
+
+        // Initial burst
+        spawnConfetti();
+        spawnPetal();
+        spawnCracker();
+        spawnRocket();
+        setTimeout(spawnRocket, 300);
+        setTimeout(spawnRocket, 600);
+
+        // Continuous loop
+        celebrationTimer = setInterval(() => {
+            spawnConfetti();
+            spawnConfetti();
+            spawnPetal();
+            spawnPetal();
+            spawnPetal();
+            spawnCracker();
+            spawnRocket();
+            if (Math.random() > 0.3) spawnRocket();
+            if (Math.random() > 0.5) spawnRocket();
+        }, 1000);
+    }
+
+    function stopCelebration() {
+        if (celebrationTimer) { clearInterval(celebrationTimer); celebrationTimer = null; }
+    }
+
     // ========== PHASE 1: REVEAL ==========
     function startPhase1() {
         busy = true;
-
         showPhase('phase1', true);
-        setTimeout(() => { document.getElementById('p1-content').classList.add('fade-in'); confetti(); }, 200);
+        const titleEl = document.getElementById('reveal-title');
+        const subEl = document.getElementById('reveal-sub');
+        const titleText = titleEl.textContent;
+        const subText = subEl.textContent;
+        titleEl.textContent = '';
+        subEl.textContent = '';
+
         setTimeout(() => {
-            showPhase('phase1', false);
-            busy = false;
-            startPhase2();
-        }, 4000);
+            document.querySelectorAll('#p1-content [class*="reveal-anim"]').forEach(el => el.classList.add('reveal-show'));
+            confetti();
+            createSparkles();
+            startCelebration();
+            // Type title
+            typeText(titleEl, titleText, 80, () => {
+                // Type subtitle after title finishes
+                typeText(subEl, subText, 60, () => {
+                    // Show continue button after everything typed
+                    document.getElementById('reveal-continue').classList.add('show');
+                });
+            });
+        }, 300);
+    }
+
+    function typeText(el, text, speed, callback) {
+        el.classList.add('typing-cursor');
+        let i = 0;
+        const interval = setInterval(() => {
+            el.textContent = text.substring(0, i + 1);
+            i++;
+            if (i >= text.length) {
+                clearInterval(interval);
+                setTimeout(() => { el.classList.remove('typing-cursor'); }, 800);
+                if (callback) callback();
+            }
+        }, speed);
+    }
+
+    function createSparkles() {
+        const c = document.getElementById('reveal-sparkles');
+        if (!c) return;
+        c.innerHTML = '';
+        for (let i = 0; i < 20; i++) {
+            const s = document.createElement('div');
+            s.className = 'reveal-sparkle';
+            s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*2}s;animation-duration:${1+Math.random()*1.5}s;`;
+            c.appendChild(s);
+        }
+        // Floating particles that continuously drift upward
+        const pc = document.getElementById('reveal-particles');
+        if (!pc) return;
+        pc.innerHTML = '';
+        function spawnParticle() {
+            const p = document.createElement('div');
+            p.className = 'reveal-particle';
+            const size = 2 + Math.random() * 4;
+            const dur = 6 + Math.random() * 8;
+            p.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;animation-duration:${dur}s;animation-delay:${Math.random()*2}s;opacity:${0.2+Math.random()*0.5};`;
+            pc.appendChild(p);
+            setTimeout(() => { p.remove(); spawnParticle(); }, (dur + 2) * 1000);
+        }
+        for (let i = 0; i < 15; i++) {
+            setTimeout(() => spawnParticle(), i * 400);
+        }
     }
 
     // ========== PHASE 2: STORY ==========
@@ -465,7 +746,7 @@
         setTimeout(() => {
             img.src = 'Fahamida/' + STORY_IMGS[i] + '.png';
             img.style.opacity = '1';
-            document.getElementById('slide-text').textContent = STORY_TXT[i].replace('{n}', rand(NICKNAMES));
+            document.getElementById('slide-text').textContent = STORY_TXT[i].replace('{n}', nextNick());
             document.getElementById('slide-counter').textContent = (i+1) + ' / ' + STORY_IMGS.length;
             document.getElementById('slide-bar').style.width = ((i+1)/STORY_IMGS.length*100) + '%';
             document.querySelectorAll('.dot').forEach((d, j) => d.classList.toggle('active', j === i));
@@ -527,7 +808,7 @@
         document.getElementById('quiz-area').classList.add('hidden');
         const r = document.getElementById('quiz-result');
         r.classList.remove('hidden');
-        const n = rand(NICKNAMES);
+        const n = nextNick();
         document.getElementById('quiz-result-title').textContent = quizScore === QUIZ.length ? "Perfect Score, " + n + "!" : "You're Amazing, " + n + "!";
         document.getElementById('quiz-score').textContent = quizScore + ' / ' + QUIZ.length;
         document.getElementById('quiz-msg').textContent = "Every answer proves how special you are!";
@@ -574,7 +855,7 @@
         const deg = 360 * 5 + (360 - pick * angle - angle/2);
         document.getElementById('wheel').style.transform = 'rotate('+deg+'deg)';
         setTimeout(() => {
-            const n = rand(NICKNAMES);
+            const n = nextNick();
             const res = document.getElementById('spin-result');
             res.textContent = SPIN_MSG[pick].replace('{n}', n) + ' For you, ' + n + '!';
             res.classList.remove('hidden');
@@ -594,7 +875,7 @@
             const card = document.createElement('div');
             card.className = 'reason-card';
             card.style.opacity = '0';
-            card.innerHTML = '<img src="Fahamida/'+name+'.png" alt=""><div><div class="reason-num">'+String(i+1).padStart(2,'0')+'</div><div class="reason-text">'+REASON_TXT[i]+', '+NICKNAMES[i%NICKNAMES.length]+'!</div></div>';
+            card.innerHTML = '<img src="Fahamida/'+name+'.png" alt=""><div><div class="reason-num">'+String(i+1).padStart(2,'0')+'</div><div class="reason-text">'+REASON_TXT[i]+', '+nextNick()+'!</div></div>';
             list.appendChild(card);
             setTimeout(() => { card.style.opacity = '1'; card.classList.add('slide-up'); }, i * 250);
         });
@@ -620,7 +901,7 @@
             const letter = document.getElementById('letter');
             letter.classList.remove('hidden');
             letter.classList.add('slide-up');
-            const n = rand(NICKNAMES);
+            const n = nextNick();
             document.getElementById('letter-text').innerHTML = LETTER.map(l => l === '' ? '<br>' : '<p>'+l.replace('{n}',n)+'</p>').join('');
             document.getElementById('replay-btn').classList.remove('hidden');
             busy = false;
@@ -629,8 +910,10 @@
 
     // ========== SKIP ==========
     function skip(phase) {
-        if (busy) return;
+        if (busy && phase !== 1) return;
         if (slideTimer) clearInterval(slideTimer);
+        stopCelebration();
+        busy = false;
         const id = 'phase' + phase;
         showPhase(id, false);
         switch(phase) {
