@@ -10,7 +10,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Orbitron', sans-serif; background: #000; color: #fff; min-height: 100vh; overflow-x: hidden; }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
 
         /* Animations */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -54,12 +54,17 @@
 
         /* Countdown */
         #countdown-phase { text-align: center; }
-        .countdown-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 400px; margin: 20px auto; }
-        @media (min-width: 640px) { .countdown-grid { grid-template-columns: repeat(4, 1fr); max-width: 700px; } }
-        .count-box { background: #0F0F0F; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px 10px; text-align: center; animation: pulse 2.5s ease-in-out infinite; }
-        .count-num { font-size: 2.5rem; font-weight: 700; color: #fff; }
-        @media (min-width: 640px) { .count-num { font-size: 3.5rem; } }
-        .count-label { font-size: 10px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 8px; }
+        .countdown-header { margin-bottom: 48px; }
+        .countdown-tag { font-size: 14px; color: rgba(255,255,255,0.9); letter-spacing: 0.35em; text-transform: uppercase; margin-bottom: 24px; }
+        .countdown-name { font-size: clamp(2.6rem, 10vw, 5rem); font-weight: 900; color: #fff; letter-spacing: 0.02em; margin-bottom: 24px; }
+        .countdown-divider { width: 50px; height: 2px; background: rgba(251,191,36,0.5); margin: 0 auto 24px; }
+        .countdown-sub { font-size: 15px; color: rgba(255,255,255,0.9); letter-spacing: 0.05em; }
+        .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 600px; margin: 0 auto; }
+        @media (max-width: 480px) { .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 340px; } }
+        .count-box { position: relative; background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.25); border-radius: 16px; padding: 32px 16px 24px; text-align: center; transition: border-color 0.4s ease; }
+        .count-box:hover { border-color: rgba(255,255,255,0.5); }
+        .count-num { font-size: clamp(3rem, 10vw, 5rem); font-weight: 700; color: #fff; line-height: 1; font-variant-numeric: tabular-nums; }
+        .count-label { font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.2em; margin-top: 12px; }
 
         /* Slideshow */
         .slide-wrap { position: relative; width: 100%; max-width: 600px; margin: 0 auto; background: rgba(15,15,15,0.8); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 15px; }
@@ -143,13 +148,13 @@
 
     <!-- COUNTDOWN -->
     <div id="countdown-phase" class="phase active" style="display:flex;">
-        <div style="text-align:center; animation: float 3s ease-in-out infinite;">
-            <p style="font-size:11px; color:rgba(255,255,255,0.5); letter-spacing:0.3em; text-transform:uppercase; margin-bottom:15px;">Counting down to</p>
-            <h1 id="title-name" style="font-size:2rem; animation: glow 2s ease-in-out infinite; letter-spacing:0.1em;"></h1>
-            <div style="width:50px; height:2px; background:rgba(255,255,255,0.2); margin:15px auto;"></div>
-            <p style="font-size:13px; color:rgba(255,255,255,0.4);">Something beautiful is on its way</p>
+        <div class="countdown-header">
+            <p class="countdown-tag">Counting down to</p>
+            <h1 id="title-name" class="countdown-name"></h1>
+            <div class="countdown-divider"></div>
+            <p class="countdown-sub">Something beautiful is on its way</p>
         </div>
-        <div class="countdown-grid" style="margin-top:30px;">
+        <div class="countdown-grid">
             <div class="count-box"><div id="cd-days" class="count-num">00</div><div class="count-label">Days</div></div>
             <div class="count-box"><div id="cd-hours" class="count-num">00</div><div class="count-label">Hours</div></div>
             <div class="count-box"><div id="cd-mins" class="count-num">00</div><div class="count-label">Minutes</div></div>
@@ -412,10 +417,10 @@
 
     function startSurprise() {
         document.getElementById('status-bar').classList.remove('hidden');
-        document.getElementById('music-btn').classList.remove('hidden');
+        document.getElementById('music-btn').classList.add('hidden');
         const music = document.getElementById('bg-music');
         music.volume = 0.5;
-        music.play().then(() => { musicPlaying = true; document.getElementById('music-btn').innerHTML = '&#9835;'; })
+        music.play().then(() => { musicPlaying = true; document.getElementById('music-btn').classList.remove('hidden'); document.getElementById('music-btn').innerHTML = '&#9835;'; })
         .catch(() => { document.getElementById('music-btn').innerHTML = '&#128263;'; });
         setTimeout(() => startPhase1(), 300);
     }
