@@ -338,17 +338,6 @@
             <button class="nav-btn" onclick="prevPhase(3)">&#8592; PREV</button>
             <button class="nav-btn continue-btn" onclick="skip(3)">CONTINUE &#8594;</button>
         </div>
-        <h2 class="reveal-title" style="margin-bottom:6px; font-size:clamp(1.2rem,4vw,1.8rem);">Love Coupons</h2>
-        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:30px;">Tap each card to reveal a promise</p>
-        <div class="coupons-grid" id="coupons-grid"></div>
-    </div>
-
-    <!-- PHASE 4: SPIN -->
-    <div id="phase4" class="phase">
-        <div class="nav-bar">
-            <button class="nav-btn" onclick="prevPhase(4)">&#8592; PREV</button>
-            <button class="nav-btn continue-btn" onclick="skip(4)">CONTINUE &#8594;</button>
-        </div>
         <h2 class="reveal-title" style="margin-bottom:6px;">Spin the Wheel</h2>
         <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:28px;">Spin to reveal a message</p>
         <div class="wheel-wrap">
@@ -359,14 +348,25 @@
         <div class="spin-result hidden" id="spin-result"></div>
     </div>
 
-    <!-- PHASE 5: REASONS -->
-    <div id="phase5" class="phase" style="justify-content:flex-start; padding-top:60px;">
+    <!-- PHASE 4: REASONS -->
+    <div id="phase4" class="phase" style="justify-content:flex-start; padding-top:60px;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhase(4)">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skip(4)">CONTINUE &#8594;</button>
+        </div>
+        <h2 class="reveal-title" style="margin-bottom:24px;">Reasons I Love You</h2>
+        <div class="reasons-list" id="reasons-list"></div>
+    </div>
+
+    <!-- PHASE 5: LOVE COUPONS -->
+    <div id="phase5" class="phase" style="padding:60px 15px 70px;">
         <div class="nav-bar">
             <button class="nav-btn" onclick="prevPhase(5)">&#8592; PREV</button>
             <button class="nav-btn continue-btn" onclick="skip(5)">CONTINUE &#8594;</button>
         </div>
-        <h2 class="reveal-title" style="margin-bottom:24px;">Reasons I Love You</h2>
-        <div class="reasons-list" id="reasons-list"></div>
+        <h2 class="reveal-title" style="margin-bottom:6px; font-size:clamp(1.2rem,4vw,1.8rem);">Love Coupons</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:30px;">Tap each card to reveal a promise</p>
+        <div class="coupons-grid" id="coupons-grid"></div>
     </div>
 
     <!-- PHASE 6: FINALE -->
@@ -537,8 +537,20 @@
         document.getElementById('music-btn').classList.add('hidden');
         const music = document.getElementById('bg-music');
         music.volume = 0.5;
-        music.play().then(() => { musicPlaying = true; document.getElementById('music-btn').classList.remove('hidden'); document.getElementById('music-btn').innerHTML = '&#9835;'; })
-        .catch(() => { document.getElementById('music-btn').innerHTML = '&#128263;'; });
+        if (loadMusicPref() === 'off') {
+            document.getElementById('music-btn').classList.remove('hidden');
+            document.getElementById('music-btn').innerHTML = '&#128263;';
+        } else {
+            music.play().then(() => {
+                musicPlaying = true;
+                document.getElementById('music-btn').classList.remove('hidden');
+                document.getElementById('music-btn').innerHTML = '&#9835;';
+                localStorage.setItem('bday_music', 'on');
+            }).catch(() => {
+                document.getElementById('music-btn').classList.remove('hidden');
+                document.getElementById('music-btn').innerHTML = '&#128263;';
+            });
+        }
         setTimeout(() => startPhase1(), 300);
     }
 
@@ -547,6 +559,11 @@
         const btn = document.getElementById('music-btn');
         if (musicPlaying) { m.pause(); btn.innerHTML = '&#128263;'; musicPlaying = false; }
         else { m.play().then(() => { btn.innerHTML = '&#9835;'; musicPlaying = true; }).catch(() => {}); }
+        localStorage.setItem('bday_music', musicPlaying ? 'on' : 'off');
+    }
+
+    function loadMusicPref() {
+        return localStorage.getItem('bday_music');
     }
 
     // ========== CONFETTI ==========
@@ -864,54 +881,10 @@
     }
 
 
-    // ========== PHASE 3: LOVE COUPONS ==========
-    const LOVE_COUPONS = [
-        { icon: '🍳', title: 'Breakfast', promise: 'I\'ll make you breakfast in bed on any day you choose.' },
-        { icon: '🎬', title: 'Movie Night', promise: 'One movie night — you pick the film, I\'ll handle the snacks.' },
-        { icon: '💐', title: 'Surprise Flowers', promise: 'A surprise bouquet of flowers, just because you deserve them.' },
-        { icon: '💆', title: 'Massage', promise: 'A full back massage whenever you\'re stressed or tired.' },
-        { icon: '🎶', title: 'Song Dedication', promise: 'I\'ll sing or play your favorite song, anytime you ask.' },
-        { icon: '☕', title: 'Coffee Date', promise: 'A cozy coffee date — just you, me, and good conversation.' },
-        { icon: '🌙', title: 'Stargazing', promise: 'A night under the stars, cuddled up together.' },
-        { icon: '🛍️', title: 'Shopping Spree', promise: 'You pick, I pay. No questions asked.' },
-        { icon: '🎂', title: 'Birthday Wish', promise: 'Whatever you wish for on your next birthday, I\'ll make it happen.' }
-    ];
-
+    // ========== PHASE 3: SPIN ==========
     function startPhase3() {
-        busy = true;
+        busy = false;
         showPhase('phase3', true);
-        const grid = document.getElementById('coupons-grid');
-        grid.innerHTML = '';
-
-        LOVE_COUPONS.forEach((coupon, i) => {
-            const card = document.createElement('div');
-            card.className = 'coupon-card';
-            card.innerHTML = `
-                <div class="coupon-inner">
-                    <div class="coupon-front">
-                        <div class="coupon-icon">${coupon.icon}</div>
-                        <div class="coupon-title">${coupon.title}</div>
-                        <div class="coupon-hint">Tap to reveal</div>
-                    </div>
-                    <div class="coupon-back">
-                        <div class="coupon-promise">${coupon.promise}</div>
-                        <div class="coupon-tap-hint">Tap to flip back</div>
-                    </div>
-                </div>
-            `;
-            card.onclick = () => card.classList.toggle('flipped');
-            grid.appendChild(card);
-
-            // Staggered reveal
-            setTimeout(() => { card.classList.add('show'); }, 200 + i * 120);
-        });
-    }
-
-    // ========== PHASE 4: SPIN ==========
-    function startPhase4() {
-        busy = true;
-
-        showPhase('phase4', true);
         canSpin = true;
         document.getElementById('spin-btn').disabled = false;
         document.getElementById('spin-result').classList.add('hidden');
@@ -947,15 +920,13 @@
             res.textContent = SPIN_MSG[pick].replace('{n}', n) + ' For you, ' + n + '!';
             res.classList.remove('hidden');
             confetti();
-            setTimeout(() => { showPhase('phase4', false); busy = false; startPhase5(); }, 4000);
         }, 4500);
     }
 
-    // ========== PHASE 5: REASONS ==========
-    function startPhase5() {
-        busy = true;
-
-        showPhase('phase5', true);
+    // ========== PHASE 4: REASONS ==========
+    function startPhase4() {
+        busy = false;
+        showPhase('phase4', true);
         const list = document.getElementById('reasons-list');
         list.innerHTML = '';
         REASON_IMGS.forEach((name, i) => {
@@ -966,7 +937,49 @@
             list.appendChild(card);
             setTimeout(() => { card.style.opacity = '1'; card.classList.add('slide-up'); }, i * 250);
         });
-        setTimeout(() => { showPhase('phase5', false); busy = false; startPhase6(); }, REASON_IMGS.length * 250 + 2000);
+    }
+
+    // ========== PHASE 5: LOVE COUPONS ==========
+    const LOVE_COUPONS = [
+        { icon: '🍳', title: 'Breakfast', promise: 'I\'ll make you breakfast in bed on any day you choose.' },
+        { icon: '🎬', title: 'Movie Night', promise: 'One movie night — you pick the film, I\'ll handle the snacks.' },
+        { icon: '💐', title: 'Surprise Flowers', promise: 'A surprise bouquet of flowers, just because you deserve them.' },
+        { icon: '💆', title: 'Massage', promise: 'A full back massage whenever you\'re stressed or tired.' },
+        { icon: '🎶', title: 'Song Dedication', promise: 'I\'ll sing or play your favorite song, anytime you ask.' },
+        { icon: '☕', title: 'Coffee Date', promise: 'A cozy coffee date — just you, me, and good conversation.' },
+        { icon: '🌙', title: 'Stargazing', promise: 'A night under the stars, cuddled up together.' },
+        { icon: '🛍️', title: 'Shopping Spree', promise: 'You pick, I pay. No questions asked.' },
+        { icon: '🎂', title: 'Birthday Wish', promise: 'Whatever you wish for on your next birthday, I\'ll make it happen.' }
+    ];
+
+    function startPhase5() {
+        busy = false;
+        showPhase('phase5', true);
+        const grid = document.getElementById('coupons-grid');
+        grid.innerHTML = '';
+
+        LOVE_COUPONS.forEach((coupon, i) => {
+            const card = document.createElement('div');
+            card.className = 'coupon-card';
+            card.innerHTML = `
+                <div class="coupon-inner">
+                    <div class="coupon-front">
+                        <div class="coupon-icon">${coupon.icon}</div>
+                        <div class="coupon-title">${coupon.title}</div>
+                        <div class="coupon-hint">Tap to reveal</div>
+                    </div>
+                    <div class="coupon-back">
+                        <div class="coupon-promise">${coupon.promise}</div>
+                        <div class="coupon-tap-hint">Tap to flip back</div>
+                    </div>
+                </div>
+            `;
+            card.onclick = () => card.classList.toggle('flipped');
+            grid.appendChild(card);
+
+            // Staggered reveal
+            setTimeout(() => { card.classList.add('show'); }, 200 + i * 120);
+        });
     }
 
     // ========== PHASE 6: FINALE ==========
@@ -1005,7 +1018,7 @@
         showPhase(id, false);
         switch(phase) {
             case 1: startPhase2(); break;
-            case 2: startPhase4(); break;
+            case 2: startPhase3(); break;
             case 3: startPhase4(); break;
             case 4: startPhase5(); break;
             case 5: startPhase6(); break;
@@ -1020,7 +1033,7 @@
         switch(phase) {
             case 2: startPhase1(); break;
             case 3: startPhase2(); break;
-            case 4: startPhase2(); break;
+            case 4: startPhase3(); break;
             case 5: startPhase4(); break;
             case 6: startPhase5(); break;
         }
