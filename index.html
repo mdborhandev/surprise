@@ -296,6 +296,14 @@
 
         /* Confetti */
         .confetti-piece { position: fixed; width: 8px; height: 8px; top: -10px; animation: confetti linear forwards; pointer-events: none; z-index: 300; }
+
+        /* Mobile: reduce heavy animations */
+        @media (max-width: 640px) {
+            .reveal-rings { display: none; }
+            .reveal-glow { animation-duration: 6s; }
+            .reveal-emoji { animation-duration: 5s; }
+            .wheel-glow { animation: none; }
+        }
     </style>
 </head>
 <body>
@@ -558,6 +566,7 @@
     let currentSlide = 0;
     let canSpin = true, busy = false, surpriseStarted = false;
     let nicknameIdx = 0;
+    const isMobile = window.innerWidth <= 640;
 
     // ========== INIT ==========
     async function init() {
@@ -584,7 +593,8 @@
 
     function createStars() {
         const c = document.getElementById('stars');
-        for (let i = 0; i < 50; i++) {
+        const count = isMobile ? 15 : 50;
+        for (let i = 0; i < count; i++) {
             const s = document.createElement('div');
             s.className = 'star';
             s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()*4}s;`;
@@ -665,7 +675,8 @@
     // ========== CONFETTI ==========
     function confetti() {
         const colors = ['#FBBF24','#F87171','#A78BFA','#34D399','#60A5FA','#F472B6'];
-        for (let i = 0; i < 40; i++) {
+        const count = isMobile ? 12 : 40;
+        for (let i = 0; i < count; i++) {
             const c = document.createElement('div');
             c.className = 'confetti-piece';
             c.style.cssText = `left:${Math.random()*100}vw;background:${rand(colors)};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*2}s;`;
@@ -684,7 +695,8 @@
 
         function spawnConfetti() {
             const colors = ['#FBBF24','#F87171','#A78BFA','#34D399','#60A5FA','#F472B6','#FB923C','#FCD34D'];
-            for (let i = 0; i < 8; i++) {
+            const count = isMobile ? 3 : 8;
+            for (let i = 0; i < count; i++) {
                 const c = document.createElement('div');
                 c.className = 'confetti-continuous';
                 const size = 4 + Math.random() * 6;
@@ -813,21 +825,22 @@
         spawnPetal();
         spawnCracker();
         spawnRocket();
-        setTimeout(spawnRocket, 300);
-        setTimeout(spawnRocket, 600);
+        if (!isMobile) {
+            setTimeout(spawnRocket, 300);
+            setTimeout(spawnRocket, 600);
+        }
 
         // Continuous loop
         celebrationTimer = setInterval(() => {
             spawnConfetti();
-            spawnConfetti();
+            if (!isMobile) spawnConfetti();
             spawnPetal();
-            spawnPetal();
-            spawnPetal();
+            if (!isMobile) { spawnPetal(); spawnPetal(); }
             spawnCracker();
             spawnRocket();
-            if (Math.random() > 0.3) spawnRocket();
-            if (Math.random() > 0.5) spawnRocket();
-        }, 1000);
+            if (!isMobile && Math.random() > 0.3) spawnRocket();
+            if (!isMobile && Math.random() > 0.5) spawnRocket();
+        }, isMobile ? 1500 : 1000);
     }
 
     function stopCelebration() {
@@ -883,7 +896,8 @@
         const c = document.getElementById('reveal-sparkles');
         if (!c) return;
         c.innerHTML = '';
-        for (let i = 0; i < 20; i++) {
+        const sparkleCount = isMobile ? 6 : 20;
+        for (let i = 0; i < sparkleCount; i++) {
             const s = document.createElement('div');
             s.className = 'reveal-sparkle';
             s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*2}s;animation-duration:${1+Math.random()*1.5}s;`;
@@ -902,7 +916,8 @@
             pc.appendChild(p);
             setTimeout(() => { p.remove(); spawnParticle(); }, (dur + 2) * 1000);
         }
-        for (let i = 0; i < 15; i++) {
+        const particleCount = isMobile ? 4 : 15;
+        for (let i = 0; i < particleCount; i++) {
             setTimeout(() => spawnParticle(), i * 400);
         }
     }
@@ -921,10 +936,11 @@
             layer.appendChild(el);
             setTimeout(() => el.remove(), 4200);
         }
-        // Spawn first batch with stagger
-        NICKNAMES.forEach((_, i) => { setTimeout(spawnNick, i * 500); });
-        // Then keep spawning every 800ms
-        setInterval(spawnNick, 800);
+        // Spawn first batch with stagger (fewer on mobile)
+        const nickBatch = isMobile ? NICKNAMES.slice(0, 3) : NICKNAMES;
+        nickBatch.forEach((_, i) => { setTimeout(spawnNick, i * 500); });
+        // Then keep spawning (less frequently on mobile)
+        setInterval(spawnNick, isMobile ? 2000 : 800);
     }
 
     // ========== PHASE 2: STORY ==========
