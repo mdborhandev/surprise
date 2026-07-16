@@ -74,6 +74,7 @@
         .reveal-ring:nth-child(2) { animation-delay: 0.6s; }
         .reveal-ring:nth-child(3) { animation-delay: 1.2s; }
         .reveal-emoji { font-size: clamp(3rem, 10vw, 5rem); margin-bottom: 16px; display: block; animation: floatUp 3s ease-in-out infinite; }
+        .reveal-happy { font-size: clamp(2rem, 7vw, 3.5rem); font-weight: 900; color: #fff; margin-bottom: 8px; line-height: 1.2; }
         .reveal-title { font-size: clamp(2rem, 7vw, 3.5rem); font-weight: 900; color: #fff; margin-bottom: 10px; line-height: 1.2; }
         .reveal-sub { font-size: clamp(14px, 3.5vw, 18px); color: rgba(255,255,255,0.5); margin-bottom: 20px; line-height: 1.5; }
         .reveal-divider { width: 80px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); margin: 0 auto 20px; }
@@ -167,8 +168,11 @@
         .letter-content { position: relative; z-index: 1; padding: 40px 36px; }
         .letter-header { text-align: center; margin-bottom: 30px; }
         .letter-ornament { font-size: 24px; color: rgba(139,115,85,0.5); margin-bottom: 12px; letter-spacing: 0.3em; }
-        .letter-greeting { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 6vw, 3rem); color: #5a3a1a; margin-bottom: 8px; }
-        .letter-dear { font-family: 'Cormorant Garamond', serif; font-size: 16px; color: #6b4c2a; font-style: italic; margin-bottom: 24px; }
+        .letter-greeting { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 6vw, 3rem); color: #5a3a1a; margin-bottom: 4px; line-height: 1.3; }
+        .letter-dear { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px, 4vw, 24px); color: #5a3a1a; font-weight: 600; margin-bottom: 24px; }
+        .letter-line { display: block; }
+        .letter-typing-cursor::after { content: '|'; animation: blink 0.7s step-end infinite; color: #6b4c2a; font-weight: 300; }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
         .letter-body { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); line-height: 1.9; color: #3d2b15; text-align: justify; }
         .letter-body p { margin-bottom: 14px; text-indent: 2em; }
         .letter-body p:first-child { text-indent: 0; }
@@ -268,8 +272,9 @@
             </div>
             <div id="reveal-sparkles"></div>
             <span id="reveal-emoji" class="reveal-emoji reveal-anim-1">🎂</span>
-            <h1 id="reveal-title" class="reveal-title reveal-anim-2"></h1>
-            <p id="reveal-sub" class="reveal-sub reveal-anim-3"></p>
+            <p id="reveal-happy" class="reveal-happy reveal-anim-2">Happy Birthday</p>
+            <h1 id="reveal-title" class="reveal-title reveal-anim-3"></h1>
+            <p id="reveal-sub" class="reveal-sub reveal-anim-4"></p>
             <div class="reveal-divider reveal-anim-4"></div>
             <p class="reveal-hint reveal-anim-5">Your surprise awaits...</p>
             <div class="reveal-continue reveal-anim-5" id="reveal-continue">
@@ -291,7 +296,7 @@
                 <div class="letter-content">
                     <div class="letter-header letter-reveal">
                         <div class="letter-ornament">&#10053; &#10053; &#10053;</div>
-                        <div class="letter-greeting">Happy Birthday</div>
+                        <div class="letter-greeting" id="letter-happy"></div>
                         <div class="letter-dear" id="letter-dear"></div>
                     </div>
                     <div class="letter-body" id="letter-body"></div>
@@ -456,14 +461,14 @@
             if (d.nicknames && d.nicknames.length) NICKNAMES = d.nicknames;
             nickname = NICKNAMES[0];
             document.getElementById('title-name').textContent = d.name + "'s Birthday";
-            document.getElementById('reveal-title').textContent = "Happy Birthday " + d.name + "!";
-            document.getElementById('reveal-sub').textContent = "Hey " + nickname + ", this is for you!";
+            document.getElementById('reveal-title').textContent = "My Dear " + d.name;
+            document.getElementById('reveal-sub').textContent = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
         } catch(e) {
             target = new Date('2026-07-10T00:00:00').getTime();
             nickname = NICKNAMES[0];
             document.getElementById('title-name').textContent = "Fahamida's Birthday";
-            document.getElementById('reveal-title').textContent = "Happy Birthday Fahamida!";
-            document.getElementById('reveal-sub').textContent = "Hey " + nickname + ", this is for you!";
+            document.getElementById('reveal-title').textContent = "My Dear Fahamida";
+            document.getElementById('reveal-sub').textContent = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
         }
         updateCD();
         countdownTimer = setInterval(updateCD, 1000);
@@ -708,10 +713,13 @@
     function startPhase1() {
         busy = true;
         showPhase('phase1', true);
+        const happyEl = document.getElementById('reveal-happy');
         const titleEl = document.getElementById('reveal-title');
         const subEl = document.getElementById('reveal-sub');
+        const happyText = happyEl.textContent;
         const titleText = titleEl.textContent;
         const subText = subEl.textContent;
+        happyEl.textContent = '';
         titleEl.textContent = '';
         subEl.textContent = '';
 
@@ -720,12 +728,14 @@
             confetti();
             createSparkles();
             startCelebration();
-            // Type title
-            typeText(titleEl, titleText, 80, () => {
-                // Type subtitle after title finishes
-                typeText(subEl, subText, 60, () => {
-                    // Show continue button after everything typed
-                    document.getElementById('reveal-continue').classList.add('show');
+            // Type "Happy Birthday" first
+            typeText(happyEl, happyText, 70, () => {
+                // Then type "My Dear Fahamida"
+                typeText(titleEl, titleText, 80, () => {
+                    // Then type subtitle
+                    typeText(subEl, subText, 50, () => {
+                        document.getElementById('reveal-continue').classList.add('show');
+                    });
                 });
             });
         }, 300);
@@ -778,30 +788,55 @@
         busy = true;
         showPhase('phase2', true);
         const n = nextNick();
-        document.getElementById('letter-dear').textContent = 'My Dearest ' + n + ' ❤️';
+        document.getElementById('letter-happy').textContent = 'Happy Birthday';
+        document.getElementById('letter-dear').textContent = 'My Dear ' + n;
         document.getElementById('letter-sign-name').textContent = '❤️ 🎂 ✨';
 
-        // Build letter body paragraphs
+        // Build letter body paragraphs with empty text for typing
         const body = document.getElementById('letter-body');
         body.innerHTML = '';
         LETTER.forEach((text, i) => {
             const p = document.createElement('p');
-            p.textContent = text.replace('{n}', n);
+            p.dataset.fullText = text.replace('{n}', n);
             p.classList.add('letter-reveal');
             body.appendChild(p);
         });
 
-        // Staggered reveal of all letter elements
-        const allReveals = document.querySelectorAll('#phase2 .letter-reveal');
-        allReveals.forEach((el, i) => {
-            setTimeout(() => { el.classList.add('visible'); }, 400 + i * 500);
+        // Show header first
+        const headerReveals = document.querySelectorAll('#phase2 .letter-header .letter-reveal');
+        headerReveals.forEach((el, i) => {
+            setTimeout(() => { el.classList.add('visible'); }, 300 + i * 400);
         });
 
-        // Show continue button after all paragraphs revealed
-        const totalTime = 400 + allReveals.length * 500 + 800;
-        setTimeout(() => {
-            document.getElementById('letter-continue-btn').classList.add('visible');
-        }, totalTime);
+        // Type each paragraph sequentially
+        const paragraphs = body.querySelectorAll('p');
+        let delay = 1500;
+        paragraphs.forEach((p, i) => {
+            setTimeout(() => {
+                p.classList.add('visible');
+                typeLetterText(p, p.dataset.fullText, 30, i === paragraphs.length - 1 ? () => {
+                    // Show sign, seal, and continue after last paragraph
+                    document.querySelectorAll('#phase2 .letter-sign .letter-reveal, #phase2 .letter-seal .letter-reveal, #letter-continue-btn').forEach(el => {
+                        el.classList.add('visible');
+                    });
+                } : null);
+            }, delay);
+            delay += p.dataset.fullText.length * 30 + 800;
+        });
+    }
+
+    function typeLetterText(el, text, speed, callback) {
+        el.classList.add('letter-typing-cursor');
+        let i = 0;
+        const interval = setInterval(() => {
+            el.textContent = text.substring(0, i + 1);
+            i++;
+            if (i >= text.length) {
+                clearInterval(interval);
+                setTimeout(() => { el.classList.remove('letter-typing-cursor'); }, 600);
+                if (callback) callback();
+            }
+        }, speed);
     }
 
 
