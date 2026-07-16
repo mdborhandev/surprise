@@ -288,6 +288,20 @@
         .finale-card-sign .golden-name { color: #FBBF24; }
         .balloon { position: absolute; bottom: -60px; font-size: 32px; animation: balloonRise 5s ease-in forwards; pointer-events: none; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); }
         @keyframes balloonRise { 0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; } 25% { transform: translateY(-25vh) translateX(15px) rotate(5deg); } 50% { transform: translateY(-50vh) translateX(-10px) rotate(-3deg); } 75% { transform: translateY(-75vh) translateX(20px) rotate(4deg); } 100% { transform: translateY(-110vh) translateX(-5px) rotate(-2deg); opacity: 0; } }
+
+        /* Dare Phase */
+        .dare-grid { display: grid; grid-template-columns: 1fr; gap: 14px; max-width: 440px; width: 100%; }
+        .dare-card { display: flex; align-items: center; gap: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 18px 16px; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .dare-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: linear-gradient(to bottom, #F87171, rgba(248,113,113,0.2)); border-radius: 0 2px 2px 0; }
+        .dare-card:hover { border-color: rgba(248,113,113,0.4); background: linear-gradient(135deg, rgba(248,113,113,0.08) 0%, rgba(248,113,113,0.02) 100%); transform: translateX(4px); }
+        .dare-card.selected { border-color: rgba(52,211,153,0.6); background: linear-gradient(135deg, rgba(52,211,153,0.1) 0%, rgba(52,211,153,0.03) 100%); }
+        .dare-card.selected::before { background: linear-gradient(to bottom, #34D399, rgba(52,211,153,0.2)); }
+        .dare-emoji { font-size: 2rem; flex-shrink: 0; }
+        .dare-info { flex: 1; }
+        .dare-title { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 600; margin-bottom: 4px; }
+        .dare-desc { font-size: 11px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+        .dare-check { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.15); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.3s; }
+        .dare-card.selected .dare-check { background: #34D399; border-color: #34D399; color: #000; }
         .finale-made { font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 12px; }
         .replay-btn { display: block; margin: 20px auto 0; padding: 14px 36px; border-radius: 30px; background: linear-gradient(135deg, rgba(251,191,36,0.15) 0%, rgba(251,191,36,0.05) 100%); border: 1.5px solid rgba(251,191,36,0.3); color: rgba(255,255,255,0.7); font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; transition: all 0.3s; }
         .replay-btn:hover { background: linear-gradient(135deg, rgba(251,191,36,0.25) 0%, rgba(251,191,36,0.1) 100%); color: #FBBF24; transform: scale(1.05); }
@@ -487,6 +501,21 @@
         <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:20px; letter-spacing:0.1em;">All the things I love about you</p>
         <div class="story-list" id="story-list"></div>
         <div class="story-dots" id="story-dots"></div>
+    </div>
+
+    <!-- PHASE 7: DARE -->
+    <div id="phase7" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhase(7)">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skip(7)">CONTINUE &#8594;</button>
+        </div>
+        <h2 class="reveal-title" style="margin-bottom:6px; font-size:clamp(1.2rem,4vw,1.8rem);">Pick Your Dares</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:8px; letter-spacing:0.1em;">Choose 3 dares to complete next time we meet</p>
+        <p id="dare-counter" style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px; font-weight:600;">0 / 3 selected</p>
+        <div class="dare-grid" id="dare-grid"></div>
+        <div id="dare-sent" style="display:none; text-align:center; margin-top:20px;">
+            <p style="font-size:14px; color:#34D399; font-weight:600;">Dare sent! Check your email</p>
+        </div>
     </div>
 
     <!-- PHASE 5: LOVE COUPONS -->
@@ -1222,6 +1251,87 @@
         }, 300);
     }
 
+    // ========== PHASE 7: DARE ==========
+    const DARES = [
+        { emoji: '💋', title: 'Kiss on Hand', desc: 'Give me a soft kiss on my hand like a prince next time we meet' },
+        { emoji: '🫂', title: 'Body Press', desc: 'Press your body against mine and hold me tight — feel everything' },
+        { emoji: '😌', title: 'Head on Chest', desc: 'Let me rest my head on your chest and listen to your heartbeat' },
+        { emoji: '🫲', title: 'Hand Hold Walk', desc: 'Hold my hand tight and take me for a long walk — no phones' },
+        { emoji: '🍽️', title: 'Cook & Feed Me', desc: 'Cook something with your hands and feed me with your own hands' },
+        { emoji: '🫦', title: 'Bite Me', desc: 'Give me a playful bite anywhere you want next time we meet' },
+        { emoji: '🤏', title: 'Cheek Caress', desc: 'Gently touch my face and look into my eyes for 10 seconds' },
+        { emoji: '🫳', title: 'Hand on Waist', desc: 'Put your hand on my waist and pull me close when we talk' },
+        { emoji: '😘', title: 'Ear Whisper', desc: 'Breathe softly on my ear and whisper my name — just once' },
+        { emoji: '🫳', title: 'Skin Touch', desc: 'Hold my hand, trace your fingers slowly on my skin — anywhere' }
+    ];
+
+    let selectedDares = [];
+
+    function startPhase7() {
+        busy = false;
+        selectedDares = [];
+        showPhase('phase7', true);
+        const grid = document.getElementById('dare-grid');
+        const sentMsg = document.getElementById('dare-sent');
+        const counter = document.getElementById('dare-counter');
+        grid.innerHTML = '';
+        sentMsg.style.display = 'none';
+        counter.textContent = '0 / 3 selected';
+
+        DARES.forEach((dare, i) => {
+            const card = document.createElement('div');
+            card.className = 'dare-card';
+            card.innerHTML = '<div class="dare-emoji">'+dare.emoji+'</div><div class="dare-info"><div class="dare-title">'+dare.title+'</div><div class="dare-desc">'+dare.desc+'</div></div><div class="dare-check"></div>';
+            card.onclick = () => toggleDare(i, card);
+            grid.appendChild(card);
+            setTimeout(() => { card.style.opacity = '1'; card.classList.add('slide-up'); }, i * 80);
+        });
+    }
+
+    function toggleDare(index, card) {
+        const isSelected = selectedDares.includes(index);
+
+        if (isSelected) {
+            selectedDares = selectedDares.filter(i => i !== index);
+            card.classList.remove('selected');
+            card.querySelector('.dare-check').textContent = '';
+        } else if (selectedDares.length < 3) {
+            selectedDares.push(index);
+            card.classList.add('selected');
+            card.querySelector('.dare-check').textContent = '✓';
+
+            if (selectedDares.length === 3) {
+                setTimeout(sendDarePicks, 800);
+            }
+        }
+
+        document.getElementById('dare-counter').textContent = selectedDares.length + ' / 3 selected';
+    }
+
+    function sendDarePicks() {
+        if (selectedDares.length !== 3) return;
+        const counter = document.getElementById('dare-counter');
+        const sentMsg = document.getElementById('dare-sent');
+        counter.textContent = 'Sending your dares...';
+
+        const n = nextNick();
+        const picks = selectedDares.map(i => DARES[i].emoji + ' ' + DARES[i].title + ': ' + DARES[i].desc).join('\n\n');
+
+        emailjs.init('UfmpMSg2KlcJjyIX0');
+        emailjs.send('service_vxkwckv', 'template_txkht7q', {
+            from_name: n,
+            from_email: 'fahamida@birthday.surprise',
+            subject: '🔥 3 Dares for Next Time!',
+            message: n + ' picked 3 dares to complete next time we meet!\n\n' + picks + '\n\nGet ready! ❤️'
+        }).then(() => {
+            counter.textContent = 'Dares sent! ❤️';
+            sentMsg.style.display = 'block';
+            confetti();
+        }).catch(() => {
+            counter.textContent = 'Failed to send. Tap a card to retry.';
+        });
+    }
+
     // ========== PHASE 5: LOVE COUPONS ==========
     const LOVE_COUPONS = [
         { icon: '🎬', title: 'Movie Date', promise: 'A cozy movie date — you pick the film, I\'ll handle the snacks and blankets.' },
@@ -1374,8 +1484,9 @@
             case 1: passwordOn ? (showPasswordGate(), setPhaseURL('password')) : (showWelcomeScreen(), setPhaseURL('welcome')); break;
             case 2: startPhase5(); setPhaseURL('coupons'); break;
             case 3: startPhase6(); setPhaseURL('finale'); break;
-            case 4: startPhase3(); setPhaseURL('spin'); break;
+            case 4: startPhase7(); setPhaseURL('dare'); break; // Why Special → Dare
             case 5: startPhase4(); setPhaseURL('special'); break;
+            case 7: startPhase3(); setPhaseURL('spin'); break; // Dare → Spin
         }
     }
 
@@ -1473,10 +1584,11 @@
         showPhase(id, false);
         switch(phase) {
             case 2: passwordOn ? (showPasswordGate(), setPhaseURL('password')) : (showWelcomeScreen(), setPhaseURL('welcome')); break;
-            case 3: startPhase4(); setPhaseURL('special'); break;
+            case 3: startPhase7(); setPhaseURL('dare'); break; // Spin ← Dare
             case 4: startPhase5(); setPhaseURL('coupons'); break;
             case 5: startPhase2(); setPhaseURL('letter'); break;
             case 6: startPhase3(); setPhaseURL('spin'); break;
+            case 7: startPhase4(); setPhaseURL('special'); break; // Dare ← Why Special
         }
     }
 
@@ -1488,6 +1600,7 @@
         'letter': 2,
         'coupons': 5,
         'special': 4,
+        'dare': 7,
         'spin': 3,
         'finale': 6
     };
@@ -1528,6 +1641,7 @@
                 case 4: startPhase4(); break;
                 case 5: startPhase5(); break;
                 case 6: startPhase6(); break;
+                case 7: startPhase7(); break;
             }
         }
         return true;
