@@ -260,7 +260,7 @@
         .story-card { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 20px; overflow: hidden; scroll-snap-align: start; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
         .story-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .story-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 35%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px 20px; }
-        .story-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 7vw, 38px); color: rgba(255,255,255,0.95); line-height: 1.4; font-style: italic; }
+        .story-text { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px, 5.5vw, 30px); color: rgba(255,255,255,0.95); line-height: 1.5; font-style: italic; font-weight: 700; }
         .story-nick { color: #FBBF24; font-weight: 700; font-style: normal; }
         .story-tag { font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 10px; }
         .story-dots { display: flex; gap: 6px; justify-content: center; margin-top: 16px; }
@@ -547,34 +547,34 @@
 
     const REASON_IMGS = IMAGES.slice(0, 28);
     const REASON_TXT = [
-        "Your smile is the most beautiful thing in this world",
-        "Your laugh is pure magic, it heals everything",
-        "Your kindness makes the world a better place",
-        "You are the strongest and bravest soul I know",
-        "Your eyes shine brighter than a thousand stars",
-        "Your beauty takes my breath away every single day",
-        "Your voice is the sweetest sound I have ever heard",
-        "You are the most amazing person I have ever known",
-        "Your love makes every day worth living",
-        "You have the most beautiful heart I have ever seen",
-        "Your presence lights up every room you walk into",
-        "You make happiness look so effortless",
-        "Your warmth wraps around me like sunshine",
-        "You are the reason I believe in love",
-        "Your elegance is breathtaking, always",
-        "You carry grace in everything you do",
-        "Your energy is contagious and beautiful",
-        "You are a masterpiece created with love",
-        "Your courage inspires me every single day",
-        "You make the ordinary feel extraordinary",
-        "Your tenderness melts my heart completely",
-        "You are the dream I never want to wake from",
-        "Your beauty goes beyond what eyes can see",
-        "You are the queen of my heart, always",
-        "Your smile could end all wars in the world",
-        "You are the sweetest blessing in my life",
-        "Your soul is as beautiful as your face",
-        "You are my forever and my always, {n}"
+        "তোমার হাসি পৃথিবীর সব সুন্দর জিনিসকেও হার মানায়, আর সেই হাসির মাঝেই আমি আমার সুখ খুঁজে পাই",
+        "তোমার হাসির শব্দ আমার হৃদয়ের সবচেয়ে প্রিয় সুর, যা আমার সব ক্লান্তি দূর করে দেয়",
+        "তোমার মায়াভরা মন আর ভালোবাসা আমার জীবনের সবচেয়ে বড় আশীর্বাদ",
+        "তুমি শুধু আমার ভালোবাসা নও, তুমি আমার সাহস, আমার শক্তি, আমার ভরসা",
+        "তোমার চোখের দিকে তাকালে মনে হয় হাজারো তারার আলো একসাথে জ্বলছে",
+        "তোমার সৌন্দর্য প্রতিদিন নতুন করে আমার হৃদয় চুরি করে নেয়",
+        "তোমার কণ্ঠস্বর আমার হৃদয়ের সবচেয়ে মধুর গান",
+        "তোমার মতো অসাধারণ একজন মানুষকে ভালোবাসতে পারা আমার জীবনের সবচেয়ে বড় সৌভাগ্য",
+        "তোমার ভালোবাসা আমার প্রতিটি দিনকে সুন্দর আর অর্থপূর্ণ করে তোলে",
+        "তোমার হৃদয়ের সৌন্দর্য পৃথিবীর যেকোনো সৌন্দর্যের চেয়েও বেশি মুগ্ধকর",
+        "তুমি যেখানে যাও, সেখানে ভালোবাসা আর আলো ছড়িয়ে পড়ে",
+        "তোমার সাথে কাটানো প্রতিটি মুহূর্ত আমার জীবনের সবচেয়ে সুন্দর স্মৃতি",
+        "তোমার ভালোবাসার উষ্ণতায় আমার পৃথিবী পূর্ণ হয়ে যায়",
+        "তুমি আমার হৃদয়ের একমাত্র রানী, আজও, আগামীকালও, সবসময়",
+        "তোমাকে দেখলে মনে হয় স্বর্গ থেকে কোনো পরী আমার জীবনে নেমে এসেছে",
+        "তোমার সৌন্দর্য শুধু মুখে নয়, তোমার হৃদয়েও সমানভাবে ফুটে ওঠে",
+        "তোমার ছোট ছোট অভিমানও আমার কাছে অসম্ভব মিষ্টি লাগে",
+        "তুমি আমার জীবনের সবচেয়ে সুন্দর গল্প, যা আমি কখনও শেষ করতে চাই না",
+        "তোমার সাহস আর আত্মবিশ্বাস আমাকে প্রতিদিন নতুন করে অনুপ্রাণিত করে",
+        "তোমার উপস্থিতি সাধারণ দিনগুলোকেও অসাধারণ করে তোলে",
+        "তোমার কোমল ভালোবাসা আমার হৃদয়কে শান্তি আর সুখে ভরিয়ে দেয়",
+        "তুমি আমার হৃদয়ের সবচেয়ে প্রিয় অনুভূতি, সবচেয়ে সুন্দর স্বপ্ন",
+        "তোমার সৌন্দর্য চোখে দেখা যায়, কিন্তু তোমার মনের সৌন্দর্য অনুভব করা যায় হৃদয় দিয়ে",
+        "তুমি আমার হৃদয়ের চিরন্তন ভালোবাসা, আমার প্রতিটি প্রার্থনার উত্তর",
+        "তোমার একটি হাসিই আমার পৃথিবীকে রঙিন করে দেওয়ার জন্য যথেষ্ট",
+        "তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার, যা আমি কখনও হারাতে চাই না",
+        "তুমি আমার হৃদস্পন্দনের কারণ, আমার প্রতিটি নিশ্বাসের প্রেরণা",
+        "তুমি শুধু আমার জীবন নও, তুমি আমার ভবিষ্যৎ, আমার স্বপ্ন, আমার চিরন্তন ভালোবাসা"
     ];
     const FINALE_IMGS = IMAGES.slice(0, 6);
 
