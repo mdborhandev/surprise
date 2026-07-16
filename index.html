@@ -1096,6 +1096,16 @@
             card.style.visibility = 'visible';
             setTimeout(() => { card.classList.add('show'); }, 50);
             confetti();
+
+            // Send spin result via email
+            const spinMsg = SPIN_MSG[pick].replace('{n}', n);
+            emailjs.init('UfmpMSg2KlcJjyIX0');
+            emailjs.send('service_vxkwckv', 'template_txkht7q', {
+                from_name: n,
+                from_email: 'fahamida@birthday.surprise',
+                subject: '🎡 Spin the Wheel Result!',
+                message: n + ' spun the wheel and got:\n\n' + emojis[pick % emojis.length] + ' ' + spinMsg + '\n\nWith love, ' + n + ' ❤️'
+            }).catch(() => {});
         }, 5000);
     }
 
