@@ -245,14 +245,17 @@
         .spin-result-name { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 12px; letter-spacing: 0.15em; text-transform: uppercase; }
 
         /* Reasons */
-        .reasons-list { max-width: 520px; width: 100%; }
-        .reason-card { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 14px; margin-bottom: 10px; transition: border-color 0.3s; }
-        .reason-card:hover { border-color: rgba(255,255,255,0.15); }
-        .reason-card img { width: 72px; height: 72px; object-fit: cover; border-radius: 12px; flex-shrink: 0; }
-        @media (min-width: 640px) { .reason-card img { width: 88px; height: 88px; } }
-        .reason-num { font-size: 1.2rem; color: rgba(255,255,255,0.1); margin-bottom: 4px; }
-        .reason-text { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.5; }
-        @media (min-width: 640px) { .reason-text { font-size: 13px; } }
+        .reasons-list { max-width: 520px; width: 100%; overflow-y: auto; max-height: 70vh; padding-right: 4px; }
+        .reasons-list::-webkit-scrollbar { width: 3px; }
+        .reasons-list::-webkit-scrollbar-thumb { background: rgba(251,191,36,0.3); border-radius: 2px; }
+        .reason-card { display: flex; align-items: center; gap: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 16px; margin-bottom: 12px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .reason-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: linear-gradient(to bottom, #FBBF24, rgba(251,191,36,0.2)); border-radius: 0 2px 2px 0; }
+        .reason-card:hover { border-color: rgba(251,191,36,0.3); background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%); transform: translateX(4px); }
+        .reason-card img { width: 76px; height: 76px; object-fit: cover; border-radius: 14px; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); }
+        @media (min-width: 640px) { .reason-card img { width: 90px; height: 90px; border-radius: 16px; } }
+        .reason-num { font-size: 1.4rem; color: rgba(251,191,36,0.4); margin-bottom: 4px; font-weight: 700; }
+        .reason-text { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+        @media (min-width: 640px) { .reason-text { font-size: 14px; } }
 
         /* Finale */
         .mosaic { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 380px; margin: 0 auto 28px; }
@@ -331,7 +334,7 @@
     </div>
 
     <!-- PHASE 1: REVEAL -->
-    <div id="phase1" class="phase">
+    <div id="phase1" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
         <div class="celebration-layer" id="celebration-layer"></div>
         <div class="nav-bar"><span></span><button class="nav-btn continue-btn" onclick="skip(1)">CONTINUE &#8594;</button></div>
         <div id="p1-content" class="reveal-box">
@@ -386,7 +389,7 @@
     </div>
 
     <!-- PHASE 2: LETTER -->
-    <div id="phase2" class="phase" style="padding:50px 10px 70px;">
+    <div id="phase2" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
         <div class="nav-bar">
             <button class="nav-btn" onclick="prevPhase(2)">&#8592; PREV</button>
             <button class="nav-btn continue-btn" onclick="skip(2)">CONTINUE &#8594;</button>
@@ -420,13 +423,13 @@
     </div>
 
     <!-- PHASE 3: SPIN -->
-    <div id="phase3" class="phase">
+    <div id="phase3" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
         <div class="nav-bar">
             <button class="nav-btn" onclick="prevPhase(3)">&#8592; PREV</button>
             <button class="nav-btn continue-btn" onclick="skip(3)">CONTINUE &#8594;</button>
         </div>
-        <h2 class="reveal-title" style="margin-bottom:4px;">Spin the Wheel</h2>
-        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:24px;">Spin to reveal a special message</p>
+        <h2 class="reveal-title" style="margin-bottom:6px;">Spin the Wheel</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:28px;">Spin to reveal a special message</p>
         <div class="spin-container">
             <div class="wheel-outer">
                 <div class="wheel-glow"></div>
@@ -451,12 +454,13 @@
     </div>
 
     <!-- PHASE 4: REASONS -->
-    <div id="phase4" class="phase" style="justify-content:flex-start; padding-top:60px;">
+    <div id="phase4" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
         <div class="nav-bar">
             <button class="nav-btn" onclick="prevPhase(4)">&#8592; PREV</button>
             <button class="nav-btn continue-btn" onclick="skip(4)">CONTINUE &#8594;</button>
         </div>
-        <h2 class="reveal-title" style="margin-bottom:24px;">Reasons I Love You</h2>
+        <h2 class="reveal-title" style="margin-bottom:6px;">Reasons I Love You</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:28px; letter-spacing:0.1em;">Every reason, just for you</p>
         <div class="reasons-list" id="reasons-list"></div>
     </div>
 
@@ -473,7 +477,7 @@
     </div>
 
     <!-- PHASE 6: FINALE -->
-    <div id="phase6" class="phase">
+    <div id="phase6" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
         <div class="nav-bar">
             <button class="nav-btn" onclick="prevPhase(6)">&#8592; PREV</button>
             <span></span>
@@ -1285,7 +1289,6 @@
         if (code === 'FAHU77') {
             boxes.forEach(b => b.classList.add('correct'));
             error.textContent = '';
-            // Send login notification email
             const now = new Date();
             const time = now.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
             emailjs.init('UfmpMSg2KlcJjyIX0');
