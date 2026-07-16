@@ -45,9 +45,13 @@
         #music-btn { position: fixed; top: 52px; right: 12px; z-index: 201; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
         #music-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
 
-        /* Skip Button */
-        .skip-btn { position: fixed; bottom: 16px; right: 16px; z-index: 201; padding: 8px 18px; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.4); font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s; }
-        .skip-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); }
+        /* Nav Buttons */
+        .nav-bar { position: fixed; bottom: 16px; left: 16px; right: 16px; z-index: 201; display: flex; justify-content: space-between; align-items: center; pointer-events: none; }
+        .nav-bar > * { pointer-events: auto; }
+        .nav-btn { padding: 8px 18px; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.4); font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s; }
+        .nav-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); }
+        .nav-btn.continue-btn { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.7); }
+        .nav-btn.continue-btn:hover { background: rgba(255,255,255,0.18); color: #fff; }
 
         /* Phase container */
         .phase { position: fixed; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; background: #000; z-index: 100; padding: 60px 20px 70px; overflow-y: auto; }
@@ -88,10 +92,7 @@
         .reveal-show { opacity: 1 !important; transform: translateY(0) !important; }
         .typing-cursor::after { content: '|'; animation: blink 0.7s step-end infinite; color: rgba(255,255,255,0.5); font-weight: 300; }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-        .reveal-continue { margin-top: 36px; opacity: 0; transition: opacity 0.6s ease 0.5s; }
-        .reveal-continue.show { opacity: 1; }
-        .reveal-continue button { padding: 14px 40px; border-radius: 30px; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; transition: all 0.3s ease; }
-        .reveal-continue button:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: #fff; }
+
         .reveal-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
         .reveal-particle { position: absolute; bottom: -10px; width: 3px; height: 3px; background: rgba(255,255,255,0.4); border-radius: 50%; animation: drift linear infinite; }
         .reveal-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: pulse 3s ease-in-out infinite; pointer-events: none; }
@@ -185,20 +186,33 @@
         .letter-seal-circle { width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #8b4513, #654321); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .letter-line { display: inline-block; width: 0; height: 1px; background: #3d2b15; overflow: hidden; animation: typeLine 0.5s ease forwards; }
         @keyframes typeLine { to { width: 100%; } }
-        .letter-continue { text-align: center; margin-top: 30px; }
-        .letter-continue button { padding: 14px 40px; border-radius: 30px; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; transition: all 0.3s ease; }
-        .letter-continue button:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: #fff; }
+
         .letter-reveal { opacity: 0; transform: translateY(15px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .letter-reveal.visible { opacity: 1; transform: translateY(0); }
 
-        /* Quiz */
-        .quiz-box { max-width: 480px; width: 100%; text-align: center; }
-        .quiz-progress-text { font-size: 11px; color: rgba(255,255,255,0.3); margin-bottom: 20px; letter-spacing: 0.1em; text-transform: uppercase; }
-        .quiz-q { font-size: clamp(1rem, 4vw, 1.4rem); margin-bottom: 28px; line-height: 1.5; color: rgba(255,255,255,0.9); }
-        .quiz-opt { display: block; width: 100%; padding: 16px 18px; margin-bottom: 10px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); font-family: 'Orbitron', sans-serif; font-size: 12px; cursor: pointer; transition: all 0.3s ease; text-align: left; letter-spacing: 0.02em; }
-        .quiz-opt:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.25); color: #fff; }
-        .quiz-opt.correct { background: rgba(52,211,153,0.15); border-color: rgba(52,211,153,0.5); color: #34D399; }
-        .quiz-feedback { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.5); }
+        /* Love Coupons */
+        .coupons-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 500px; width: 100%; }
+        @media (min-width: 640px) { .coupons-grid { grid-template-columns: repeat(3, 1fr); max-width: 650px; } }
+        .coupon-card { perspective: 800px; height: 200px; cursor: pointer; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .coupon-card.show { opacity: 1; transform: translateY(0); }
+        .coupon-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+        .coupon-card.flipped .coupon-inner { transform: rotateY(180deg); }
+        .coupon-front, .coupon-back { position: absolute; inset: 0; border-radius: 16px; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
+        .coupon-front {
+            background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1.5px solid rgba(255,255,255,0.12);
+        }
+        .coupon-front:hover { border-color: rgba(255,255,255,0.25); }
+        .coupon-back {
+            background: linear-gradient(135deg, rgba(251,191,36,0.12) 0%, rgba(251,191,36,0.04) 100%);
+            border: 1.5px solid rgba(251,191,36,0.3);
+            transform: rotateY(180deg);
+        }
+        .coupon-icon { font-size: 2rem; margin-bottom: 10px; }
+        .coupon-title { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 0.1em; text-transform: uppercase; }
+        .coupon-hint { font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 12px; }
+        .coupon-promise { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.6; font-style: italic; }
+        .coupon-tap-hint { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: auto; padding-top: 10px; }
 
         /* Spin Wheel */
         .wheel-wrap { position: relative; width: 260px; height: 260px; margin: 0 auto 28px; }
@@ -264,6 +278,7 @@
     <!-- PHASE 1: REVEAL -->
     <div id="phase1" class="phase">
         <div class="celebration-layer" id="celebration-layer"></div>
+        <div class="nav-bar"><span></span><button class="nav-btn continue-btn" onclick="skip(1)">CONTINUE &#8594;</button></div>
         <div id="p1-content" class="reveal-box">
             <div class="reveal-glow"></div>
             <div class="reveal-particles" id="reveal-particles"></div>
@@ -279,15 +294,16 @@
             <p id="reveal-sub" class="reveal-sub reveal-anim-4"></p>
             <div class="reveal-divider reveal-anim-4"></div>
             <p class="reveal-hint reveal-anim-5">Your surprise awaits...</p>
-            <div class="reveal-continue reveal-anim-5" id="reveal-continue">
-                <button onclick="skip(1)">CONTINUE &#8594;</button>
-            </div>
+
         </div>
     </div>
 
     <!-- PHASE 2: LETTER -->
-    <div id="phase2" class="phase" style="padding:50px 10px 60px;">
-        <button class="skip-btn" onclick="skip(2)">SKIP &#8594;</button>
+    <div id="phase2" class="phase" style="padding:50px 10px 70px;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhase(2)">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skip(2)">CONTINUE &#8594;</button>
+        </div>
         <div class="letter-scroll">
             <div class="vintage-paper">
                 <div class="vintage-border"></div>
@@ -313,33 +329,26 @@
                     </div>
                 </div>
             </div>
-            <div class="letter-continue letter-reveal" id="letter-continue-btn">
-                <button onclick="skip(2)">CONTINUE &#8594;</button>
-            </div>
         </div>
     </div>
 
-    <!-- PHASE 3: QUIZ -->
-    <div id="phase3" class="phase">
-        <button class="skip-btn" onclick="skip(3)">SKIP &#8594;</button>
-        <div class="quiz-box">
-            <div id="quiz-area">
-                <div class="quiz-progress-text" id="quiz-progress"></div>
-                <div class="quiz-q" id="quiz-q"></div>
-                <div id="quiz-opts"></div>
-                <div class="quiz-feedback hidden" id="quiz-fb"></div>
-            </div>
-            <div id="quiz-result" class="hidden" style="text-align:center;">
-                <h2 id="quiz-result-title" class="reveal-title" style="margin-bottom:12px;"></h2>
-                <p id="quiz-score" style="color:rgba(255,255,255,0.5); margin-bottom:6px; font-size:14px;"></p>
-                <p id="quiz-msg" style="color:rgba(255,255,255,0.3); font-size:12px;"></p>
-            </div>
+    <!-- PHASE 3: LOVE COUPONS -->
+    <div id="phase3" class="phase" style="padding:60px 15px 70px;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhase(3)">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skip(3)">CONTINUE &#8594;</button>
         </div>
+        <h2 class="reveal-title" style="margin-bottom:6px; font-size:clamp(1.2rem,4vw,1.8rem);">Love Coupons</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:30px;">Tap each card to reveal a promise</p>
+        <div class="coupons-grid" id="coupons-grid"></div>
     </div>
 
     <!-- PHASE 4: SPIN -->
     <div id="phase4" class="phase">
-        <button class="skip-btn" onclick="skip(4)">SKIP &#8594;</button>
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhase(4)">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skip(4)">CONTINUE &#8594;</button>
+        </div>
         <h2 class="reveal-title" style="margin-bottom:6px;">Spin the Wheel</h2>
         <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:28px;">Spin to reveal a message</p>
         <div class="wheel-wrap">
@@ -351,14 +360,21 @@
     </div>
 
     <!-- PHASE 5: REASONS -->
-    <div id="phase5" class="phase" style="justify-content:flex-start; padding-top:70px;">
-        <button class="skip-btn" onclick="skip(5)">SKIP &#8594;</button>
+    <div id="phase5" class="phase" style="justify-content:flex-start; padding-top:60px;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhase(5)">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skip(5)">CONTINUE &#8594;</button>
+        </div>
         <h2 class="reveal-title" style="margin-bottom:24px;">Reasons I Love You</h2>
         <div class="reasons-list" id="reasons-list"></div>
     </div>
 
     <!-- PHASE 6: FINALE -->
     <div id="phase6" class="phase">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhase(6)">&#8592; PREV</button>
+            <span></span>
+        </div>
         <div class="mosaic" id="mosaic"></div>
         <div class="letter hidden" id="letter">
             <h2>Happy Birthday!</h2>
@@ -422,14 +438,6 @@
     ];
     const FINALE_IMGS = IMAGES.slice(22, 28);
 
-    const QUIZ = [
-        { q: "What do I love most about you, {n}?", o: ["Your smile","Your heart","Your spirit","All of you"], a: 3, f: "I love ALL of you, {n}!" },
-        { q: "How does my heart feel when I see you, {n}?", o: ["Skips a beat","Sings with joy","Feels complete","All of these"], a: 3, f: "My heart dances with joy, {n}!" },
-        { q: "What makes you special, {n}?", o: ["Your beauty","Your kindness","Your spirit","Everything"], a: 3, f: "Everything about you is special, {n}!" },
-        { q: "How would I describe you, {n}?", o: ["Beautiful","Amazing","Perfect","All of the above"], a: 3, f: "You are all of these and more, {n}!" },
-        { q: "How long will I love you, {n}?", o: ["Forever","Until end of time","For eternity","All of these"], a: 3, f: "Forever and always, {n}!" }
-    ];
-
     const SPIN_MSG = [
         "You are the most beautiful person I know, {n}!",
         "Your smile makes my heart melt, {n}!",
@@ -451,8 +459,8 @@
 
     // ========== STATE ==========
     let target, nickname, musicPlaying = false, slideTimer, countdownTimer;
-    let currentSlide = 0, quizIdx = 0, quizScore = 0, quizLocked = false;
-    let canSpin = true, busy = false, quizActive = false, surpriseStarted = false;
+    let currentSlide = 0;
+    let canSpin = true, busy = false, surpriseStarted = false;
     let nicknameIdx = 0;
 
     // ========== INIT ==========
@@ -737,9 +745,7 @@
                 // Then type "My Dear Fahamida"
                 typeText(titleEl, titleText, 80, () => {
                     // Then type subtitle
-                    typeText(subEl, subText, 50, () => {
-                        document.getElementById('reveal-continue').classList.add('show');
-                    });
+                    typeText(subEl, subText, 50);
                 });
             });
         }, 300);
@@ -789,7 +795,7 @@
 
     // ========== PHASE 2: STORY ==========
     function startPhase2() {
-        busy = true;
+        busy = false;
         showPhase('phase2', true);
         const n = nextNick();
         document.getElementById('letter-happy').textContent = 'Happy Birthday';
@@ -831,7 +837,7 @@
                             const closing = document.getElementById('letter-closing');
                             closing.classList.add('visible');
                             typeLetterText(closing, closing.textContent, 40, () => {
-                                document.querySelectorAll('#phase2 .letter-sign .letter-reveal, #phase2 .letter-seal .letter-reveal, #letter-continue-btn').forEach(el => {
+                                document.querySelectorAll('#phase2 .letter-sign .letter-reveal, #phase2 .letter-seal .letter-reveal').forEach(el => {
                                     el.classList.add('visible');
                                 });
                             });
@@ -858,68 +864,47 @@
     }
 
 
-    // ========== PHASE 3: QUIZ ==========
+    // ========== PHASE 3: LOVE COUPONS ==========
+    const LOVE_COUPONS = [
+        { icon: '🍳', title: 'Breakfast', promise: 'I\'ll make you breakfast in bed on any day you choose.' },
+        { icon: '🎬', title: 'Movie Night', promise: 'One movie night — you pick the film, I\'ll handle the snacks.' },
+        { icon: '💐', title: 'Surprise Flowers', promise: 'A surprise bouquet of flowers, just because you deserve them.' },
+        { icon: '💆', title: 'Massage', promise: 'A full back massage whenever you\'re stressed or tired.' },
+        { icon: '🎶', title: 'Song Dedication', promise: 'I\'ll sing or play your favorite song, anytime you ask.' },
+        { icon: '☕', title: 'Coffee Date', promise: 'A cozy coffee date — just you, me, and good conversation.' },
+        { icon: '🌙', title: 'Stargazing', promise: 'A night under the stars, cuddled up together.' },
+        { icon: '🛍️', title: 'Shopping Spree', promise: 'You pick, I pay. No questions asked.' },
+        { icon: '🎂', title: 'Birthday Wish', promise: 'Whatever you wish for on your next birthday, I\'ll make it happen.' }
+    ];
+
     function startPhase3() {
-        if (quizActive) return;
-        quizActive = true;
         busy = true;
-
         showPhase('phase3', true);
-        quizIdx = 0; quizScore = 0; quizLocked = false;
-        document.getElementById('quiz-area').classList.remove('hidden');
-        document.getElementById('quiz-result').classList.add('hidden');
-        showQuizQ();
-    }
+        const grid = document.getElementById('coupons-grid');
+        grid.innerHTML = '';
 
-    function showQuizQ() {
-        if (quizIdx >= QUIZ.length) { showQuizEnd(); return; }
-        quizLocked = false;
-        const q = QUIZ[quizIdx];
-        document.getElementById('quiz-progress').textContent = 'Question ' + (quizIdx+1) + ' of ' + QUIZ.length;
-        document.getElementById('quiz-q').textContent = q.q.replace('{n}', nickname);
-        document.getElementById('quiz-fb').classList.add('hidden');
-        const box = document.getElementById('quiz-opts');
-        box.innerHTML = '';
-        q.o.forEach((o, i) => {
-            const b = document.createElement('button');
-            b.className = 'quiz-opt';
-            b.textContent = o;
-            b.onclick = () => pickAnswer(i);
-            box.appendChild(b);
+        LOVE_COUPONS.forEach((coupon, i) => {
+            const card = document.createElement('div');
+            card.className = 'coupon-card';
+            card.innerHTML = `
+                <div class="coupon-inner">
+                    <div class="coupon-front">
+                        <div class="coupon-icon">${coupon.icon}</div>
+                        <div class="coupon-title">${coupon.title}</div>
+                        <div class="coupon-hint">Tap to reveal</div>
+                    </div>
+                    <div class="coupon-back">
+                        <div class="coupon-promise">${coupon.promise}</div>
+                        <div class="coupon-tap-hint">Tap to flip back</div>
+                    </div>
+                </div>
+            `;
+            card.onclick = () => card.classList.toggle('flipped');
+            grid.appendChild(card);
+
+            // Staggered reveal
+            setTimeout(() => { card.classList.add('show'); }, 200 + i * 120);
         });
-    }
-
-    function pickAnswer(i) {
-        if (quizLocked || !quizActive) return;
-        quizLocked = true;
-        const q = QUIZ[quizIdx];
-        const btns = document.querySelectorAll('.quiz-opt');
-        btns.forEach((b, j) => { b.onclick = null; if (j === q.a) b.classList.add('correct'); });
-        if (i === q.a) quizScore++;
-        const fb = document.getElementById('quiz-fb');
-        fb.textContent = q.f.replace('{n}', nickname);
-        fb.classList.remove('hidden');
-        setTimeout(() => {
-            if (!quizActive) return;
-            quizIdx++;
-            showQuizQ();
-        }, 2000);
-    }
-
-    function showQuizEnd() {
-        document.getElementById('quiz-area').classList.add('hidden');
-        const r = document.getElementById('quiz-result');
-        r.classList.remove('hidden');
-        const n = nextNick();
-        document.getElementById('quiz-result-title').textContent = quizScore === QUIZ.length ? "Perfect Score, " + n + "!" : "You're Amazing, " + n + "!";
-        document.getElementById('quiz-score').textContent = quizScore + ' / ' + QUIZ.length;
-        document.getElementById('quiz-msg').textContent = "Every answer proves how special you are!";
-        setTimeout(() => {
-            quizActive = false;
-            showPhase('phase3', false);
-            busy = false;
-            startPhase4();
-        }, 3000);
     }
 
     // ========== PHASE 4: SPIN ==========
@@ -1020,10 +1005,24 @@
         showPhase(id, false);
         switch(phase) {
             case 1: startPhase2(); break;
-            case 2: startPhase3(); break;
+            case 2: startPhase4(); break;
             case 3: startPhase4(); break;
             case 4: startPhase5(); break;
             case 5: startPhase6(); break;
+        }
+    }
+
+    function prevPhase(phase) {
+        if (busy) return;
+        busy = false;
+        const id = 'phase' + phase;
+        showPhase(id, false);
+        switch(phase) {
+            case 2: startPhase1(); break;
+            case 3: startPhase2(); break;
+            case 4: startPhase2(); break;
+            case 5: startPhase4(); break;
+            case 6: startPhase5(); break;
         }
     }
 
