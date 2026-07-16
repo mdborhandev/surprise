@@ -166,9 +166,9 @@
         .vintage-corner.tr { top: 14px; right: 14px; border-width: 2px 2px 0 0; }
         .vintage-corner.bl { bottom: 14px; left: 14px; border-width: 0 0 2px 2px; }
         .vintage-corner.br { bottom: 14px; right: 14px; border-width: 0 2px 2px 0; }
-        .letter-content { position: relative; z-index: 1; padding: 40px 36px; }
-        .letter-header { text-align: center; margin-bottom: 30px; }
-        .letter-ornament { font-size: 24px; color: rgba(139,115,85,0.5); margin-bottom: 12px; letter-spacing: 0.3em; }
+        .letter-content { position: relative; z-index: 1; padding: 40px 36px; text-align: left; }
+        .letter-header { text-align: left; margin-bottom: 30px; }
+        .letter-ornament { font-size: 24px; color: rgba(139,115,85,0.5); margin-bottom: 12px; letter-spacing: 0.3em; text-align: left; }
         .letter-greeting { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 6vw, 3rem); color: #5a3a1a; margin-bottom: 4px; line-height: 1.3; }
         .letter-dear { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px, 4vw, 24px); color: #5a3a1a; font-weight: 600; margin-bottom: 24px; }
         .letter-opening { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); color: #3d2b15; line-height: 1.9; margin-bottom: 20px; font-style: italic; }
@@ -176,9 +176,8 @@
         .letter-line { display: block; }
         .letter-typing-cursor::after { content: '|'; animation: blink 0.7s step-end infinite; color: #6b4c2a; font-weight: 300; }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-        .letter-body { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); line-height: 1.9; color: #3d2b15; text-align: justify; }
-        .letter-body p { margin-bottom: 14px; text-indent: 2em; }
-        .letter-body p:first-child { text-indent: 0; }
+        .letter-body { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); line-height: 1.9; color: #3d2b15; text-align: left; }
+        .letter-body p { margin-bottom: 14px; }
         .letter-sign { text-align: right; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(139,115,85,0.2); }
         .letter-sign-text { font-family: 'Great Vibes', cursive; font-size: clamp(1.4rem, 4vw, 2rem); color: #5a3a1a; }
         .letter-sign-sub { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: rgba(90,58,26,0.5); font-style: italic; margin-top: 4px; }
@@ -267,6 +266,31 @@
         .replay-btn { display: block; margin: 28px auto 0; padding: 12px 30px; border-radius: 24px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.5); font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s; }
         .replay-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
 
+        /* Password Gate OTP */
+        .password-box { text-align: center; max-width: 440px; width: 100%; }
+        .password-icon { font-size: 3rem; margin-bottom: 16px; }
+        .password-title { font-size: clamp(1.2rem, 4vw, 1.6rem); font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .password-sub { font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 28px; }
+        .otp-container { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+        .otp-box { width: 48px; height: 56px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.12); color: #fff; font-family: 'Orbitron', sans-serif; font-size: 22px; font-weight: 700; text-align: center; outline: none; transition: all 0.3s ease; caret-color: transparent; }
+        .otp-box:focus { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.08); box-shadow: 0 0 20px rgba(255,255,255,0.05); }
+        .otp-box.filled { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); }
+        .otp-box.correct { border-color: rgba(52,211,153,0.6); background: rgba(52,211,153,0.1); color: #34D399; }
+        .otp-box.wrong { border-color: rgba(248,113,113,0.6); background: rgba(248,113,113,0.1); color: #F87171; }
+        .otp-shake .otp-box { animation: shake 0.4s ease; }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-5px); } 40%,80% { transform: translateX(5px); } }
+        .password-hint { font-size: 11px; color: rgba(255,255,255,0.2); margin-top: 16px; }
+        .password-error { font-size: 12px; color: rgba(248,113,113,0.8); margin-top: 12px; min-height: 16px; }
+        @media (max-width: 400px) { .otp-box { width: 40px; height: 48px; font-size: 18px; } .otp-container { gap: 6px; } }
+        /* Welcome Screen */
+        .welcome-box { text-align: center; max-width: 460px; }
+        .welcome-emoji { font-size: 4rem; margin-bottom: 16px; display: block; animation: floatUp 3s ease-in-out infinite; }
+        .welcome-text { font-size: clamp(1.4rem, 5vw, 2.2rem); font-weight: 800; color: #fff; margin-bottom: 8px; line-height: 1.3; }
+        .welcome-nick { font-size: clamp(1.6rem, 6vw, 2.8rem); font-weight: 900; color: #FBBF24; margin-bottom: 16px; }
+        .welcome-msg { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 360px; margin: 0 auto; }
+        .welcome-line { width: 50px; height: 2px; background: rgba(251,191,36,0.4); margin: 20px auto; }
+        .welcome-sub { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.15em; }
+
         /* Confetti */
         .confetti-piece { position: fixed; width: 8px; height: 8px; top: -10px; animation: confetti linear forwards; pointer-events: none; z-index: 300; }
     </style>
@@ -315,6 +339,38 @@
             <div class="reveal-divider reveal-anim-4"></div>
             <p class="reveal-hint reveal-anim-5">Your surprise awaits...</p>
 
+        </div>
+    </div>
+
+    <!-- PASSWORD GATE -->
+    <div id="password-phase" class="phase">
+        <div class="password-box">
+            <div class="password-icon">🔐</div>
+            <div class="password-title">Enter the Secret Code</div>
+            <div class="password-sub">Only MY BABY FAHAMIDA knows this</div>
+            <div class="otp-container" id="otp-container">
+                <input type="text" class="otp-box" maxlength="1" autocomplete="off" inputmode="text" data-index="0">
+                <input type="text" class="otp-box" maxlength="1" autocomplete="off" inputmode="text" data-index="1">
+                <input type="text" class="otp-box" maxlength="1" autocomplete="off" inputmode="text" data-index="2">
+                <input type="text" class="otp-box" maxlength="1" autocomplete="off" inputmode="text" data-index="3">
+                <input type="text" class="otp-box" maxlength="1" autocomplete="off" inputmode="text" data-index="4">
+                <input type="text" class="otp-box" maxlength="1" autocomplete="off" inputmode="text" data-index="5">
+            </div>
+            <div class="password-error" id="password-error"></div>
+            <div class="password-hint">Enter the 6-character code</div>
+        </div>
+    </div>
+
+    <!-- WELCOME SCREEN -->
+    <div id="welcome-phase" class="phase">
+        <div class="welcome-box">
+            <span class="welcome-emoji">💖</span>
+            <div class="welcome-text">Welcome, beautiful</div>
+            <div class="welcome-nick" id="welcome-nick"></div>
+            <div class="welcome-line"></div>
+            <div class="welcome-msg">This whole surprise was made just for you, with all my love. Every word, every moment here — it's all yours.</div>
+            <div class="welcome-line"></div>
+            <button class="nav-btn continue-btn" onclick="goToLetter()" style="margin-top:20px;">CONTINUE &#8594;</button>
         </div>
     </div>
 
@@ -1134,12 +1190,88 @@
         const id = 'phase' + phase;
         showPhase(id, false);
         switch(phase) {
-            case 1: startPhase2(); break;
+            case 1: showPasswordGate(); break;
             case 2: startPhase3(); break;
             case 3: startPhase4(); break;
             case 4: startPhase5(); break;
             case 5: startPhase6(); break;
         }
+    }
+
+    function showPasswordGate() {
+        showPhase('password-phase', true);
+        const boxes = document.querySelectorAll('.otp-box');
+        boxes.forEach(b => { b.value = ''; b.className = 'otp-box'; });
+        document.getElementById('password-error').textContent = '';
+        document.getElementById('otp-container').classList.remove('otp-shake');
+        setTimeout(() => boxes[0].focus(), 300);
+    }
+
+    document.querySelectorAll('.otp-box').forEach((box, i, all) => {
+        box.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^A-Z0-9]/g, '').toUpperCase();
+            if (this.value && i < all.length - 1) {
+                all[i + 1].focus();
+            }
+            this.classList.toggle('filled', this.value.length > 0);
+            if (i === all.length - 1 && this.value) {
+                setTimeout(otpValidate, 200);
+            }
+        });
+        box.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && !this.value && i > 0) {
+                all[i - 1].focus();
+                all[i - 1].value = '';
+                all[i - 1].classList.remove('filled');
+            }
+            if (e.key === 'Enter') otpValidate();
+        });
+        box.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const text = (e.clipboardData || window.clipboardData).getData('text').toUpperCase().slice(0, 6);
+            text.split('').forEach((ch, j) => {
+                if (all[j]) { all[j].value = ch; all[j].classList.add('filled'); }
+            });
+            if (text.length === 6) { setTimeout(otpValidate, 200); }
+            else if (text.length > 0) { all[Math.min(text.length, 5)].focus(); }
+        });
+    });
+
+    function otpValidate() {
+        const boxes = document.querySelectorAll('.otp-box');
+        const code = Array.from(boxes).map(b => b.value).join('').toUpperCase();
+        const error = document.getElementById('password-error');
+        const container = document.getElementById('otp-container');
+        if (code === 'FAHU77') {
+            boxes.forEach(b => b.classList.add('correct'));
+            error.textContent = '';
+            setTimeout(() => {
+                showPhase('password-phase', false);
+                showWelcomeScreen();
+            }, 700);
+        } else {
+            container.classList.add('otp-shake');
+            boxes.forEach(b => b.classList.add('wrong'));
+            error.textContent = 'Wrong code. Try again!';
+            setTimeout(() => {
+                container.classList.remove('otp-shake');
+                boxes.forEach(b => { b.value = ''; b.className = 'otp-box'; });
+                error.textContent = '';
+                boxes[0].focus();
+            }, 800);
+        }
+    }
+
+    function showWelcomeScreen() {
+        const n = nextNick();
+        document.getElementById('welcome-nick').textContent = n;
+        showPhase('welcome-phase', true);
+        confetti();
+    }
+
+    function goToLetter() {
+        showPhase('welcome-phase', false);
+        startPhase2();
     }
 
     function prevPhase(phase) {
@@ -1148,7 +1280,7 @@
         const id = 'phase' + phase;
         showPhase(id, false);
         switch(phase) {
-            case 2: startPhase1(); break;
+            case 2: showPasswordGate(); break;
             case 3: startPhase2(); break;
             case 4: startPhase3(); break;
             case 5: startPhase4(); break;
