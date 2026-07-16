@@ -215,15 +215,28 @@
         .coupon-tap-hint { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: auto; padding-top: 10px; }
 
         /* Spin Wheel */
-        .wheel-wrap { position: relative; width: 260px; height: 260px; margin: 0 auto 28px; }
-        @media (min-width: 640px) { .wheel-wrap { width: 300px; height: 300px; } }
-        .wheel { width: 100%; height: 100%; border-radius: 50%; position: relative; transition: transform 4s cubic-bezier(0.17,0.67,0.12,0.99); overflow: hidden; border: 2px solid rgba(255,255,255,0.1); }
+        .spin-container { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+        .wheel-outer { position: relative; width: 300px; height: 300px; }
+        @media (min-width: 640px) { .wheel-outer { width: 340px; height: 340px; } }
+        .wheel-glow { position: absolute; inset: -20px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%); animation: pulse 3s ease-in-out infinite; pointer-events: none; }
+        .wheel-ring { position: absolute; inset: -4px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); }
+        .wheel-ring-inner { position: absolute; inset: -8px; border-radius: 50%; border: 1px dashed rgba(255,255,255,0.06); }
+        .wheel { width: 100%; height: 100%; border-radius: 50%; position: relative; transition: transform 4.5s cubic-bezier(0.17,0.67,0.12,0.99); overflow: hidden; border: 3px solid rgba(255,255,255,0.2); box-shadow: 0 0 50px rgba(255,255,255,0.05), inset 0 0 30px rgba(0,0,0,0.4); }
         .wheel-seg { position: absolute; width: 50%; height: 50%; transform-origin: 100% 100%; clip-path: polygon(0 0, 100% 0, 100% 100%); }
-        .wheel-pointer { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 20px solid #fff; z-index: 10; }
-        .spin-btn { padding: 14px 44px; border-radius: 30px; background: #fff; color: #000; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.15em; border: none; cursor: pointer; transition: all 0.3s ease; }
-        .spin-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,255,255,0.15); }
+        .wheel-seg-label { position: absolute; font-size: 11px; color: rgba(255,255,255,0.95); font-weight: 600; pointer-events: none; text-shadow: 0 1px 4px rgba(0,0,0,0.6); max-width: 90px; text-align: center; line-height: 1.2; letter-spacing: 0.02em; }
+        .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 60px; height: 60px; background: radial-gradient(circle at 30% 30%, #fff, #e0e0e0); border-radius: 50%; z-index: 5; box-shadow: 0 4px 15px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .wheel-pointer-wrap { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); z-index: 10; }
+        .wheel-pointer { width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 30px solid #fff; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.5)); }
+        .wheel-pointer-dot { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 8px; height: 8px; background: #FBBF24; border-radius: 50%; box-shadow: 0 0 10px rgba(251,191,36,0.6); }
+        .spin-btn { padding: 16px 50px; border-radius: 30px; background: linear-gradient(135deg, #fff, #e8e8e8); color: #000; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.2em; border: none; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(255,255,255,0.1); }
+        .spin-btn:hover { transform: scale(1.05); box-shadow: 0 6px 30px rgba(255,255,255,0.15); }
         .spin-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; box-shadow: none; }
-        .spin-result { margin-top: 20px; font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.5; max-width: 400px; }
+        .spin-result { text-align: center; max-width: 440px; width: 100%; }
+        .spin-result-card { background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 28px 24px; opacity: 0; transform: translateY(20px) scale(0.95); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .spin-result-card.show { opacity: 1; transform: translateY(0) scale(1); }
+        .spin-result-emoji { font-size: 3rem; margin-bottom: 14px; filter: drop-shadow(0 0 12px rgba(255,255,255,0.2)); }
+        .spin-result-msg { font-size: 16px; color: rgba(255,255,255,0.85); line-height: 1.7; font-style: italic; }
+        .spin-result-name { font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 12px; letter-spacing: 0.15em; text-transform: uppercase; }
 
         /* Reasons */
         .reasons-list { max-width: 520px; width: 100%; }
@@ -332,20 +345,35 @@
         </div>
     </div>
 
-    <!-- PHASE 3: LOVE COUPONS -->
-    <div id="phase3" class="phase" style="padding:60px 15px 70px;">
+    <!-- PHASE 3: SPIN -->
+    <div id="phase3" class="phase">
         <div class="nav-bar">
             <button class="nav-btn" onclick="prevPhase(3)">&#8592; PREV</button>
             <button class="nav-btn continue-btn" onclick="skip(3)">CONTINUE &#8594;</button>
         </div>
-        <h2 class="reveal-title" style="margin-bottom:6px;">Spin the Wheel</h2>
-        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:28px;">Spin to reveal a message</p>
-        <div class="wheel-wrap">
-            <div class="wheel-pointer"></div>
-            <div class="wheel" id="wheel"></div>
+        <h2 class="reveal-title" style="margin-bottom:4px;">Spin the Wheel</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:24px;">Spin to reveal a special message</p>
+        <div class="spin-container">
+            <div class="wheel-outer">
+                <div class="wheel-glow"></div>
+                <div class="wheel-ring"></div>
+                <div class="wheel-ring-inner"></div>
+                <div class="wheel-pointer-wrap">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel-pointer-dot"></div>
+                </div>
+                <div class="wheel" id="wheel"></div>
+                <div class="wheel-center">💌</div>
+            </div>
+            <button class="spin-btn" id="spin-btn" onclick="spinWheel()">SPIN</button>
+            <div class="spin-result" id="spin-result">
+                <div class="spin-result-card" id="spin-result-card">
+                    <div class="spin-result-emoji" id="spin-result-emoji"></div>
+                    <div class="spin-result-msg" id="spin-result-msg"></div>
+                    <div class="spin-result-name" id="spin-result-name"></div>
+                </div>
+            </div>
         </div>
-        <button class="spin-btn" id="spin-btn" onclick="spinWheel()">SPIN</button>
-        <div class="spin-result hidden" id="spin-result"></div>
     </div>
 
     <!-- PHASE 4: REASONS -->
@@ -837,33 +865,38 @@
             setTimeout(() => { el.classList.add('visible'); }, 300 + i * 400);
         });
 
-        // Type opening
-        const opening = document.getElementById('letter-opening');
-        let delay = 1500;
+        // Chain: header → opening → paragraphs → closing → sign
         setTimeout(() => {
+            const opening = document.getElementById('letter-opening');
             opening.classList.add('visible');
             typeLetterText(opening, opening.textContent, 40, () => {
-                // Type each body paragraph sequentially
                 const paragraphs = body.querySelectorAll('p');
-                let bodyDelay = 500;
-                paragraphs.forEach((p, i) => {
-                    setTimeout(() => {
-                        p.classList.add('visible');
-                        typeLetterText(p, p.dataset.fullText, 25, i === paragraphs.length - 1 ? () => {
-                            // Type closing, then show sign and seal
-                            const closing = document.getElementById('letter-closing');
-                            closing.classList.add('visible');
-                            typeLetterText(closing, closing.textContent, 40, () => {
-                                document.querySelectorAll('#phase2 .letter-sign .letter-reveal, #phase2 .letter-seal .letter-reveal').forEach(el => {
-                                    el.classList.add('visible');
-                                });
-                            });
-                        } : null);
-                    }, bodyDelay);
-                    bodyDelay += p.dataset.fullText.length * 25 + 600;
+                typeParagraphsSequentially(paragraphs, 0);
+            });
+        }, 1500);
+    }
+
+    function typeParagraphsSequentially(paragraphs, index) {
+        if (index >= paragraphs.length) {
+            // All paragraphs done — type closing
+            const closing = document.getElementById('letter-closing');
+            closing.classList.add('visible');
+            typeLetterText(closing, closing.textContent, 40, () => {
+                document.querySelectorAll('#phase2 .letter-sign .letter-reveal, #phase2 .letter-seal .letter-reveal').forEach(el => {
+                    el.classList.add('visible');
                 });
             });
-        }, delay);
+            return;
+        }
+        const p = paragraphs[index];
+        p.classList.add('visible');
+        // Scroll into view as it types
+        p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        typeLetterText(p, p.dataset.fullText, 25, () => {
+            setTimeout(() => {
+                typeParagraphsSequentially(paragraphs, index + 1);
+            }, 400);
+        });
     }
 
     function typeLetterText(el, text, speed, callback) {
@@ -887,7 +920,10 @@
         showPhase('phase3', true);
         canSpin = true;
         document.getElementById('spin-btn').disabled = false;
-        document.getElementById('spin-result').classList.add('hidden');
+        const card = document.getElementById('spin-result-card');
+        card.classList.remove('show');
+        card.style.visibility = 'hidden';
+        document.getElementById('wheel').style.transform = 'rotate(0deg)';
         buildWheel();
     }
 
@@ -896,12 +932,23 @@
         w.innerHTML = '';
         w.style.transform = 'rotate(0deg)';
         const colors = ['#FBBF24','#F87171','#A78BFA','#34D399','#60A5FA','#F472B6','#FCD34D','#FB923C'];
+        const emojis = ['💖','🌸','✨','💫','🦋','🌙','💝','🎀'];
         const angle = 360 / SPIN_MSG.length;
-        SPIN_MSG.forEach((_, i) => {
+        SPIN_MSG.forEach((msg, i) => {
             const seg = document.createElement('div');
             seg.className = 'wheel-seg';
-            seg.style.transform = 'rotate('+i*angle+'deg)';
-            seg.style.background = colors[i % colors.length];
+            seg.style.transform = 'rotate(' + (i * angle) + 'deg)';
+            seg.style.background = 'linear-gradient(135deg, ' + colors[i % colors.length] + ', ' + colors[(i + 1) % colors.length] + ')';
+            // Add emoji label
+            const label = document.createElement('div');
+            label.className = 'wheel-seg-label';
+            const midAngle = (i * angle + angle / 2) * Math.PI / 180;
+            const r = 35;
+            label.style.left = (50 + Math.cos(midAngle - Math.PI / 2) * r) + '%';
+            label.style.top = (50 + Math.sin(midAngle - Math.PI / 2) * r) + '%';
+            label.style.transform = 'translate(-50%, -50%)';
+            label.textContent = emojis[i % emojis.length];
+            seg.appendChild(label);
             w.appendChild(seg);
         });
     }
@@ -910,17 +957,23 @@
         if (!canSpin) return;
         canSpin = false;
         document.getElementById('spin-btn').disabled = true;
+        const card = document.getElementById('spin-result-card');
+        card.classList.remove('show');
+        card.style.visibility = 'hidden';
         const angle = 360 / SPIN_MSG.length;
         const pick = Math.floor(Math.random() * SPIN_MSG.length);
-        const deg = 360 * 5 + (360 - pick * angle - angle/2);
-        document.getElementById('wheel').style.transform = 'rotate('+deg+'deg)';
+        const deg = 360 * 6 + (360 - pick * angle - angle / 2);
+        document.getElementById('wheel').style.transform = 'rotate(' + deg + 'deg)';
         setTimeout(() => {
             const n = nextNick();
-            const res = document.getElementById('spin-result');
-            res.textContent = SPIN_MSG[pick].replace('{n}', n) + ' For you, ' + n + '!';
-            res.classList.remove('hidden');
+            const emojis = ['💖','🌸','✨','💫','🦋','🌙','💝','🎀'];
+            document.getElementById('spin-result-emoji').textContent = emojis[pick % emojis.length];
+            document.getElementById('spin-result-msg').textContent = SPIN_MSG[pick].replace('{n}', n);
+            document.getElementById('spin-result-name').textContent = '— For you, ' + n;
+            card.style.visibility = 'visible';
+            setTimeout(() => { card.classList.add('show'); }, 50);
             confetti();
-        }, 4500);
+        }, 5000);
     }
 
     // ========== PHASE 4: REASONS ==========
