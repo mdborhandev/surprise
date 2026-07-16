@@ -1273,10 +1273,10 @@
         showPhase(id, false);
         switch(phase) {
             case 1: passwordOn ? showPasswordGate() : showWelcomeScreen(); break;
-            case 2: startPhase3(); break;
-            case 3: startPhase4(); break;
-            case 4: startPhase5(); break;
-            case 5: startPhase6(); break;
+            case 2: startPhase5(); break; // Letter → Love Coupons
+            case 3: startPhase6(); break; // Spin → Finale
+            case 4: startPhase3(); break; // Why Special → Spin
+            case 5: startPhase4(); break; // Coupons → Why Special
         }
     }
 
@@ -1372,10 +1372,10 @@
         showPhase(id, false);
         switch(phase) {
             case 2: passwordOn ? showPasswordGate() : showWelcomeScreen(); break;
-            case 3: startPhase2(); break;
-            case 4: startPhase3(); break;
-            case 5: startPhase4(); break;
-            case 6: startPhase5(); break;
+            case 3: startPhase4(); break; // Spin ← Why Special
+            case 4: startPhase5(); break; // Why Special ← Coupons
+            case 5: startPhase2(); break; // Coupons ← Letter
+            case 6: startPhase3(); break; // Finale ← Spin
         }
     }
 
