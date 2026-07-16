@@ -170,6 +170,8 @@
         .letter-ornament { font-size: 24px; color: rgba(139,115,85,0.5); margin-bottom: 12px; letter-spacing: 0.3em; }
         .letter-greeting { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 6vw, 3rem); color: #5a3a1a; margin-bottom: 4px; line-height: 1.3; }
         .letter-dear { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px, 4vw, 24px); color: #5a3a1a; font-weight: 600; margin-bottom: 24px; }
+        .letter-opening { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); color: #3d2b15; line-height: 1.9; margin-bottom: 20px; font-style: italic; }
+        .letter-closing { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); color: #3d2b15; line-height: 1.9; margin-top: 20px; font-style: italic; }
         .letter-line { display: block; }
         .letter-typing-cursor::after { content: '|'; animation: blink 0.7s step-end infinite; color: #6b4c2a; font-weight: 300; }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
@@ -299,10 +301,12 @@
                         <div class="letter-greeting" id="letter-happy"></div>
                         <div class="letter-dear" id="letter-dear"></div>
                     </div>
+                    <div class="letter-opening letter-reveal" id="letter-opening"></div>
                     <div class="letter-body" id="letter-body"></div>
+                    <div class="letter-closing letter-reveal" id="letter-closing"></div>
                     <div class="letter-sign letter-reveal">
                         <div class="letter-sign-text" id="letter-sign-name"></div>
-                        <div class="letter-sign-sub">With all my heart</div>
+                        <div class="letter-sign-sub">With all my love, always</div>
                     </div>
                     <div class="letter-seal letter-reveal">
                         <div class="letter-seal-circle">&#10084;</div>
@@ -790,12 +794,14 @@
         const n = nextNick();
         document.getElementById('letter-happy').textContent = 'Happy Birthday';
         document.getElementById('letter-dear').textContent = 'My Dear ' + n;
-        document.getElementById('letter-sign-name').textContent = '❤️ 🎂 ✨';
+        document.getElementById('letter-opening').textContent = 'To my dearest ' + n + ',';
+        document.getElementById('letter-closing').textContent = 'With all my love and devotion, always and forever.';
+        document.getElementById('letter-sign-name').textContent = n;
 
-        // Build letter body paragraphs with empty text for typing
+        // Build letter body paragraphs
         const body = document.getElementById('letter-body');
         body.innerHTML = '';
-        LETTER.forEach((text, i) => {
+        LETTER.forEach((text) => {
             const p = document.createElement('p');
             p.dataset.fullText = text.replace('{n}', n);
             p.classList.add('letter-reveal');
@@ -808,21 +814,33 @@
             setTimeout(() => { el.classList.add('visible'); }, 300 + i * 400);
         });
 
-        // Type each paragraph sequentially
-        const paragraphs = body.querySelectorAll('p');
+        // Type opening
+        const opening = document.getElementById('letter-opening');
         let delay = 1500;
-        paragraphs.forEach((p, i) => {
-            setTimeout(() => {
-                p.classList.add('visible');
-                typeLetterText(p, p.dataset.fullText, 30, i === paragraphs.length - 1 ? () => {
-                    // Show sign, seal, and continue after last paragraph
-                    document.querySelectorAll('#phase2 .letter-sign .letter-reveal, #phase2 .letter-seal .letter-reveal, #letter-continue-btn').forEach(el => {
-                        el.classList.add('visible');
-                    });
-                } : null);
-            }, delay);
-            delay += p.dataset.fullText.length * 30 + 800;
-        });
+        setTimeout(() => {
+            opening.classList.add('visible');
+            typeLetterText(opening, opening.textContent, 40, () => {
+                // Type each body paragraph sequentially
+                const paragraphs = body.querySelectorAll('p');
+                let bodyDelay = 500;
+                paragraphs.forEach((p, i) => {
+                    setTimeout(() => {
+                        p.classList.add('visible');
+                        typeLetterText(p, p.dataset.fullText, 25, i === paragraphs.length - 1 ? () => {
+                            // Type closing, then show sign and seal
+                            const closing = document.getElementById('letter-closing');
+                            closing.classList.add('visible');
+                            typeLetterText(closing, closing.textContent, 40, () => {
+                                document.querySelectorAll('#phase2 .letter-sign .letter-reveal, #phase2 .letter-seal .letter-reveal, #letter-continue-btn').forEach(el => {
+                                    el.classList.add('visible');
+                                });
+                            });
+                        } : null);
+                    }, bodyDelay);
+                    bodyDelay += p.dataset.fullText.length * 25 + 600;
+                });
+            });
+        }, delay);
     }
 
     function typeLetterText(el, text, speed, callback) {
