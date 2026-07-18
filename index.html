@@ -376,6 +376,82 @@
         /* Share Button */
         .share-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; padding: 10px 24px; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.5); font-family: 'Orbitron', sans-serif; font-size: 10px; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s; }
         .share-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); }
+
+        /* Quiz Phase */
+        .quiz-card { max-width: 440px; width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 28px 20px; text-align: center; }
+        .quiz-question { font-size: 15px; color: rgba(255,255,255,0.9); font-weight: 600; margin-bottom: 20px; line-height: 1.5; }
+        .quiz-num { font-size: 11px; color: rgba(255,184,255,0.6); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; }
+        .quiz-options { display: grid; gap: 10px; }
+        .quiz-opt { padding: 14px 16px; border-radius: 14px; border: 1.5px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.8); font-size: 13px; cursor: pointer; transition: all 0.3s ease; text-align: left; }
+        .quiz-opt:hover { border-color: rgba(255,184,255,0.4); background: rgba(255,184,255,0.08); transform: translateX(4px); }
+        .quiz-opt.correct { border-color: rgba(52,211,153,0.6); background: rgba(52,211,153,0.1); color: #34D399; }
+        .quiz-opt.wrong { border-color: rgba(248,113,113,0.6); background: rgba(248,113,113,0.1); color: #F87171; }
+        .quiz-opt.disabled { pointer-events: none; opacity: 0.5; }
+        .quiz-result { font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 16px; font-style: italic; }
+        .quiz-score { font-size: 13px; color: rgba(255,184,255,0.8); margin-top: 12px; font-weight: 600; }
+
+        /* Would You Rather */
+        .wyr-card { max-width: 440px; width: 100%; text-align: center; }
+        .wyr-question { font-size: 13px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+        .wyr-choices { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; }
+        .wyr-opt { padding: 20px 16px; border-radius: 16px; border: 1.5px solid rgba(255,255,255,0.1); background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%); cursor: pointer; transition: all 0.3s ease; }
+        .wyr-opt:hover { border-color: rgba(255,184,255,0.4); transform: scale(1.03); }
+        .wyr-opt.selected { border-color: rgba(255,184,255,0.6); background: rgba(255,184,255,0.1); }
+        .wyr-emoji { font-size: 2rem; margin-bottom: 8px; }
+        .wyr-text { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.5; }
+        .wyr-vs { font-size: 18px; font-weight: 900; color: rgba(255,255,255,0.3); }
+        .wyr-result { margin-top: 16px; font-size: 13px; color: rgba(255,255,255,0.6); font-style: italic; }
+        .wyr-counter { font-size: 12px; color: rgba(255,184,255,0.6); margin-bottom: 16px; }
+
+        /* Timeline */
+        .timeline-list { display: flex; flex-direction: column; gap: 0; max-width: 440px; width: 100%; max-height: 65vh; overflow-y: auto; padding: 0 4px 20px; }
+        .timeline-list::-webkit-scrollbar { width: 3px; }
+        .timeline-list::-webkit-scrollbar-thumb { background: rgba(255,184,255,0.3); border-radius: 2px; }
+        .timeline-item { display: flex; gap: 16px; padding: 16px 0; position: relative; }
+        .timeline-line { position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, rgba(255,184,255,0.4), rgba(255,184,255,0.1)); }
+        .timeline-dot { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,184,255,0.15); border: 2px solid rgba(255,184,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; z-index: 1; }
+        .timeline-content { flex: 1; }
+        .timeline-date { font-size: 10px; color: rgba(255,184,255,0.6); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+        .timeline-title { font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 600; margin-bottom: 4px; }
+        .timeline-desc { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+        /* Scratch Card */
+        .scratch-container { max-width: 360px; width: 100%; text-align: center; }
+        .scratch-card { position: relative; width: 100%; aspect-ratio: 4/3; border-radius: 20px; overflow: hidden; border: 2px solid rgba(255,184,255,0.3); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .scratch-message { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: linear-gradient(135deg, rgba(255,184,255,0.08) 0%, rgba(255,255,255,0.03) 100%); }
+        .scratch-emoji { font-size: 3rem; margin-bottom: 12px; }
+        .scratch-text { font-family: 'Great Vibes', cursive; font-size: clamp(1.4rem, 5vw, 2rem); color: #FFB8FF; line-height: 1.4; }
+        .scratch-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 8px; font-style: italic; }
+        .scratch-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, #2a1a3e, #1a1a2e); cursor: crosshair; touch-action: none; border-radius: 18px; display: flex; align-items: center; justify-content: center; }
+        .scratch-hint { font-size: 13px; color: rgba(255,255,255,0.5); text-align: center; }
+        .scratch-hint span { font-size: 2rem; display: block; margin-bottom: 8px; animation: floatUp 2s ease-in-out infinite; }
+        .scratch-progress { font-size: 12px; color: rgba(255,184,255,0.6); margin-top: 12px; }
+
+        /* Love Recipe */
+        .recipe-card { max-width: 420px; width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 32px 24px; text-align: center; }
+        .recipe-title { font-family: 'Great Vibes', cursive; font-size: clamp(1.4rem, 5vw, 2rem); color: #FFB8FF; margin-bottom: 20px; }
+        .recipe-list { text-align: left; }
+        .recipe-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .recipe-item:last-child { border-bottom: none; }
+        .recipe-icon { font-size: 1.4rem; flex-shrink: 0; }
+        .recipe-name { font-size: 13px; color: rgba(255,255,255,0.8); flex: 1; }
+        .recipe-amount { font-size: 12px; color: rgba(255,184,255,0.7); font-style: italic; }
+        .recipe-steps { margin-top: 20px; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px; }
+        .recipe-step { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.8; text-align: left; }
+        .recipe-step strong { color: rgba(255,184,255,0.8); }
+
+        /* Love Meter */
+        .meter-container { max-width: 400px; width: 100%; text-align: center; }
+        .meter-gauge { position: relative; width: 200px; height: 200px; margin: 0 auto 24px; }
+        .meter-ring { width: 100%; height: 100%; border-radius: 50%; border: 8px solid rgba(255,255,255,0.08); position: relative; overflow: hidden; }
+        .meter-fill { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, #FFB8FF, #F472B6, #FF6B9D); transition: height 3s cubic-bezier(0.25, 0.46, 0.45, 0.94); border-radius: 0 0 50% 50%; }
+        .meter-emoji { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3rem; z-index: 2; transition: all 0.3s; }
+        .meter-label { font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 600; margin-bottom: 8px; }
+        .meter-value { font-size: clamp(2rem, 8vw, 3rem); font-weight: 900; color: #FFB8FF; margin-bottom: 8px; }
+        .meter-msg { font-size: 13px; color: rgba(255,255,255,0.5); font-style: italic; min-height: 20px; }
+        .meter-bar { width: 100%; height: 12px; background: rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; margin-bottom: 16px; }
+        .meter-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #FFB8FF, #FF6B9D); border-radius: 6px; transition: width 3s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
     </style>
 </head>
 <body>
@@ -571,6 +647,93 @@
         <button class="share-btn hidden" id="share-btn" onclick="shareSurprise()">&#128279; Share the Love</button>
     </div>
 
+    <!-- PHASE: QUIZ ABOUT US -->
+    <div id="phaseQuiz" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhaseFromHash('quiz')">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skipToHash('quiz')">CONTINUE &#8594;</button>
+        </div>
+        <h2 class="reveal-title" style="margin-bottom:4px; font-size:clamp(1.2rem,4vw,1.8rem);">Quiz About Us</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:16px;">How well do you know our love story?</p>
+        <div id="quiz-area"></div>
+    </div>
+
+    <!-- PHASE: WOULD YOU RATHER -->
+    <div id="phaseWyr" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhaseFromHash('wyr')">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skipToHash('wyr')">CONTINUE &#8594;</button>
+        </div>
+        <h2 class="reveal-title" style="margin-bottom:4px; font-size:clamp(1.2rem,4vw,1.8rem);">Would You Rather</h2>
+        <p class="wyr-counter" id="wyr-counter"></p>
+        <div id="wyr-area"></div>
+    </div>
+
+    <!-- PHASE: TIMELINE OF US -->
+    <div id="phaseTimeline" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhaseFromHash('timeline')">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skipToHash('timeline')">CONTINUE &#8594;</button>
+        </div>
+        <h2 class="reveal-title" style="margin-bottom:4px; font-size:clamp(1.2rem,4vw,1.8rem);">Timeline of Us</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:16px;">Our journey together, moment by moment</p>
+        <div class="timeline-list" id="timeline-list"></div>
+    </div>
+
+    <!-- PHASE: SCRATCH CARD -->
+    <div id="phaseScratch" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhaseFromHash('scratch')">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skipToHash('scratch')">CONTINUE &#8594;</button>
+        </div>
+        <h2 class="reveal-title" style="margin-bottom:4px; font-size:clamp(1.2rem,4vw,1.8rem);">Scratch & Reveal</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:20px;">Scratch the card to reveal your surprise</p>
+        <div class="scratch-container">
+            <div class="scratch-card" id="scratch-card">
+                <div class="scratch-message">
+                    <div class="scratch-emoji">💖</div>
+                    <div class="scratch-text" id="scratch-text"></div>
+                    <div class="scratch-sub" id="scratch-sub"></div>
+                </div>
+                <canvas class="scratch-overlay" id="scratch-canvas"></canvas>
+            </div>
+            <p class="scratch-progress" id="scratch-progress"></p>
+        </div>
+    </div>
+
+    <!-- PHASE: LOVE RECIPE -->
+    <div id="phaseRecipe" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhaseFromHash('recipe')">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skipToHash('recipe')">CONTINUE &#8594;</button>
+        </div>
+        <h2 class="reveal-title" style="margin-bottom:4px; font-size:clamp(1.2rem,4vw,1.8rem);">Recipe for Our Love</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:20px;">The secret ingredients that make us, us</p>
+        <div class="recipe-card" id="recipe-card"></div>
+    </div>
+
+    <!-- PHASE: LOVE METER -->
+    <div id="phaseMeter" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhaseFromHash('meter')">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skipToHash('meter')">CONTINUE &#8594;</button>
+        </div>
+        <h2 class="reveal-title" style="margin-bottom:4px; font-size:clamp(1.2rem,4vw,1.8rem);">Love Meter</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:20px;">Measuring how much love I have for you</p>
+        <div class="meter-container">
+            <div class="meter-bar"><div class="meter-bar-fill" id="meter-bar-fill"></div></div>
+            <div class="meter-gauge">
+                <div class="meter-ring">
+                    <div class="meter-fill" id="meter-fill"></div>
+                </div>
+                <div class="meter-emoji" id="meter-emoji">💕</div>
+            </div>
+            <div class="meter-value" id="meter-value">0%</div>
+            <div class="meter-label" id="meter-label">Calculating love...</div>
+            <div class="meter-msg" id="meter-msg"></div>
+        </div>
+    </div>
+
     <!-- PHASE 8: GALLERY -->
     <div id="phase8" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
         <div class="nav-bar">
@@ -709,7 +872,7 @@
     let typewriterIntervals = [];
     let typeSkipActive = false;
 
-    const PHASE_FLOW = ['password','reveal','welcome','letter','coupons','special','dare','gallery','finale'];
+    const PHASE_FLOW = ['password','reveal','welcome','letter','coupons','special','dare','quiz','wyr','timeline','scratch','recipe','meter','gallery','finale'];
     function getPhaseIndex(hash) { return PHASE_FLOW.indexOf(hash); }
     function updateProgress(hash) {
         const idx = getPhaseIndex(hash);
@@ -1612,6 +1775,248 @@
         }
     }
 
+    // ========== QUIZ ABOUT US ==========
+    const QUIZ_DATA = [
+        { q: "What's the first thing I noticed about you?", opts: ["Your smile","Your eyes","Your laugh","Your hair"], correct: 0, msg: "That smile! It still melts me every time." },
+        { q: "What's my favorite thing we do together?", opts: ["Walking hand in hand","Watching movies","Talking late at night","Taking photos"], correct: 2, msg: "Those late night talks where it's just us and the world disappears." },
+        { q: "When is our anniversary?", opts: ["I'll never forget","Somewhere in my heart","You tell me every day","Both of us know"], correct: 0, msg: "Never forget — because every day with you feels like a celebration." },
+        { q: "What makes you most special to me?", opts: ["Everything about you","Your cute face","The way you care","All of the above"], correct: 3, msg: "All of the above and a million more things I can't even count!" },
+        { q: "What do I love most about your voice?", opts: ["How soft it sounds","How it makes me calm","The way you say my name","All of these"], correct: 3, msg: "Every word from you is music to my ears." }
+    ];
+
+    let quizIdx = 0, quizScore = 0;
+
+    function startQuiz() {
+        busy = false; quizIdx = 0; quizScore = 0;
+        showPhase('phaseQuiz', true);
+        renderQuiz();
+    }
+
+    function renderQuiz() {
+        const area = document.getElementById('quiz-area');
+        if (quizIdx >= QUIZ_DATA.length) {
+            area.innerHTML = '<div class="quiz-card"><div class="quiz-emoji" style="font-size:3rem; margin-bottom:12px;">🎉</div><div class="quiz-question">Quiz Complete!</div><div class="quiz-score">You got ' + quizScore + ' / ' + QUIZ_DATA.length + ' right</div><div class="quiz-result">' + (quizScore === QUIZ_DATA.length ? "Perfect score! You know our love story by heart!" : "You know us so well — that's all that matters!") + '</div></div>';
+            return;
+        }
+        const d = QUIZ_DATA[quizIdx];
+        area.innerHTML = '<div class="quiz-card"><div class="quiz-num">Question ' + (quizIdx+1) + ' of ' + QUIZ_DATA.length + '</div><div class="quiz-question">' + d.q + '</div><div class="quiz-options" id="quiz-opts"></div><div class="quiz-result" id="quiz-result"></div></div>';
+        const opts = document.getElementById('quiz-opts');
+        d.opts.forEach((o, i) => {
+            const btn = document.createElement('div');
+            btn.className = 'quiz-opt';
+            btn.textContent = o;
+            btn.onclick = () => pickQuiz(i, d.correct, d.msg);
+            opts.appendChild(btn);
+        });
+    }
+
+    function pickQuiz(picked, correct, msg) {
+        const opts = document.querySelectorAll('#quiz-opts .quiz-opt');
+        opts.forEach((o, i) => {
+            o.classList.add('disabled');
+            if (i === correct) o.classList.add('correct');
+            if (i === picked && i !== correct) o.classList.add('wrong');
+        });
+        if (picked === correct) quizScore++;
+        document.getElementById('quiz-result').textContent = msg;
+        setTimeout(() => { quizIdx++; renderQuiz(); }, 2000);
+    }
+
+    // ========== WOULD YOU RATHER ==========
+    const WYR_DATA = [
+        { a: { emoji: "🌅", text: "Watch the sunrise together" }, b: { emoji: "🌙", text: "Watch the moonrise together" }, msg: "Either way, I just want to be next to you." },
+        { a: { emoji: "🍽️", text: "I cook for you" }, b: { emoji: "👩‍🍳", text: "You cook for me" }, msg: "As long as we eat together, it's perfect." },
+        { a: { emoji: "🎵", text: "Listen to our song on repeat" }, b: { emoji: "💬", text: "Talk about our memories all night" }, msg: "Both make my heart full — you make my heart full." },
+        { a: { emoji: "✈️", text: "Travel the world with me" }, b: { emoji: "🏠", text: "Build a cozy home with me" }, msg: "Home is wherever you are." },
+        { a: { emoji: "📸", text: "Take 100 photos of us" }, b: { emoji: "📝", text: "Write 100 love notes for each other" }, msg: "I'd do both — you deserve the world." },
+        { a: { emoji: "🤗", text: "A tight hug right now" }, b: { emoji: "😘", text: "A soft kiss right now" }, msg: "I want both, but you first." }
+    ];
+
+    let wyrIdx = 0;
+
+    function startWyr() {
+        busy = false; wyrIdx = 0;
+        showPhase('phaseWyr', true);
+        renderWyr();
+    }
+
+    function renderWyr() {
+        const area = document.getElementById('wyr-area');
+        const counter = document.getElementById('wyr-counter');
+        if (wyrIdx >= WYR_DATA.length) {
+            counter.textContent = '';
+            area.innerHTML = '<div class="wyr-card"><div style="font-size:3rem; margin-bottom:12px;">💝</div><div class="quiz-question" style="color:#FFB8FF;">Every choice leads back to us!</div><div class="wyr-result">No matter what you choose, I choose you — every single time.</div></div>';
+            return;
+        }
+        counter.textContent = (wyrIdx+1) + ' / ' + WYR_DATA.length;
+        const d = WYR_DATA[wyrIdx];
+        area.innerHTML = '<div class="wyr-card"><div class="wyr-choices"><div class="wyr-opt" id="wyr-a"><div class="wyr-emoji">' + d.a.emoji + '</div><div class="wyr-text">' + d.a.text + '</div></div><div class="wyr-vs">OR</div><div class="wyr-opt" id="wyr-b"><div class="wyr-emoji">' + d.b.emoji + '</div><div class="wyr-text">' + d.b.text + '</div></div></div><div class="wyr-result" id="wyr-result"></div></div>';
+        document.getElementById('wyr-a').onclick = () => pickWyr(d.msg);
+        document.getElementById('wyr-b').onclick = () => pickWyr(d.msg);
+    }
+
+    function pickWyr(msg) {
+        document.getElementById('wyr-a').classList.add('selected');
+        document.getElementById('wyr-b').classList.add('selected');
+        document.getElementById('wyr-result').textContent = msg;
+        setTimeout(() => { wyrIdx++; renderWyr(); }, 2000);
+    }
+
+    // ========== TIMELINE OF US ==========
+    const TIMELINE_DATA = [
+        { emoji: "💫", date: "The Beginning", title: "When Our Eyes First Met", desc: "That moment changed everything. I didn't know then that you'd become my whole world." },
+        { emoji: "💬", date: "First Words", title: "Our First Conversation", desc: "I still remember every word. It felt like I'd known you forever." },
+        { emoji: "💕", date: "Falling", title: "When I Knew You Were The One", desc: "Somewhere between your smile and your laugh, my heart decided — it's you, always you." },
+        { emoji: "🤗", date: "Closer", title: "Our First Moment Together", desc: "The world went quiet. Just you, just me, just us." },
+        { emoji: "🌟", date: "Growing", title: "Building Our Story", desc: "Every day with you writes a new beautiful chapter." },
+        { emoji: "🎂", date: "Today", title: "Your Special Day", desc: "And here we are — celebrating you, the most precious person in my life." },
+        { emoji: "🔮", date: "Tomorrow", title: "Our Beautiful Future", desc: "So many adventures waiting for us. I can't wait to live them all with you." }
+    ];
+
+    function startTimeline() {
+        busy = false;
+        showPhase('phaseTimeline', true);
+        const list = document.getElementById('timeline-list');
+        if (list.children.length > 0) return;
+        TIMELINE_DATA.forEach((item, i) => {
+            const el = document.createElement('div');
+            el.className = 'timeline-item';
+            el.style.opacity = '0';
+            el.innerHTML = '<div class="timeline-line"></div><div class="timeline-dot">' + item.emoji + '</div><div class="timeline-content"><div class="timeline-date">' + item.date + '</div><div class="timeline-title">' + item.title + '</div><div class="timeline-desc">' + item.desc + '</div></div>';
+            list.appendChild(el);
+            setTimeout(() => { el.style.opacity = '1'; el.style.transition = 'opacity 0.5s ease'; }, i * 200);
+        });
+    }
+
+    // ========== SCRATCH CARD ==========
+    let scratchRevealed = false;
+
+    function startScratch() {
+        busy = false; scratchRevealed = false;
+        showPhase('phaseScratch', true);
+        const msgs = [
+            { text: "You are the reason\nI believe in love", sub: "— always and forever" },
+            { text: "Every love song\nreminds me of you", sub: "— every single one" },
+            { text: "My heart chose you\nand it will always choose you", sub: "— no matter what" },
+            { text: "You make ordinary days\nfeel like magic", sub: "— just by being you" }
+        ];
+        const pick = msgs[Math.floor(Math.random() * msgs.length)];
+        document.getElementById('scratch-text').textContent = pick.text;
+        document.getElementById('scratch-sub').textContent = pick.sub;
+        document.getElementById('scratch-progress').textContent = 'Scratch the card!';
+        initScratchCanvas();
+    }
+
+    function initScratchCanvas() {
+        const canvas = document.getElementById('scratch-canvas');
+        const card = document.getElementById('scratch-card');
+        canvas.width = card.offsetWidth;
+        canvas.height = card.offsetHeight;
+        const ctx = canvas.getContext('2d');
+        const g = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        g.addColorStop(0, '#2a1a3e');
+        g.addColorStop(0.5, '#1a1a2e');
+        g.addColorStop(1, '#2a1a3e');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        for (let i = 0; i < 20; i++) { ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*30+5, 0, Math.PI*2); ctx.fill(); }
+
+        let isScratching = false;
+        function scratch(e) {
+            if (!isScratching || scratchRevealed) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 25, 0, Math.PI * 2);
+            ctx.fill();
+            checkScratchProgress(canvas, ctx);
+        }
+
+        canvas.addEventListener('mousedown', () => { isScratching = true; });
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('mouseup', () => { isScratching = false; });
+        canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); }, { passive: true });
+        canvas.addEventListener('touchmove', scratch, { passive: true });
+        canvas.addEventListener('touchend', () => { isScratching = false; });
+    }
+
+    function checkScratchProgress(canvas, ctx) {
+        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+        let cleared = 0, total = data.length / 4;
+        for (let i = 3; i < data.length; i += 4) { if (data[i] === 0) cleared++; }
+        const pct = Math.round((cleared / total) * 100);
+        if (pct > 40 && !scratchRevealed) {
+            scratchRevealed = true;
+            canvas.style.transition = 'opacity 0.5s';
+            canvas.style.opacity = '0';
+            setTimeout(() => { canvas.style.display = 'none'; }, 500);
+            document.getElementById('scratch-progress').textContent = 'Revealed!';
+            confetti();
+        } else if (!scratchRevealed) {
+            document.getElementById('scratch-progress').textContent = pct + '% scratched';
+        }
+    }
+
+    // ========== LOVE RECIPE ==========
+    function startRecipe() {
+        busy = false;
+        showPhase('phaseRecipe', true);
+        const card = document.getElementById('recipe-card');
+        card.innerHTML = '<div class="recipe-title">Recipe for Our Love</div><div class="recipe-list">' +
+            '<div class="recipe-item"><div class="recipe-icon">💕</div><div class="recipe-name">Unconditional Love</div><div class="recipe-amount">An endless amount</div></div>' +
+            '<div class="recipe-item"><div class="recipe-icon">🤗</div><div class="recipe-name">Tight Hugs</div><div class="recipe-amount">Every single day</div></div>' +
+            '<div class="recipe-item"><div class="recipe-icon">😂</div><div class="recipe-name">Laughter</div><div class="recipe-amount">As much as possible</div></div>' +
+            '<div class="recipe-item"><div class="recipe-icon">💬</div><div class="recipe-name">Late Night Talks</div><div class="recipe-amount">Until the stars fade</div></div>' +
+            '<div class="recipe-item"><div class="recipe-icon">🤝</div><div class="recipe-name">Trust & Patience</div><div class="recipe-amount">A heaping spoonful</div></div>' +
+            '<div class="recipe-item"><div class="recipe-icon">🌟</div><div class="recipe-name">Dreams Together</div><div class="recipe-amount">A lifetime of them</div></div>' +
+            '<div class="recipe-item"><div class="recipe-icon">☕</div><div class="recipe-name">Comfortable Silence</div><div class="recipe-amount">A pinch, always</div></div>' +
+            '<div class="recipe-item"><div class="recipe-icon">🎉</div><div class="recipe-name">Celebrating Each Other</div><div class="recipe-amount">Every moment</div></div>' +
+            '</div><div class="recipe-steps"><div class="recipe-step"><strong>Instructions:</strong><br>Mix two hearts together. Add laughter daily. Stir with patience. Let simmer through all of life\'s seasons. Serve warm with a lifetime of love. Best enjoyed together — forever. 💝</div></div>';
+    }
+
+    // ========== LOVE METER ==========
+    function startMeter() {
+        busy = false;
+        showPhase('phaseMeter', true);
+        const fill = document.getElementById('meter-fill');
+        const bar = document.getElementById('meter-bar-fill');
+        const val = document.getElementById('meter-value');
+        const label = document.getElementById('meter-label');
+        const msg = document.getElementById('meter-msg');
+        const emoji = document.getElementById('meter-emoji');
+
+        fill.style.height = '0%';
+        bar.style.width = '0%';
+        val.textContent = '0%';
+        label.textContent = 'Calculating love...';
+        msg.textContent = '';
+        emoji.textContent = '💕';
+
+        const stages = [
+            { pct: 15, emoji: '💕', label: 'Love detected...', msg: 'Something special is building...', delay: 600 },
+            { pct: 35, emoji: '😍', label: 'Feelings rising...', msg: 'My heart beats faster for you...', delay: 1200 },
+            { pct: 55, emoji: '🥰', label: 'Love growing stronger...', msg: 'Every moment with you is precious...', delay: 1800 },
+            { pct: 75, emoji: '💖', label: 'Overwhelming love...', msg: 'You mean everything to me...', delay: 2400 },
+            { pct: 90, emoji: '💗', label: 'Almost maxed out...', msg: 'I didn\'t think love could be this deep...', delay: 3000 },
+            { pct: 100, emoji: '💝', label: 'BEYOND MAXIMUM!', msg: 'My love for you has no limit — it just keeps growing, today, tomorrow, and always. 💕', delay: 3600 }
+        ];
+
+        stages.forEach(s => {
+            setTimeout(() => {
+                fill.style.height = s.pct + '%';
+                bar.style.width = s.pct + '%';
+                val.textContent = s.pct + '%';
+                label.textContent = s.label;
+                emoji.textContent = s.emoji;
+                msg.textContent = s.msg;
+                if (s.pct === 100) { setTimeout(() => { confetti(); }, 500); }
+            }, s.delay);
+        });
+    }
+
     // ========== PHASE 8: GALLERY ==========
     let expandedGalleryItem = null;
 
@@ -1681,7 +2086,6 @@
         typewriterIntervals = [];
         busy = false;
 
-        // Map HTML phase number to PHASE_FLOW hash
         const phaseToHash = { 1: 'reveal', 2: 'letter', 4: 'special', 5: 'coupons', 6: 'finale', 7: 'dare', 8: 'gallery' };
         const currentHash = phaseToHash[phase];
         if (!currentHash) return;
@@ -1691,24 +2095,8 @@
         const nextHash = PHASE_FLOW[idx + 1];
 
         showPhase('phase' + phase, false);
-
-        if (nextHash === 'password') { showPasswordGate(); setPhaseURL('password'); }
-        else if (nextHash === 'welcome') { showWelcomeScreen(); setPhaseURL('welcome'); }
-        else {
-            const num = PHASE_HASH[nextHash];
-            if (typeof num === 'number') {
-                switch(num) {
-                    case 1: startPhase1(); break;
-                    case 2: startPhase2(); break;
-                    case 4: startPhase4(); break;
-                    case 5: startPhase5(); break;
-                    case 6: startPhase6(); break;
-                    case 7: startPhase7(); break;
-                    case 8: startPhase8(); break;
-                }
-            }
-            setPhaseURL(nextHash);
-        }
+        launchPhase(nextHash);
+        setPhaseURL(nextHash);
     }
 
     function showPasswordGate() {
@@ -1847,24 +2235,8 @@
         const prevHash = PHASE_FLOW[idx - 1];
 
         showPhase('phase' + phase, false);
-
-        if (prevHash === 'password') { showPasswordGate(); setPhaseURL('password'); }
-        else if (prevHash === 'welcome') { showWelcomeScreen(); setPhaseURL('welcome'); }
-        else {
-            const num = PHASE_HASH[prevHash];
-            if (typeof num === 'number') {
-                switch(num) {
-                    case 1: startPhase1(); break;
-                    case 2: startPhase2(); break;
-                    case 4: startPhase4(); break;
-                    case 5: startPhase5(); break;
-                    case 6: startPhase6(); break;
-                    case 7: startPhase7(); break;
-                    case 8: startPhase8(); break;
-                }
-            }
-            setPhaseURL(prevHash);
-        }
+        launchPhase(prevHash);
+        setPhaseURL(prevHash);
     }
 
     // ========== URL NAVIGATION ==========
@@ -1876,9 +2248,51 @@
         'coupons': 5,
         'special': 4,
         'dare': 7,
+        'quiz': 'quiz',
+        'wyr': 'wyr',
+        'timeline': 'timeline',
+        'scratch': 'scratch',
+        'recipe': 'recipe',
+        'meter': 'meter',
         'gallery': 8,
         'finale': 6
     };
+
+    function launchPhase(hash) {
+        switch(hash) {
+            case 'password': showPasswordGate(); break;
+            case 'welcome': showWelcomeScreen(); break;
+            case 'quiz': startQuiz(); break;
+            case 'wyr': startWyr(); break;
+            case 'timeline': startTimeline(); break;
+            case 'scratch': startScratch(); break;
+            case 'recipe': startRecipe(); break;
+            case 'meter': startMeter(); break;
+            default:
+                const num = PHASE_HASH[hash];
+                if (typeof num === 'number') {
+                    switch(num) { case 1: startPhase1(); break; case 2: startPhase2(); break; case 4: startPhase4(); break; case 5: startPhase5(); break; case 6: startPhase6(); break; case 7: startPhase7(); break; case 8: startPhase8(); break; }
+                }
+        }
+    }
+
+    function skipToHash(hash) {
+        const idx = PHASE_FLOW.indexOf(hash);
+        if (idx < 0 || idx >= PHASE_FLOW.length - 1) return;
+        const nextHash = PHASE_FLOW[idx + 1];
+        document.querySelectorAll('.phase').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+        launchPhase(nextHash);
+        setPhaseURL(nextHash);
+    }
+
+    function prevPhaseFromHash(hash) {
+        const idx = PHASE_FLOW.indexOf(hash);
+        if (idx <= 0) return;
+        const prevHash = PHASE_FLOW[idx - 1];
+        document.querySelectorAll('.phase').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+        launchPhase(prevHash);
+        setPhaseURL(prevHash);
+    }
 
     function setPhaseURL(hash) {
         history.replaceState(null, '', '#' + hash);
@@ -1913,11 +2327,12 @@
             showPasswordGate();
         } else if (target === 'welcome') {
             showWelcomeScreen();
+        } else if (typeof target === 'string' && target !== 'password' && target !== 'welcome') {
+            launchPhase(target);
         } else if (typeof target === 'number') {
             switch(target) {
                 case 1: startPhase1(); break;
                 case 2: startPhase2(); break;
-
                 case 4: startPhase4(); break;
                 case 5: startPhase5(); break;
                 case 6: startPhase6(); break;
