@@ -1287,8 +1287,8 @@
             startCelebration();
             createFloatingNicks();
             spawnBalloons(document.getElementById('phase1'), 15);
-            typeRevealText(titleEl, titleHTML, 70, () => {
-                typeRevealText(subEl, subText, 50, () => {
+            typeHTML(titleEl, titleHTML, 70, () => {
+                typeHTML(subEl, subText, 50, () => {
                     revealTyped = true;
                     revealRunning = false;
                     busy = false;
