@@ -337,8 +337,11 @@
         .loader-heart { font-size: 4rem; animation: pulse 1.2s ease-in-out infinite; }
         @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.7; } 50% { transform: scale(1.15); opacity: 1; } }
         .loader-text { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.2em; margin-top: 20px; text-transform: uppercase; }
-        .loader-bar { width: 160px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 3px; margin-top: 14px; overflow: hidden; }
-        .loader-fill { height: 100%; width: 0%; background: #FFB8FF; border-radius: 3px; transition: width 0.3s ease; }
+        .loader-circle { position: relative; width: 80px; height: 80px; margin-top: 20px; }
+        .loader-circle svg { transform: rotate(-90deg); }
+        .loader-circle-bg { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 4; }
+        .loader-circle-fill { fill: none; stroke: #FFB8FF; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 226.2; stroke-dashoffset: 226.2; transition: stroke-dashoffset 0.3s ease; }
+        .loader-percent { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; color: rgba(255,255,255,0.5); font-family: 'Orbitron', sans-serif; letter-spacing: 0.05em; }
 
         /* Progress Bar */
         #progress-bar { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 202; background: rgba(255,255,255,0.05); }
@@ -462,7 +465,13 @@
     <div id="loading-screen">
         <div class="loader-heart">💖</div>
         <div class="loader-text">Preparing your surprise</div>
-        <div class="loader-bar"><div class="loader-fill" id="loader-fill"></div></div>
+        <div class="loader-circle">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+                <circle class="loader-circle-bg" cx="40" cy="40" r="36"/>
+                <circle class="loader-circle-fill" id="loader-circle-fill" cx="40" cy="40" r="36"/>
+            </svg>
+            <div class="loader-percent" id="loader-percent">0%</div>
+        </div>
     </div>
 
     <!-- Progress Bar -->
@@ -916,8 +925,17 @@
 
     // ========== INIT ==========
     async function init() {
-        const fill = document.getElementById('loader-fill');
-        fill.style.width = '10%';
+        const circleFill = document.getElementById('loader-circle-fill');
+        const percentEl = document.getElementById('loader-percent');
+        const circumference = 2 * Math.PI * 36;
+        let loadProgress = 10;
+
+        function updateCircle(pct) {
+            const offset = circumference - (pct / 100) * circumference;
+            circleFill.style.strokeDashoffset = offset;
+            percentEl.textContent = Math.round(pct) + '%';
+        }
+        updateCircle(10);
         createStars();
         try {
             const r = await fetch('birthday.json?t=' + Date.now());
@@ -940,18 +958,20 @@
             document.getElementById('reveal-sub').textContent = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
         }
 
-        fill.style.width = '40%';
+        loadProgress = 40;
+        updateCircle(40);
 
         // Preload images
         const allImgs = GALLERY_IMGS.map(f => 'BEST //' + encodeURIComponent(f));
         let loaded = 0;
         const preloadPromise = allImgs.map(src => new Promise(resolve => {
             const img = new Image();
-            img.onload = img.onerror = () => { loaded++; fill.style.width = (40 + (loaded / allImgs.length) * 50) + '%'; resolve(); };
+            img.onload = img.onerror = () => { loaded++; loadProgress = 40 + (loaded / allImgs.length) * 55; updateCircle(loadProgress); resolve(); };
             img.src = src;
         }));
         await Promise.all(preloadPromise);
-        fill.style.width = '95%';
+        loadProgress = 95;
+        updateCircle(95);
 
         // Click anywhere for confetti
         document.addEventListener('click', (e) => {
@@ -970,7 +990,7 @@
             return;
         }
 
-        fill.style.width = '100%';
+        updateCircle(100);
         setTimeout(() => {
             document.getElementById('loading-screen').style.opacity = '0';
             document.getElementById('loading-screen').style.transition = 'opacity 0.5s';
