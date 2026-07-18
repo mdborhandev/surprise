@@ -1922,9 +1922,11 @@
 
     // ========== SCRATCH CARD ==========
     let scratchRevealed = false;
+    let scratchTotalArea = 0;
+    let scratchClearedArea = 0;
 
     function startScratch() {
-        busy = false; scratchRevealed = false;
+        busy = false; scratchRevealed = false; scratchClearedArea = 0;
         showPhase('phaseScratch', true);
         const msgs = [
             { text: "You are the reason\nI believe in love", sub: "— always and forever" },
@@ -1936,59 +1938,71 @@
         document.getElementById('scratch-text').textContent = pick.text;
         document.getElementById('scratch-sub').textContent = pick.sub;
         document.getElementById('scratch-progress').textContent = 'Scratch the card!';
-        initScratchCanvas();
+        setTimeout(initScratchCanvas, 100);
     }
 
     function initScratchCanvas() {
         const canvas = document.getElementById('scratch-canvas');
         const card = document.getElementById('scratch-card');
-        canvas.width = card.offsetWidth;
-        canvas.height = card.offsetHeight;
+        const w = card.offsetWidth || 360;
+        const h = card.offsetHeight || 270;
+        canvas.width = w;
+        canvas.height = h;
+        scratchTotalArea = w * h;
+        scratchClearedArea = 0;
         const ctx = canvas.getContext('2d');
-        const g = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        const g = ctx.createLinearGradient(0, 0, w, h);
         g.addColorStop(0, '#2a1a3e');
         g.addColorStop(0.5, '#1a1a2e');
         g.addColorStop(1, '#2a1a3e');
         ctx.fillStyle = g;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, w, h);
         ctx.fillStyle = 'rgba(255,255,255,0.06)';
-        for (let i = 0; i < 20; i++) { ctx.beginPath(); ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, Math.random()*30+5, 0, Math.PI*2); ctx.fill(); }
+        for (let i = 0; i < 20; i++) { ctx.beginPath(); ctx.arc(Math.random()*w, Math.random()*h, Math.random()*30+5, 0, Math.PI*2); ctx.fill(); }
 
         let isScratching = false;
         function scratch(e) {
-            if (!isScratching || scratchRevealed) return;
+            if (scratchRevealed) return;
+            e.preventDefault();
             const rect = canvas.getBoundingClientRect();
             const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
             const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+            const scaleX = w / rect.width;
+            const scaleY = h / rect.height;
+            const cx = x * scaleX;
+            const cy = y * scaleY;
             ctx.globalCompositeOperation = 'destination-out';
             ctx.beginPath();
-            ctx.arc(x, y, 25, 0, Math.PI * 2);
+            ctx.arc(cx, cy, 40, 0, Math.PI * 2);
             ctx.fill();
-            checkScratchProgress(canvas, ctx);
+            ctx.beginPath();
+            ctx.arc(cx + 5, cy + 5, 35, 0, Math.PI * 2);
+            ctx.fill();
+            scratchClearedArea += 40 * 40 * Math.PI * 1.5;
+            const pct = Math.min(100, Math.round((scratchClearedArea / scratchTotalArea) * 100));
+            updateScratchUI(pct);
         }
 
-        canvas.addEventListener('mousedown', () => { isScratching = true; });
-        canvas.addEventListener('mousemove', scratch);
-        canvas.addEventListener('mouseup', () => { isScratching = false; });
-        canvas.addEventListener('touchstart', (e) => { isScratching = true; scratch(e); }, { passive: true });
-        canvas.addEventListener('touchmove', scratch, { passive: true });
-        canvas.addEventListener('touchend', () => { isScratching = false; });
+        canvas.onmousedown = (e) => { isScratching = true; scratch(e); };
+        canvas.onmousemove = (e) => { if (isScratching) scratch(e); };
+        canvas.onmouseup = () => { isScratching = false; };
+        canvas.onmouseleave = () => { isScratching = false; };
+        canvas.ontouchstart = (e) => { isScratching = true; scratch(e); };
+        canvas.ontouchmove = (e) => { if (isScratching) scratch(e); };
+        canvas.ontouchend = () => { isScratching = false; };
     }
 
-    function checkScratchProgress(canvas, ctx) {
-        const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-        let cleared = 0, total = data.length / 4;
-        for (let i = 3; i < data.length; i += 4) { if (data[i] === 0) cleared++; }
-        const pct = Math.round((cleared / total) * 100);
-        if (pct > 40 && !scratchRevealed) {
+    function updateScratchUI(pct) {
+        if (pct > 25 && !scratchRevealed) {
             scratchRevealed = true;
+            const canvas = document.getElementById('scratch-canvas');
             canvas.style.transition = 'opacity 0.5s';
             canvas.style.opacity = '0';
             setTimeout(() => { canvas.style.display = 'none'; }, 500);
-            document.getElementById('scratch-progress').textContent = 'Revealed!';
+            document.getElementById('scratch-progress').textContent = 'Revealed! 💖';
             confetti();
         } else if (!scratchRevealed) {
-            document.getElementById('scratch-progress').textContent = pct + '% scratched';
+            document.getElementById('scratch-progress').textContent = pct + '% scratched — keep going!';
         }
     }
 
