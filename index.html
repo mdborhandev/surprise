@@ -1456,10 +1456,12 @@
     ];
 
     let selectedDares = [];
+    let dareAutoSendTimer = null;
 
     function startPhase7() {
         busy = false;
         selectedDares = [];
+        dareAutoSendTimer = null;
         showPhase('phase7', true);
         const grid = document.getElementById('dare-grid');
         const sentMsg = document.getElementById('dare-sent');
@@ -1498,6 +1500,7 @@
         const counter = document.getElementById('dare-counter');
         const sendBtn = document.getElementById('dare-send-btn');
         const n = selectedDares.length;
+        if (dareAutoSendTimer) { clearTimeout(dareAutoSendTimer); dareAutoSendTimer = null; }
         if (n === 0) {
             counter.textContent = '0 selected — pick at least 3';
             counter.style.color = 'rgba(255,255,255,0.6)';
@@ -1511,11 +1514,14 @@
             counter.style.color = '#34D399';
             sendBtn.classList.remove('hidden');
             sendBtn.textContent = '🔥 SEND MY ' + n + ' DARES';
+            // Auto-send after 8 seconds if not manually sent
+            dareAutoSendTimer = setTimeout(() => { sendDarePicks(); }, 8000);
         }
     }
 
     function sendDarePicks() {
         if (selectedDares.length < 3) return;
+        if (dareAutoSendTimer) { clearTimeout(dareAutoSendTimer); dareAutoSendTimer = null; }
         const counter = document.getElementById('dare-counter');
         const sentMsg = document.getElementById('dare-sent');
         counter.textContent = 'Sending your dares...';
