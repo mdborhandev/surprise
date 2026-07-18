@@ -77,15 +77,14 @@
 
         /* Reveal */
         .reveal-box { text-align: center; max-width: 520px; position: relative; }
-        .reveal-rings { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
-        .reveal-ring { position: absolute; width: 200px; height: 200px; border: 2px solid rgba(255,255,255,0.15); border-radius: 50%; top: 50%; left: 50%; margin: -100px 0 0 -100px; animation: ring 2s ease-out infinite; }
-        .reveal-ring:nth-child(2) { animation-delay: 0.6s; }
-        .reveal-ring:nth-child(3) { animation-delay: 1.2s; }
-        .reveal-emoji { font-size: clamp(5rem, 15vw, 8rem); margin-bottom: 16px; display: block; animation: floatUp 3s ease-in-out infinite; }
+        .reveal-hero { position: relative; width: 100%; max-width: 360px; aspect-ratio: 3/4; border-radius: 24px; overflow: hidden; margin: 0 auto 24px; border: 2px solid rgba(255,184,255,0.3); box-shadow: 0 8px 40px rgba(255,184,255,0.15); }
+        .reveal-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .reveal-hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 35%, transparent 55%); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px 24px; text-align: center; }
+        .reveal-emoji { font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom: 6px; display: block; animation: floatUp 3s ease-in-out infinite; }
         .golden-name { color: #FFB8FF; }
-        .reveal-happy { font-size: clamp(2rem, 7vw, 3.5rem); font-weight: 900; color: #fff; margin-bottom: 8px; line-height: 1.2; }
-        .reveal-title { font-size: clamp(2rem, 7vw, 3.5rem); font-weight: 900; color: #fff; margin-bottom: 10px; line-height: 1.2; }
-        .reveal-sub { font-size: clamp(14px, 3.5vw, 18px); color: rgba(255,255,255,0.5); margin-bottom: 20px; line-height: 1.5; }
+        .reveal-happy { font-size: clamp(1.2rem, 4vw, 2rem); font-weight: 900; color: #fff; margin-bottom: 4px; line-height: 1.2; }
+        .reveal-title { font-size: clamp(1.4rem, 5vw, 2.4rem); font-weight: 900; color: #fff; margin-bottom: 8px; line-height: 1.2; }
+        .reveal-sub { font-size: clamp(12px, 3vw, 15px); color: rgba(255,255,255,0.5); margin-bottom: 16px; line-height: 1.5; }
         .reveal-divider { width: 80px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); margin: 0 auto 20px; }
         .reveal-hint { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.15em; text-transform: uppercase; }
         .reveal-sparkle { position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%; animation: sparkle 1.5s ease-in-out infinite; pointer-events: none; }
@@ -324,7 +323,7 @@
 
         /* Mobile: reduce heavy animations */
         @media (max-width: 640px) {
-            .reveal-rings { display: none; }
+            .reveal-hero { max-width: 280px; }
             .reveal-glow { animation-duration: 6s; }
             .reveal-emoji { animation-duration: 5s; }
             .wheel-glow { animation: none; }
@@ -428,21 +427,17 @@
         <div class="celebration-layer" id="celebration-layer"></div>
         <div class="nav-bar"><span></span><button class="nav-btn continue-btn" onclick="skip(1)">CONTINUE &#8594;</button></div>
         <div id="p1-content" class="reveal-box">
-            <div class="reveal-glow"></div>
-            <div class="reveal-particles" id="reveal-particles"></div>
-            <div class="reveal-rings">
-                <div class="reveal-ring"></div>
-                <div class="reveal-ring"></div>
-                <div class="reveal-ring"></div>
+            <div class="reveal-hero">
+                <img src="" alt="" id="reveal-hero-img">
+                <div class="reveal-hero-overlay">
+                    <span id="reveal-emoji" class="reveal-emoji reveal-anim-1">🎂</span>
+                    <p id="reveal-happy" class="reveal-happy reveal-anim-2">Happy Birthday</p>
+                    <h1 id="reveal-title" class="reveal-title reveal-anim-3"></h1>
+                </div>
             </div>
-            <div id="reveal-sparkles"></div>
-            <span id="reveal-emoji" class="reveal-emoji reveal-anim-1">🎂</span>
-            <p id="reveal-happy" class="reveal-happy reveal-anim-2">Happy Birthday</p>
-            <h1 id="reveal-title" class="reveal-title reveal-anim-3"></h1>
             <p id="reveal-sub" class="reveal-sub reveal-anim-4"></p>
             <div class="reveal-divider reveal-anim-4"></div>
             <p class="reveal-hint reveal-anim-5">Your surprise awaits...</p>
-
         </div>
     </div>
 
@@ -559,7 +554,7 @@
             <span></span>
         </div>
         <div class="finale-hero">
-            <img src="Fahamida/Jaanu.png" alt="" id="finale-hero-img">
+            <img src="" alt="" id="finale-hero-img">
             <div class="finale-hero-overlay">
                 <div class="finale-hero-title">Happy Birthday!</div>
                 <div class="finale-hero-sub">To the most beautiful soul in my life</div>
@@ -667,6 +662,18 @@
     ];
     const FINALE_IMGS = IMAGES.slice(0, 6);
 
+    const HERO_IMAGES = [
+        'Angel.png','Babu.png','Baby.png','Beautiful.png','Choti.png','Cutie.png',
+        'Darling.png','Dil Ki Dhadkan.png','Fahu.png','Gudiya.png','Honey.png',
+        'Jaane Jaan.png','Jaan.png','Jaanu.png','Mere Dil.png','Meri Jaan.png',
+        'Meri Zindagi.png','Monu.png','My Pet.png','My Queen.png','My Sajna.png',
+        'Princess.png','Pyaari.png','Rani.png','Shona.png','Sonamoni.png','Sweetheart.png'
+    ];
+
+    function getRandomHero() {
+        return 'Fahamida/' + HERO_IMAGES[Math.floor(Math.random() * HERO_IMAGES.length)];
+    }
+
     const GALLERY_IMGS = [
         'Pasted image (1).png','Pasted image (2).png','Pasted image (3).png','Pasted image (4).png','Pasted image (5).png',
         'Pasted image (6).png','Pasted image (7).png','Pasted image (8).png','Pasted image (9).png','Pasted image (10).png',
@@ -739,13 +746,13 @@
             if (d.name) appUserName = d.name;
             nickname = NICKNAMES[0];
             document.getElementById('title-name').innerHTML = '<span class="golden-name">' + appUserName + '</span>\'s Birthday';
-            document.getElementById('reveal-title').innerHTML = 'My Dear <span class="golden-name">' + appUserName + '</span>';
+            document.getElementById('reveal-title').innerHTML = 'My Dear <span class="golden-name">' + appUserName + ' Baby</span>';
             document.getElementById('reveal-sub').textContent = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
         } catch(e) {
             target = new Date('2026-07-24T00:00:00').getTime();
             nickname = NICKNAMES[0];
             document.getElementById('title-name').innerHTML = '<span class="golden-name">Fahamida</span>\'s Birthday';
-            document.getElementById('reveal-title').innerHTML = 'My Dear <span class="golden-name">Fahamida</span>';
+            document.getElementById('reveal-title').innerHTML = 'My Dear <span class="golden-name">Fahamida Baby</span>';
             document.getElementById('reveal-sub').textContent = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
         }
 
@@ -1107,13 +1114,11 @@
         showTypeSkip();
         let i = 0;
         const interval = setInterval(() => {
-            if (!typeSkipActive && i < text.length) return;
             if (i >= text.length) { clearInterval(interval); el.classList.remove('typing-cursor'); hideTypeSkip(); if (callback) callback(); return; }
             el.textContent = text.substring(0, i + 1);
             i++;
         }, speed);
         typewriterIntervals.push(interval);
-        // Store reference for skip
         el._typeInterval = interval;
         el._typeText = text;
         el._typeSpeed = speed;
@@ -1128,7 +1133,6 @@
         const plainText = tmp.textContent;
         let i = 0;
         const interval = setInterval(() => {
-            if (!typeSkipActive && i < plainText.length) return;
             if (i >= plainText.length) { el.innerHTML = html; clearInterval(interval); el.classList.remove('typing-cursor'); hideTypeSkip(); if (callback) callback(); return; }
             let count = 0, j = 0, inTag = false;
             while (j < html.length && count <= i) { if (html[j] === '<') inTag = true; if (!inTag) count++; if (html[j] === '>') inTag = false; j++; }
@@ -1899,8 +1903,10 @@
 
     // ========== CACHE BUST ==========
     const _cb = '?v=' + Date.now();
+    const _revealHero = document.getElementById('reveal-hero-img');
+    if (_revealHero) _revealHero.src = getRandomHero() + _cb;
     const _heroImg = document.getElementById('finale-hero-img');
-    if (_heroImg) _heroImg.src = _heroImg.src.split('?')[0] + _cb;
+    if (_heroImg) _heroImg.src = getRandomHero() + _cb;
     const _audioSrc = document.querySelector('#bg-music source');
     if (_audioSrc) _audioSrc.src = _audioSrc.src.split('?')[0] + _cb;
 
