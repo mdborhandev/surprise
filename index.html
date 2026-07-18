@@ -232,6 +232,7 @@
         .coupon-card.selected .coupon-front { border-color: rgba(251,191,36,0.5); background: linear-gradient(135deg, rgba(251,191,36,0.1) 0%, rgba(251,191,36,0.03) 100%); }
         .coupon-card.selected .coupon-front::after { content: '✓'; position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; background: #FBBF24; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
         .coupon-card.selected .coupon-back { border-color: rgba(251,191,36,0.5); }
+        .coupon-category { grid-column: 1 / -1; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,184,255,0.7); padding: 8px 0 4px; border-bottom: 1px solid rgba(255,184,255,0.15); margin-bottom: 4px; font-weight: 600; }
         .coupon-send-btn { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; padding: 14px 36px; border-radius: 30px; background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.85); font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 0.1em; cursor: pointer; transition: all 0.3s ease; }
         .coupon-send-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.4); color: #fff; transform: scale(1.03); }
         .coupon-send-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
@@ -594,8 +595,8 @@
             <button class="nav-btn continue-btn" onclick="skip(5)">CONTINUE &#8594;</button>
         </div>
         <h2 class="reveal-title" style="margin-bottom:4px; font-size:clamp(1.2rem,4vw,1.8rem);">Love Coupons</h2>
-        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:8px;">Pick 3 mystery gifts — see what's inside after you choose</p>
-        <p id="coupon-counter" style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px; font-weight:600;">0 / 3 selected</p>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:8px;">Pick 1 from each category — see what's inside after you choose</p>
+        <p id="coupon-counter" style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:20px; font-weight:600;">0 / 3 selected</p>
         <div class="coupons-grid" id="coupons-grid"></div>
     </div>
 
@@ -1522,18 +1523,27 @@
 
     // ========== PHASE 5: LOVE COUPONS ==========
     const LOVE_COUPONS = [
-        { icon: '🎬', title: 'Movie Date', promise: 'A cozy movie date — you pick the film, I\'ll handle the snacks and blankets.' },
-        { icon: '💐', title: 'Surprise Flowers', promise: 'A surprise bouquet of flowers, just because you deserve them.' },
-        { icon: '☕', title: 'Coffee Date', promise: 'A cozy coffee date — just you, me, and good conversation.' },
-        { icon: '🛍️', title: 'Shopping Spree', promise: 'You pick, I pay. No questions asked.' },
-        { icon: '🎂', title: 'Birthday Wish', promise: 'Whatever you wish for on your next birthday, I\'ll make it happen.' },
-        { icon: '🏖️', title: 'Beach Day', promise: 'A perfect day at the beach — sun, sand, and just us.' },
-        { icon: '📸', title: 'Photo Day', promise: 'A fun photoshoot day at the most scenic spots in town.' },
-        { icon: '📖', title: 'Love Letter', promise: 'A handwritten love letter, pouring my heart out just for you.' },
-        { icon: '🚶', title: 'Long Walk', promise: 'A long walk holding hands, no destination, just us.' }
+        { icon: '💞', title: 'Deep Talk Date', promise: 'An evening where we put our phones away and talk about our dreams, fears, and everything in between.' },
+        { icon: '💌', title: 'Letters From My Heart', promise: 'We exchange handwritten letters sharing what we love most about each other and our journey together.' },
+        { icon: '🌅', title: 'Sunset Promise Walk', promise: 'A peaceful walk together while watching the sunset and making promises for our future.' },
+        { icon: '📸', title: 'Memory Photo Day', promise: 'We spend the afternoon taking beautiful photos together and creating new memories to keep forever.' },
+        { icon: '📝', title: 'Our Couple Bucket List', promise: 'We write down all the places we want to visit, dreams we want to achieve, and adventures we want to share.' },
+        { icon: '🎨', title: 'Create Together', promise: 'We spend time drawing, writing, or creating something together that will always remind us of this day.' },
+        { icon: '🍰', title: 'Birthday Treat Date', promise: 'Your favorite snacks, dessert, and quality time together while celebrating you.' },
+        { icon: '🌹', title: 'Flower & Compliment Hour', promise: 'A special hour where I give you flowers and tell you all the reasons why you are so precious to me.' },
+        { icon: '🎁', title: 'Secret Birthday Surprise', promise: 'A surprise planned with love that will make this birthday unforgettable and strengthen our bond even more.' }
     ];
 
     let selectedCoupons = [];
+    const COUPON_CATEGORIES = [
+        { name: '❤️ Heart-to-Heart Moments', start: 0, end: 2 },
+        { name: '🌸 Memory Making', start: 3, end: 5 },
+        { name: '✨ Romance & Happiness', start: 6, end: 8 }
+    ];
+
+    function getCouponCategory(index) {
+        return COUPON_CATEGORIES.find(c => index >= c.start && index <= c.end);
+    }
 
     function startPhase5() {
         busy = false;
@@ -1543,7 +1553,18 @@
         grid.innerHTML = '';
 
         const FACE_EMOJIS = ['😊','🥰','😍','😘','🤗','😋','🤭','😌','😇'];
+        let catIdx = 0;
+
         LOVE_COUPONS.forEach((coupon, i) => {
+            // Insert category header before first item of each category
+            if (COUPON_CATEGORIES[catIdx] && i === COUPON_CATEGORIES[catIdx].start) {
+                const header = document.createElement('div');
+                header.className = 'coupon-category';
+                header.textContent = COUPON_CATEGORIES[catIdx].name;
+                grid.appendChild(header);
+                catIdx++;
+            }
+
             const card = document.createElement('div');
             card.className = 'coupon-card';
             card.dataset.index = i;
@@ -1563,7 +1584,6 @@
             card.onclick = () => toggleCoupon(i, card);
             grid.appendChild(card);
 
-            // Staggered reveal
             setTimeout(() => { card.classList.add('show'); }, 200 + i * 120);
         });
 
@@ -1573,18 +1593,19 @@
     function toggleCoupon(index, card) {
         const isFlipped = card.classList.contains('flipped');
         const isSelected = selectedCoupons.includes(index);
+        const category = getCouponCategory(index);
+        const catSelected = selectedCoupons.filter(i => i >= category.start && i <= category.end);
 
         if (isSelected && isFlipped) {
-            // Already selected and revealed — deselect and flip back
+            // Deselect
             selectedCoupons = selectedCoupons.filter(i => i !== index);
             card.classList.remove('selected');
             card.classList.remove('flipped');
-        } else if (!isSelected && selectedCoupons.length < 3) {
-            // Not selected — select and flip to reveal
+        } else if (!isSelected && catSelected.length === 0) {
+            // Select (only 1 per category)
             selectedCoupons.push(index);
             card.classList.add('selected');
             setTimeout(() => { card.classList.add('flipped'); }, 200);
-            // Auto-send when 3rd card is picked
             if (selectedCoupons.length === 3) {
                 setTimeout(() => { sendCouponGifts(); }, 1200);
             }
@@ -1594,7 +1615,34 @@
 
     function updateCouponUI() {
         const counter = document.getElementById('coupon-counter');
-        if (counter) counter.textContent = selectedCoupons.length + ' / 3 selected';
+        if (!counter) return;
+        const picked = selectedCoupons.length;
+        const remaining = COUPON_CATEGORIES.length - picked;
+        if (picked === 0) {
+            counter.textContent = 'Pick 1 from each category';
+        } else if (picked < 3) {
+            counter.textContent = picked + ' / 3 selected — ' + remaining + ' category left';
+        } else {
+            counter.textContent = '3 / 3 selected!';
+        }
+
+        // Dim cards in categories that already have a pick
+        document.querySelectorAll('.coupon-card').forEach(card => {
+            const i = parseInt(card.dataset.index);
+            const cat = getCouponCategory(i);
+            const catHasPick = selectedCoupons.some(s => s >= cat.start && s <= cat.end);
+            const inThisCat = i >= cat.start && i <= cat.end;
+            if (inThisCat && catHasPick && !selectedCoupons.includes(i)) {
+                card.style.opacity = '0.35';
+                card.style.pointerEvents = 'none';
+            } else if (inThisCat && !catHasPick) {
+                card.style.opacity = '';
+                card.style.pointerEvents = '';
+            } else if (!inThisCat) {
+                card.style.opacity = '';
+                card.style.pointerEvents = '';
+            }
+        });
     }
 
     function sendCouponGifts() {
@@ -1602,7 +1650,10 @@
         const counter = document.getElementById('coupon-counter');
         counter.textContent = 'Sending your choices...';
 
-        const promises = selectedCoupons.map(i => '• ' + LOVE_COUPONS[i].title + ': ' + LOVE_COUPONS[i].promise).join('\n');
+        const promises = selectedCoupons.map(i => {
+            const cat = getCouponCategory(i);
+            return '• [' + cat.name + '] ' + LOVE_COUPONS[i].title + ': ' + LOVE_COUPONS[i].promise;
+        }).join('\n');
 
         emailjs.init('UfmpMSg2KlcJjyIX0');
         emailjs.send('service_vxkwckv', 'template_txkht7q', {
