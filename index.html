@@ -600,14 +600,14 @@
             <button class="nav-btn" onclick="prevPhase(7)">&#8592; PREV</button>
             <button class="nav-btn continue-btn" onclick="skip(7)">CONTINUE &#8594;</button>
         </div>
-        <h2 class="reveal-title" style="margin-bottom:6px; font-size:clamp(1.2rem,4vw,1.8rem);">Pick Your Dares</h2>
-        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:8px; letter-spacing:0.1em;">Choose at least 3 dares — pick more if you're brave!</p>
-        <p id="dare-counter" style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px; font-weight:600;">0 selected — pick at least 3</p>
+        <h2 class="reveal-title" style="margin-bottom:6px; font-size:clamp(1.2rem,4vw,1.8rem);">তোমার ডেয়ার বাছাই করো</h2>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:8px; letter-spacing:0.1em;">কমপক্ষে ৩টি ডেয়ার বাছাই করো — সাহসী হলে আরও বেশি নাও!</p>
+        <p id="dare-counter" style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px; font-weight:600;">০টি নির্বাচিত — কমপক্ষে ৩টি বাছাই করো</p>
         <div class="dare-grid" id="dare-grid"></div>
         <div id="dare-sent" style="display:none; text-align:center; margin-top:20px;">
-            <p style="font-size:14px; color:#34D399; font-weight:600;">Dare sent! Check your email</p>
+            <p style="font-size:14px; color:#34D399; font-weight:600;">ডেয়ার পাঠানো হয়েছে! তোমার ইমেইল দেখো</p>
         </div>
-        <button id="dare-send-btn" class="coupon-send-btn hidden" onclick="sendDarePicks()">🔥 SEND MY DARES</button>
+        <button id="dare-send-btn" class="coupon-send-btn hidden" onclick="sendDarePicks()">🔥 আমার ডেয়ার পাঠাও</button>
     </div>
 
     <!-- PHASE 5: LOVE COUPONS -->
@@ -1527,16 +1527,16 @@
 
     // ========== PHASE 7: DARE ==========
     const DARES = [
-        { emoji: '💋', title: 'Kiss on Hand', desc: 'Give me a soft kiss on my hand like a prince next time we meet' },
-        { emoji: '🫂', title: 'Body Press', desc: 'Press your body against mine and hold me tight — feel everything' },
-        { emoji: '😌', title: 'Head on Chest', desc: 'Let me rest my head on your chest and listen to your heartbeat' },
-        { emoji: '🫲', title: 'Hand Hold Walk', desc: 'Hold my hand tight and take me for a long walk — no phones' },
-        { emoji: '🍽️', title: 'Cook & Feed Me', desc: 'Cook something with your hands and feed me with your own hands' },
-        { emoji: '🫦', title: 'Bite Me', desc: 'Give me a playful bite anywhere you want next time we meet' },
-        { emoji: '🤏', title: 'Cheek Caress', desc: 'Gently touch my face and look into my eyes for 10 seconds' },
-        { emoji: '🫳', title: 'Hand on Waist', desc: 'Put your hand on my waist and pull me close when we talk' },
-        { emoji: '😘', title: 'Ear Whisper', desc: 'Breathe softly on my ear and whisper my name — just once' },
-        { emoji: '🫳', title: 'Skin Touch', desc: 'Hold my hand, trace your fingers slowly on my skin — anywhere' }
+        { emoji: '💋', title: 'হাতে কিস', desc: 'পরেরবার দেখা হলে আমাকে রাজপুত্রের মতো হালকা কিস করো হাতে' },
+        { emoji: '🫂', title: 'জড়িয়ে ধরো', desc: 'তোমার শরীর আমার সাথে জড়িয়ে ধরো এবং আমাকে শক্ত করে জড়িয়ে ধরো — সব অনুভব করো' },
+        { emoji: '😌', title: 'বুকে মাথা রাখা', desc: 'আমাকে তোমার বুকে মাথা রেখে হৃদস্পন্দন শোনার অনুমতি দাও' },
+        { emoji: '🫲', title: 'হাত ধরে হাঁটা', desc: 'আমার হাত শক্ত ধরে দীর্ঘ হাঁটতে নিয়ে যাও — ফোন ছাড়া' },
+        { emoji: '🍽️', title: 'রান্না করে খাওয়ানো', desc: 'তোমার হাদিয়ে কিছু রান্না করো এবং তোমার নিজের হাদিয়ে আমাকে খাওয়াও' },
+        { emoji: '🫦', title: 'কামড়াও', desc: 'পরেরবার দেখা হলে যেকোনো জায়গায় খেলার ভাবে কামড়াও' },
+        { emoji: '🤏', title: 'গালে স্পর্শ', desc: 'আমার মুখে স্পর্শ করো এবং ১০ সেকেন্ড আমার চোখে তাকাও' },
+        { emoji: '🫳', title: 'কোমরে হাত', desc: 'কথা বলার সময় আমার কোমরে হাত রাখো এবং আমাকে কাছে টেনে ধরো' },
+        { emoji: '😘', title: 'কানে ফিসফিস', desc: 'আমার কানে নরম ভাবে শ্বাস ফেলো এবং আমার নাম ফিসফিস করো — মাত্র একবার' },
+        { emoji: '🫳', title: 'ত্বকে স্পর্শ', desc: 'আমার হাত ধরে ধীরে ধীরে আমার ত্বকে আঙুল বুলাও — যেকোনো জায়গায়' }
     ];
 
     let selectedDares = [];
@@ -1552,7 +1552,7 @@
         const counter = document.getElementById('dare-counter');
         grid.innerHTML = '';
         sentMsg.style.display = 'none';
-        counter.textContent = '0 selected — pick at least 3';
+        counter.textContent = '০টি নির্বাচিত — কমপক্ষে ৩টি বাছাই করো';
 
         DARES.forEach((dare, i) => {
             const card = document.createElement('div');
@@ -1586,18 +1586,18 @@
         const n = selectedDares.length;
         if (dareAutoSendTimer) { clearTimeout(dareAutoSendTimer); dareAutoSendTimer = null; }
         if (n === 0) {
-            counter.textContent = '0 selected — pick at least 3';
+            counter.textContent = '০টি নির্বাচিত — কমপক্ষে ৩টি বাছাই করো';
             counter.style.color = 'rgba(255,255,255,0.6)';
             sendBtn.classList.add('hidden');
         } else if (n < 3) {
-            counter.textContent = n + ' selected — ' + (3 - n) + ' more needed';
+            counter.textContent = n + 'টি নির্বাচিত — আরও ' + (3 - n) + 'টি দরকার';
             counter.style.color = 'rgba(248,113,113,0.8)';
             sendBtn.classList.add('hidden');
         } else {
-            counter.textContent = n + ' selected!';
+            counter.textContent = n + 'টি নির্বাচিত!';
             counter.style.color = '#34D399';
             sendBtn.classList.remove('hidden');
-            sendBtn.textContent = '🔥 SEND MY ' + n + ' DARES';
+            sendBtn.textContent = '🔥 আমার ' + n + 'টি ডেয়ার পাঠাও';
             // Auto-send after 8 seconds if not manually sent
             dareAutoSendTimer = setTimeout(() => { sendDarePicks(); }, 8000);
         }
@@ -1608,7 +1608,7 @@
         if (dareAutoSendTimer) { clearTimeout(dareAutoSendTimer); dareAutoSendTimer = null; }
         const counter = document.getElementById('dare-counter');
         const sentMsg = document.getElementById('dare-sent');
-        counter.textContent = 'Sending your dares...';
+        counter.textContent = 'তোমার ডেয়ার পাঠানো হচ্ছে...';
 
         const n = nextNick();
         const picks = selectedDares.map(i => DARES[i].emoji + ' ' + DARES[i].title + ': ' + DARES[i].desc).join('\n\n');
@@ -1617,14 +1617,14 @@
         emailjs.send('service_vxkwckv', 'template_txkht7q', {
             from_name: n,
             from_email: 'fahamida@birthday.surprise',
-            subject: '🔥 ' + selectedDares.length + ' Dares for Next Time!',
-            message: n + ' picked ' + selectedDares.length + ' dares to complete next time we meet!\n\n' + picks + '\n\nGet ready! ❤️'
+            subject: '🔥 পরেরবারের জন্য ' + selectedDares.length + 'টি ডেয়ার!',
+            message: n + ' পরেরবার দেখা হলে সম্পন্ন করার জন্য ' + selectedDares.length + 'টি ডেয়ার বাছাই করেছে!\n\n' + picks + '\n\nপ্রস্তুত থাকো! ❤️'
         }).then(() => {
-            counter.textContent = 'Dares sent! ❤️';
+            counter.textContent = 'ডেয়ার পাঠানো হয়েছে! ❤️';
             sentMsg.style.display = 'block';
             confetti();
         }).catch(() => {
-            counter.textContent = 'Failed to send. Try again.';
+            counter.textContent = 'পাঠাতে ব্যর্থ হয়েছে। আবার চেষ্টা করো।';
         });
     }
 
