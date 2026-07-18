@@ -623,11 +623,11 @@
         <div class="coupons-grid" id="coupons-grid"></div>
     </div>
 
-    <!-- PHASE 6: FINALE -->
-    <div id="phase6" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
+    <!-- FINALE 1: HERO IMAGE -->
+    <div id="phaseFinale1" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
         <div class="nav-bar">
-            <button class="nav-btn" onclick="prevPhase(6)">&#8592; PREV</button>
-            <span></span>
+            <button class="nav-btn" onclick="prevPhaseFromHash('finale1')">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skipToHash('finale1')">CONTINUE &#8594;</button>
         </div>
         <div class="finale-hero">
             <img src="" alt="" id="finale-hero-img">
@@ -636,15 +636,34 @@
                 <div class="finale-hero-sub">To the most beautiful soul in my life</div>
             </div>
         </div>
-        <div class="finale-card hidden" id="finale-card">
+        <div class="finale-made">Made with love, just for you</div>
+    </div>
+
+    <!-- FINALE 2: BIRTHDAY CARD -->
+    <div id="phaseFinale2" class="phase" style="padding:70px 20px 80px; justify-content:flex-start;">
+        <div class="nav-bar">
+            <button class="nav-btn" onclick="prevPhaseFromHash('finale2')">&#8592; PREV</button>
+            <button class="nav-btn continue-btn" onclick="skipToHash('finale2')">CONTINUE &#8594;</button>
+        </div>
+        <div class="finale-card" id="finale-card">
             <div class="finale-card-emoji">&#10084;</div>
             <div class="finale-card-title">Happy Birthday!</div>
             <div id="finale-card-text"></div>
             <div class="finale-card-sign" id="finale-card-sign"></div>
         </div>
         <div class="finale-made">Made with love, just for you</div>
-        <button class="replay-btn hidden" id="replay-btn" onclick="location.reload()">&#8634; Watch Again</button>
-        <button class="share-btn hidden" id="share-btn" onclick="shareSurprise()">&#128279; Share the Love</button>
+    </div>
+
+    <!-- FINALE 3: WATCH AGAIN -->
+    <div id="phaseFinale3" class="phase" style="padding:70px 20px 80px; justify-content:center;">
+        <div style="text-align:center; max-width:400px;">
+            <div style="font-size:4rem; margin-bottom:16px;">💝</div>
+            <h2 class="reveal-title" style="margin-bottom:12px; font-size:clamp(1.4rem,5vw,2.2rem);">Thank You for Being You</h2>
+            <p style="font-size:14px; color:rgba(255,255,255,0.5); line-height:1.7; margin-bottom:24px; font-style:italic;">Every moment with you is a gift. This surprise was made with all my love — just for you, Fahamida.</p>
+            <button class="replay-btn" onclick="location.reload()">&#8634; Watch Again</button>
+            <button class="share-btn" onclick="shareSurprise()" style="margin-top:12px;">&#128279; Share the Love</button>
+            <div class="finale-made" style="margin-top:24px;">Made with love, just for you</div>
+        </div>
     </div>
 
     <!-- PHASE: QUIZ ABOUT US -->
@@ -872,7 +891,7 @@
     let typewriterIntervals = [];
     let typeSkipActive = false;
 
-    const PHASE_FLOW = ['password','reveal','welcome','letter','coupons','special','dare','quiz','wyr','timeline','scratch','recipe','meter','gallery','finale'];
+    const PHASE_FLOW = ['password','reveal','welcome','letter','coupons','special','dare','quiz','wyr','timeline','scratch','recipe','meter','gallery','finale1','finale2','finale3'];
     function getPhaseIndex(hash) { return PHASE_FLOW.indexOf(hash); }
     function updateProgress(hash) {
         const idx = getPhaseIndex(hash);
@@ -1732,30 +1751,33 @@
         });
     }
 
-    // ========== PHASE 6: FINALE ==========
-    function startPhase6() {
-        busy = true;
-        showPhase('phase6', true);
-        document.getElementById('phase6').scrollTop = 0;
+    // ========== FINALE 1: HERO IMAGE ==========
+    function startFinale1() {
+        busy = false;
+        showPhase('phaseFinale1', true);
         confetti();
+        spawnBalloons(document.getElementById('phaseFinale1'), 20);
+        setTimeout(confetti, 1500);
+    }
 
-        // Birthday card
-        setTimeout(() => {
-            const card = document.getElementById('finale-card');
-            card.classList.remove('hidden');
-            const n = nextNick();
-            document.getElementById('finale-card-text').innerHTML = LETTER.map(l => '<p>' + l.replace('{n}', n) + '</p>').join('');
-            document.getElementById('finale-card-sign').innerHTML = '— <span class="golden-name">' + n + '</span>';
-            document.getElementById('replay-btn').classList.remove('hidden');
-            document.getElementById('share-btn').classList.remove('hidden');
+    // ========== FINALE 2: BIRTHDAY CARD ==========
+    function startFinale2() {
+        busy = false;
+        showPhase('phaseFinale2', true);
+        const n = nextNick();
+        document.getElementById('finale-card-text').innerHTML = LETTER.map(l => '<p>' + l.replace('{n}', n) + '</p>').join('');
+        document.getElementById('finale-card-sign').innerHTML = '— <span class="golden-name">' + n + '</span>';
+        confetti();
+        spawnBalloons(document.getElementById('phaseFinale2'), 25);
+        setTimeout(confetti, 1000);
+        setTimeout(confetti, 2000);
+    }
 
-            // Balloons & fireworks
-            spawnBalloons(document.getElementById('phase6'), 25);
-            confetti();
-            setTimeout(confetti, 1000);
-            setTimeout(confetti, 2000);
-            busy = false;
-        }, FINALE_IMGS.length * 200 + 800);
+    // ========== FINALE 3: WATCH AGAIN ==========
+    function startFinale3() {
+        busy = false;
+        showPhase('phaseFinale3', true);
+        confetti();
     }
 
     function spawnBalloons(container, count) {
@@ -2086,7 +2108,7 @@
         typewriterIntervals = [];
         busy = false;
 
-        const phaseToHash = { 1: 'reveal', 2: 'letter', 4: 'special', 5: 'coupons', 6: 'finale', 7: 'dare', 8: 'gallery' };
+        const phaseToHash = { 1: 'reveal', 2: 'letter', 4: 'special', 5: 'coupons', 7: 'dare', 8: 'gallery' };
         const currentHash = phaseToHash[phase];
         if (!currentHash) return;
 
@@ -2226,7 +2248,7 @@
         typewriterIntervals.forEach(id => clearInterval(id));
         typewriterIntervals = [];
 
-        const phaseToHash = { 1: 'reveal', 2: 'letter', 4: 'special', 5: 'coupons', 6: 'finale', 7: 'dare', 8: 'gallery' };
+        const phaseToHash = { 1: 'reveal', 2: 'letter', 4: 'special', 5: 'coupons', 7: 'dare', 8: 'gallery' };
         const currentHash = phaseToHash[phase];
         if (!currentHash) return;
 
@@ -2255,7 +2277,9 @@
         'recipe': 'recipe',
         'meter': 'meter',
         'gallery': 8,
-        'finale': 6
+        'finale1': 'finale1',
+        'finale2': 'finale2',
+        'finale3': 'finale3'
     };
 
     function launchPhase(hash) {
@@ -2268,10 +2292,13 @@
             case 'scratch': startScratch(); break;
             case 'recipe': startRecipe(); break;
             case 'meter': startMeter(); break;
+            case 'finale1': startFinale1(); break;
+            case 'finale2': startFinale2(); break;
+            case 'finale3': startFinale3(); break;
             default:
                 const num = PHASE_HASH[hash];
                 if (typeof num === 'number') {
-                    switch(num) { case 1: startPhase1(); break; case 2: startPhase2(); break; case 4: startPhase4(); break; case 5: startPhase5(); break; case 6: startPhase6(); break; case 7: startPhase7(); break; case 8: startPhase8(); break; }
+                    switch(num) { case 1: startPhase1(); break; case 2: startPhase2(); break; case 4: startPhase4(); break; case 5: startPhase5(); break; case 7: startPhase7(); break; case 8: startPhase8(); break; }
                 }
         }
     }
@@ -2335,7 +2362,6 @@
                 case 2: startPhase2(); break;
                 case 4: startPhase4(); break;
                 case 5: startPhase5(); break;
-                case 6: startPhase6(); break;
                 case 7: startPhase7(); break;
                 case 8: startPhase8(); break;
             }
