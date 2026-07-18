@@ -580,12 +580,13 @@
             <button class="nav-btn continue-btn" onclick="skip(7)">CONTINUE &#8594;</button>
         </div>
         <h2 class="reveal-title" style="margin-bottom:6px; font-size:clamp(1.2rem,4vw,1.8rem);">Pick Your Dares</h2>
-        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:8px; letter-spacing:0.1em;">Choose 3 dares to complete next time we meet</p>
-        <p id="dare-counter" style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px; font-weight:600;">0 / 3 selected</p>
+        <p style="font-size:12px; color:rgba(255,255,255,0.3); margin-bottom:8px; letter-spacing:0.1em;">Choose at least 3 dares — pick more if you're brave!</p>
+        <p id="dare-counter" style="font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:24px; font-weight:600;">0 selected — pick at least 3</p>
         <div class="dare-grid" id="dare-grid"></div>
         <div id="dare-sent" style="display:none; text-align:center; margin-top:20px;">
             <p style="font-size:14px; color:#34D399; font-weight:600;">Dare sent! Check your email</p>
         </div>
+        <button id="dare-send-btn" class="coupon-send-btn hidden" onclick="sendDarePicks()">🔥 SEND MY DARES</button>
     </div>
 
     <!-- PHASE 5: LOVE COUPONS -->
@@ -1465,7 +1466,7 @@
         const counter = document.getElementById('dare-counter');
         grid.innerHTML = '';
         sentMsg.style.display = 'none';
-        counter.textContent = '0 / 3 selected';
+        counter.textContent = '0 selected — pick at least 3';
 
         DARES.forEach((dare, i) => {
             const card = document.createElement('div');
@@ -1484,21 +1485,37 @@
             selectedDares = selectedDares.filter(i => i !== index);
             card.classList.remove('selected');
             card.querySelector('.dare-check').textContent = '';
-        } else if (selectedDares.length < 3) {
+        } else {
             selectedDares.push(index);
             card.classList.add('selected');
             card.querySelector('.dare-check').textContent = '✓';
-
-            if (selectedDares.length === 3) {
-                setTimeout(sendDarePicks, 800);
-            }
         }
 
-        document.getElementById('dare-counter').textContent = selectedDares.length + ' / 3 selected';
+        updateDareCounter();
+    }
+
+    function updateDareCounter() {
+        const counter = document.getElementById('dare-counter');
+        const sendBtn = document.getElementById('dare-send-btn');
+        const n = selectedDares.length;
+        if (n === 0) {
+            counter.textContent = '0 selected — pick at least 3';
+            counter.style.color = 'rgba(255,255,255,0.6)';
+            sendBtn.classList.add('hidden');
+        } else if (n < 3) {
+            counter.textContent = n + ' selected — ' + (3 - n) + ' more needed';
+            counter.style.color = 'rgba(248,113,113,0.8)';
+            sendBtn.classList.add('hidden');
+        } else {
+            counter.textContent = n + ' selected!';
+            counter.style.color = '#34D399';
+            sendBtn.classList.remove('hidden');
+            sendBtn.textContent = '🔥 SEND MY ' + n + ' DARES';
+        }
     }
 
     function sendDarePicks() {
-        if (selectedDares.length !== 3) return;
+        if (selectedDares.length < 3) return;
         const counter = document.getElementById('dare-counter');
         const sentMsg = document.getElementById('dare-sent');
         counter.textContent = 'Sending your dares...';
@@ -1510,14 +1527,14 @@
         emailjs.send('service_vxkwckv', 'template_txkht7q', {
             from_name: n,
             from_email: 'fahamida@birthday.surprise',
-            subject: '🔥 3 Dares for Next Time!',
-            message: n + ' picked 3 dares to complete next time we meet!\n\n' + picks + '\n\nGet ready! ❤️'
+            subject: '🔥 ' + selectedDares.length + ' Dares for Next Time!',
+            message: n + ' picked ' + selectedDares.length + ' dares to complete next time we meet!\n\n' + picks + '\n\nGet ready! ❤️'
         }).then(() => {
             counter.textContent = 'Dares sent! ❤️';
             sentMsg.style.display = 'block';
             confetti();
         }).catch(() => {
-            counter.textContent = 'Failed to send. Tap a card to retry.';
+            counter.textContent = 'Failed to send. Try again.';
         });
     }
 
