@@ -170,25 +170,26 @@
         .vintage-corner.tr { top: 14px; right: 14px; border-width: 2px 2px 0 0; }
         .vintage-corner.bl { bottom: 14px; left: 14px; border-width: 0 0 2px 2px; }
         .vintage-corner.br { bottom: 14px; right: 14px; border-width: 0 2px 2px 0; }
-        .letter-content { position: relative; z-index: 1; padding: 40px 36px; text-align: left; }
-        .letter-header { text-align: left; margin-bottom: 30px; }
-        .letter-ornament { font-size: 24px; color: rgba(139,115,85,0.5); margin-bottom: 12px; letter-spacing: 0.3em; text-align: left; }
-        .letter-greeting { font-family: 'Great Vibes', cursive; font-size: clamp(2rem, 6vw, 3rem); color: #5a3a1a; margin-bottom: 4px; line-height: 1.3; }
-        .letter-dear { font-family: 'Great Vibes', cursive; font-size: clamp(1.6rem, 5vw, 2.4rem); color: #5a3a1a; font-weight: 400; margin-bottom: 24px; }
+        .letter-content { position: relative; z-index: 1; padding: 24px 28px; text-align: left; }
+        .letter-header { text-align: left; margin-bottom: 16px; }
+        .letter-ornament { font-size: 20px; color: rgba(139,115,85,0.5); margin-bottom: 8px; letter-spacing: 0.3em; text-align: left; }
+        .letter-greeting { font-family: 'Great Vibes', cursive; font-size: clamp(1.8rem, 5vw, 2.6rem); color: #5a3a1a; margin-bottom: 2px; line-height: 1.3; }
+        .letter-dear { font-family: 'Great Vibes', cursive; font-size: clamp(1.4rem, 4.5vw, 2.2rem); color: #5a3a1a; font-weight: 400; margin-bottom: 14px; }
         .letter-dear .golden-name { color: #8B4513; }
-        .letter-opening { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); color: #3d2b15; line-height: 1.9; margin-bottom: 20px; font-style: italic; }
-        .letter-closing { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); color: #3d2b15; line-height: 1.9; margin-top: 20px; font-style: italic; }
+        .letter-opening { font-family: 'Cormorant Garamond', serif; font-size: clamp(13px, 2.8vw, 16px); color: #3d2b15; line-height: 1.7; margin-bottom: 12px; font-style: italic; }
+        .letter-closing { font-family: 'Cormorant Garamond', serif; font-size: clamp(13px, 2.8vw, 16px); color: #3d2b15; line-height: 1.7; margin-top: 12px; font-style: italic; }
         .letter-line { display: block; }
-        .letter-typing-cursor::after { content: '|'; animation: blink 0.7s step-end infinite; color: #6b4c2a; font-weight: 300; }
+        .letter-typing-cursor::after { content: '🖊️'; animation: penWrite 0.5s ease-in-out infinite alternate; display: inline-block; margin-left: 2px; font-size: 0.85em; }
+        @keyframes penWrite { 0% { transform: rotate(-10deg) translateY(0); } 100% { transform: rotate(10deg) translateY(-2px); } }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-        .letter-body { font-family: 'Cormorant Garamond', serif; font-size: clamp(14px, 3vw, 17px); line-height: 1.9; color: #3d2b15; text-align: left; }
-        .letter-body p { margin-bottom: 14px; }
-        .letter-sign { text-align: right; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(139,115,85,0.2); }
-        .letter-sign-text { font-family: 'Great Vibes', cursive; font-size: clamp(1.4rem, 4vw, 2rem); color: #5a3a1a; }
+        .letter-body { font-family: 'Cormorant Garamond', serif; font-size: clamp(13px, 2.8vw, 16px); line-height: 1.7; color: #3d2b15; text-align: left; }
+        .letter-body p { margin-bottom: 8px; }
+        .letter-sign { text-align: right; margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(139,115,85,0.2); }
+        .letter-sign-text { font-family: 'Great Vibes', cursive; font-size: clamp(1.2rem, 3.5vw, 1.8rem); color: #5a3a1a; }
         .letter-sign-text .golden-name { color: #8B4513; }
-        .letter-sign-sub { font-family: 'Cormorant Garamond', serif; font-size: 13px; color: rgba(90,58,26,0.5); font-style: italic; margin-top: 4px; }
-        .letter-seal { text-align: center; margin-top: 24px; }
-        .letter-seal-circle { width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #8b4513, #654321); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+        .letter-sign-sub { font-family: 'Cormorant Garamond', serif; font-size: 12px; color: rgba(90,58,26,0.5); font-style: italic; margin-top: 2px; }
+        .letter-seal { text-align: center; margin-top: 14px; }
+        .letter-seal-circle { width: 50px; height: 50px; border-radius: 50%; background: radial-gradient(circle, #8b4513, #654321); margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
         .letter-line { display: inline-block; width: 0; height: 1px; background: #3d2b15; overflow: hidden; animation: typeLine 0.5s ease forwards; }
         @keyframes typeLine { to { width: 100%; } }
 
@@ -573,7 +574,7 @@
                     <div class="letter-closing letter-reveal" id="letter-closing"></div>
                     <div class="letter-sign letter-reveal">
                         <div class="letter-sign-text" id="letter-sign-name"></div>
-                        <div class="letter-sign-sub">With all my love, always</div>
+                        <div class="letter-sign-sub">সমস্ত ভালোবাসা দিয়ে, সবসময়</div>
                     </div>
                     <div class="letter-seal letter-reveal">
                         <div class="letter-seal-circle">&#10084;</div>
@@ -872,11 +873,11 @@
     ];
 
     const LETTER = [
-        "Today is special because it's the day the most beautiful person in my life was born. Since you came into my life, every day has felt brighter, happier, and more meaningful. Your smile is my favorite sight, your laughter is my favorite sound, and your love is my greatest blessing.",
-        "Thank you for filling my life with happiness, care, and endless love. You make my world a better place simply by being in it.",
-        "On your birthday, I wish you all the happiness, success, love, and beautiful moments your heart desires. May your smile never fade, and may all your dreams come true.",
-        "Always remember that you are deeply loved, cherished, and appreciated more than words can ever express.",
-        "Happy Birthday, my love. I love you today, tomorrow, and always."
+        "আজকের দিনটি খুবই বিশেষ, কারণ আজ আমার জীবনের সবচেয়ে সুন্দর মানুষটির জন্মদিন। তুমি যখন আমার জীবনে এসেছো, তখন থেকে প্রতিটি দিন আরও উজ্জ্বল, আরও সুন্দর এবং আরও অর্থবহ হয়ে উঠেছে। তোমার হাসি আমার প্রিয় দৃশ্য, তোমার কণ্ঠস্বর আমার প্রিয় শব্দ, এবং তোমার ভালোবাসা আমার সবচেয়ে বড় সম্পদ।",
+        "আমার জীবনকে সুখ, যত্ন ও অসীম ভালোবাসায় পূর্ণ করার জন্য তোমাকে ধন্যবাদ। তুমি শুধু থাকাটাই যথেষ্ট — তুমি আমার পৃথিবীকে আরও সুন্দর করে তোলো।",
+        "তোমার জন্মদিনে আমি কামনা করি যে তোমার হৃদয় যা চায় — সুখ, সাফল্য, ভালোবাসা এবং সুন্দর মুহূর্তগুলো তোমার জীবনে এসে যাক। তোমার হাসি কখনো ম্লান না হোক এবং তোমার স্বপ্নগুলো সব পূরণ হোক।",
+        "সবসময় মনে রেখো যে তুমি গভীরভাবে ভালোবাসা, যত্ন ও মূল্যায়নের পাত্র — যতটুকু শব্দে প্রকাশ করা সম্ভব নয়।",
+        "জন্মদিনের শুভেচ্ছা, আমার প্রাণ। আমি তোমাকে ভালোবাসি আজ, আগামীকাল, এবং সবসময়।"
     ];
 
     // ========== STATE ==========
@@ -1386,10 +1387,10 @@
         busy = false;
         showPhase('phase2', true);
         const n = nextNick();
-        document.getElementById('letter-happy').textContent = 'Happy Birthday';
-        document.getElementById('letter-dear').innerHTML = 'My Dear <span class="golden-name">' + n + '</span>';
-        document.getElementById('letter-opening').textContent = 'To my dearest ' + n + ',';
-        document.getElementById('letter-closing').textContent = 'With all my love and devotion, always and forever.';
+        document.getElementById('letter-happy').textContent = 'শুভ জন্মদিন';
+        document.getElementById('letter-dear').innerHTML = 'আমার প্রিয় <span class="golden-name">' + n + '</span>';
+        document.getElementById('letter-opening').textContent = 'আমার সবচেয়ে প্রিয় ' + n + ',';
+        document.getElementById('letter-closing').textContent = 'আমার সমস্ত ভালোবাসা ও সমর্পণ দিয়ে, সবসময় ও চিরকাল।';
         document.getElementById('letter-sign-name').innerHTML = '<span class="golden-name">' + n + '</span>';
 
         // Build letter body paragraphs
@@ -1447,7 +1448,6 @@
         showTypeSkip();
         let i = 0;
         const interval = setInterval(() => {
-            if (!typeSkipActive && i < text.length) return;
             if (i >= text.length) { clearInterval(interval); el.classList.remove('letter-typing-cursor'); hideTypeSkip(); if (callback) callback(); return; }
             el.textContent = text.substring(0, i + 1);
             i++;
