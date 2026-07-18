@@ -83,7 +83,7 @@
         .reveal-emoji { font-size: clamp(2.5rem, 8vw, 4rem); margin-bottom: 6px; display: block; animation: floatUp 3s ease-in-out infinite; }
         .golden-name { color: #FFB8FF; }
         .reveal-happy { font-size: clamp(1.2rem, 4vw, 2rem); font-weight: 900; color: #fff; margin-bottom: 4px; line-height: 1.2; }
-        .reveal-title { font-size: clamp(1.4rem, 5vw, 2.4rem); font-weight: 900; color: #fff; margin-bottom: 8px; line-height: 1.2; }
+        .reveal-title { font-size: clamp(1.4rem, 5vw, 2.4rem); font-weight: 900; color: #fff; margin-bottom: 8px; line-height: 1.4; }
         .reveal-sub { font-size: clamp(12px, 3vw, 15px); color: rgba(255,255,255,0.5); margin-bottom: 16px; line-height: 1.5; }
         .reveal-divider { width: 80px; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); margin: 0 auto 20px; }
         .reveal-hint { font-size: 12px; color: rgba(255,255,255,0.25); letter-spacing: 0.15em; text-transform: uppercase; }
@@ -507,9 +507,7 @@
             <div class="reveal-hero">
                 <img src="" alt="" id="reveal-hero-img">
                 <div class="reveal-hero-overlay">
-                    <span id="reveal-emoji" class="reveal-emoji reveal-anim-1">🎂</span>
-                    <p id="reveal-happy" class="reveal-happy reveal-anim-2">Happy Birthday</p>
-                    <h1 id="reveal-title" class="reveal-title reveal-anim-3"></h1>
+                    <h1 id="reveal-title" class="reveal-title reveal-anim-2"></h1>
                 </div>
             </div>
             <p id="reveal-sub" class="reveal-sub reveal-anim-4"></p>
@@ -1262,17 +1260,23 @@
     }
 
     // ========== PHASE 1: REVEAL ==========
+    let revealTyped = false;
+    let revealRunning = false;
+
     function startPhase1() {
+        if (revealTyped || revealRunning) {
+            document.querySelectorAll('#p1-content [class*="reveal-anim"]').forEach(el => el.classList.add('reveal-show'));
+            return;
+        }
+        revealRunning = true;
         busy = true;
         showPhase('phase1', true);
-        const happyEl = document.getElementById('reveal-happy');
         const titleEl = document.getElementById('reveal-title');
         const subEl = document.getElementById('reveal-sub');
-        const happyText = happyEl.textContent;
-        const titleHTML = titleEl.innerHTML;
-        const titleText = titleEl.textContent;
-        const subText = subEl.textContent;
-        happyEl.textContent = '';
+
+        const titleHTML = 'Happy Birthday My Dear <span class="golden-name">' + appUserName + ' Baby</span>';
+        const subText = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
+
         titleEl.innerHTML = '';
         subEl.textContent = '';
 
@@ -1283,15 +1287,36 @@
             startCelebration();
             createFloatingNicks();
             spawnBalloons(document.getElementById('phase1'), 15);
-            // Type "Happy Birthday" first
-            typeText(happyEl, happyText, 70, () => {
-                // Then type "My Dear Fahamida" with golden name
-                typeHTML(titleEl, titleHTML, 80, () => {
-                    // Then type subtitle
-                    typeText(subEl, subText, 50);
+            typeRevealText(titleEl, titleHTML, 70, () => {
+                typeRevealText(subEl, subText, 50, () => {
+                    revealTyped = true;
+                    revealRunning = false;
+                    busy = false;
                 });
             });
         }, 300);
+    }
+
+    function typeRevealText(el, text, speed, callback) {
+        showTypeSkip();
+        // Extract plain text, replacing tags with spaces to avoid word-joining
+        const tmp = document.createElement('div');
+        tmp.innerHTML = text.replace(/<br\s*\/?>/gi, ' ').replace(/<\/?[^>]+(>|$)/g, ' ');
+        const plainText = tmp.textContent.replace(/\s+/g, ' ').trim();
+        let i = 0;
+        el.textContent = '';
+        const interval = setInterval(() => {
+            if (i >= plainText.length) {
+                clearInterval(interval);
+                el.innerHTML = text;
+                hideTypeSkip();
+                if (callback) callback();
+                return;
+            }
+            i++;
+            el.textContent = plainText.substring(0, i);
+        }, speed);
+        typewriterIntervals.push(interval);
     }
 
     function typeText(el, text, speed, callback) {
@@ -1799,21 +1824,21 @@
 
     // ========== QUIZ ABOUT US ==========
     const QUIZ_DATA = [
-        { q: "What do you think is my favorite thing about you?", opts: ["Your smile","Your eyes","Your laugh","Everything"], correct: 3, msg: "How could I choose just one thing when I love everything about you? ❤️" },
-        { q: "What do I miss most when we're apart?", opts: ["Your voice","Your hugs","Your texts","All of these"], correct: 3, msg: "Every little thing about you stays on my mind. 💕" },
-        { q: "What is my favorite notification?", opts: ["Facebook","Instagram","Work messages","Your message"], correct: 3, msg: "One message from you can make my entire day better. 💌" },
-        { q: "What is my favorite part of the day?", opts: ["Morning","Afternoon","Evening","Talking to you"], correct: 3, msg: "Those moments with you are always the best part of my day. 🥰" },
-        { q: "What melts my heart every time?", opts: ["Your smile","Your kindness","Your voice","All of these"], correct: 3, msg: "You make my heart melt without even trying. ❤️" },
-        { q: "If I could be anywhere right now, where would I be?", opts: ["At home","Traveling","With you","Sleeping"], correct: 2, msg: "Any place feels perfect when you're there. 🌹" },
-        { q: "What do I love most hearing from you?", opts: ["Good Morning","I Miss You","I Love You","All of these"], correct: 3, msg: "Every loving word from you feels special to me. 💖" },
-        { q: "What do your hugs feel like to me?", opts: ["Warm sunshine","Home","Happiness","All of these"], correct: 3, msg: "Your hugs are my favorite place in the world. 🤗" },
-        { q: "What makes you so special to me?", opts: ["Your beauty","Your heart","Your care","All of these"], correct: 3, msg: "You're beautiful inside and out. ✨" },
-        { q: "What is my biggest wish for us?", opts: ["More dates","More photos","Growing old together","More gifts"], correct: 2, msg: "I want every chapter of my life to include you. 💍" },
-        { q: "What do I think when I see your smile?", opts: ["She's cute","She's beautiful","I'm lucky","All of these"], correct: 3, msg: "Your smile still gives me butterflies. 🦋❤️" },
-        { q: "What would I choose over everything else?", opts: ["Money","Success","Travel","You"], correct: 3, msg: "You're worth more to me than anything else. 💕" },
-        { q: "What is my favorite memory?", opts: ["Our first chat","Our first call","Our first meeting","Every moment with you"], correct: 3, msg: "Every moment with you becomes my favorite memory. 🌷" },
-        { q: "What is the sweetest word I know?", opts: ["Love","Forever","Happiness","Your name"], correct: 3, msg: "Because your name carries all my favorite feelings. ❤️" },
-        { q: "What are you to me?", opts: ["My happiness","My safe place","My best friend","All of these"], correct: 3, msg: "You're my favorite person, my peace, and my forever. 💞" }
+        { q: "তুমি মনে করো আমার তোমার কোনটি সবচেয়ে বেশি পছন্দ?", opts: ["তোমার হাসি","তোমার চোখ","তোমার কণ্ঠ","সবকিছু"], correct: 3, msg: "একটি জিনিস কিভাবে বাছবি যখন তোমার সবকিছু ভালোবাসি? ❤️" },
+        { q: "আমরা দূরে থাকলে আমি কোনটি সবচেয়ে বেশি মিস করি?", opts: ["তোমার কণ্ঠ","তোমার জড়িয়ে ধরা","তোমার মেসেজ","এগুলো সব"], correct: 3, msg: "তোমার প্রতিটি ছোট্ট জিনিস আমার মনে থাকে। 💕" },
+        { q: "আমার পছন্দের নোটিফিকেশন কোনটি?", opts: ["Facebook","Instagram","কাজের মেসেজ","তোমার মেসেজ"], correct: 3, msg: "তোমার একটি মেসেজ আমার পুরো দিনটি ভালো করে দিতে পারে। 💌" },
+        { q: "আমার দিনের সবচেয়ে পছন্দের অংশ কোনটি?", opts: ["সকাল","দুপুর","সন্ধ্যা","তোমার সাথে কথা বলা"], correct: 3, msg: "তোমার সাথে কাটানো মুহূর্তগুলো সবসময় আমার দিনের সেরা অংশ। 🥰" },
+        { q: "প্রতিবার কোনটি আমার হৃদয় গলিয়ে দেয়?", opts: ["তোমার হাসি","তোমার ভালোবাসা","তোমার কণ্ঠ","এগুলো সব"], correct: 3, msg: "তুমি কোনো চেষ্টাই না করে আমার হৃদয় গলিয়ে দাও। ❤️" },
+        { q: "আমি এখন যেকোনো জায়গায় থাকতে চাইলে কোথায় থাকতাম?", opts: ["বাসায়","ভ্রমণে","তোমার সাথে","ঘুমিয়ে"], correct: 2, msg: "তুমি থাকলে যেকোনো জায়গাই পারফেক্ট। 🌹" },
+        { q: "তোমার কাছ থেকে আমি কোনটি শুনতে সবচেয়ে ভালোবাসি?", opts: ["শুভ সকাল","মিস করছি","ভালোবাসি","এগুলো সব"], correct: 3, msg: "তোমার প্রতিটি ভালোবাসার শব্দ আমার কাছে বিশেষ। 💖" },
+        { q: "তোমার জড়িয়ে ধরা আমার কাছে কেমন লাগে?", opts: ["উষ্ণ রোদের মতো","বাসার মতো","সুখের মতো","এগুলো সব"], correct: 3, msg: "তোমার জড়িয়ে ধরা আমার পৃথিবীর সবচেয়ে প্রিয় জায়গা। 🤗" },
+        { q: "তুমি আমার কাছে কেন এত বিশেষ?", opts: ["তোমার সৌন্দর্য","তোমার হৃদয়","তোমার যত্ন","এগুলো সব"], correct: 3, msg: "তুমি ভেতর থেকেও বাইরে থেকেও সুন্দর। ✨" },
+        { q: "আমার আমাদের জন্য সবচেয়ে বড় কামনা কী?", opts: ["আরও ডেট","আরও ছবি","একসাথে বৃদ্ধি হওয়া","আরও উপহার"], correct: 2, msg: "আমার জীবনের প্রতিটি অধ্যায়ে তোমাকে চাই। 💍" },
+        { q: "তোমার হাসি দেখলে আমি কী ভাবি?", opts: ["সে সুন্দর","সে সুশীল","আমি ভাগ্যবান","এগুলো সব"], correct: 3, msg: "তোমার হাসি আজও আমাকে প্রজাপতির মতো উড়িয়ে দেয়। 🦋❤️" },
+        { q: "আমি সবকিছুর বদলে কী বাছতাম?", opts: ["টাকা","সাফল্য","ভ্রমণ","তোমাকে"], correct: 3, msg: "তুমি আমার কাছে সবকিছুর চেয়ে বেশি মূল্যবান। 💕" },
+        { q: "আমার পছন্দের স্মৃতি কোনটি?", opts: ["আমাদের প্রথম কথোপকথন","আমাদের প্রথম ফোন কল","আমাদের প্রথম দেখা","তোমার সাথে প্রতিটি মুহূর্ত"], correct: 3, msg: "তোমার সাথে প্রতিটি মুহূর্ত আমার পছন্দের স্মৃতি হয়ে যায়। 🌷" },
+        { q: "আমার কাছে সবচেয়ে মিষ্টি শব্দ কোনটি?", opts: ["ভালোবাসা","চিরকাল","সুখ","তোমার নাম"], correct: 3, msg: "কারণ তোমার নামে আমার সমস্ত প্রিয় অনুভূতি বাস করে। ❤️" },
+        { q: "তুমি আমার কাছে কী?", opts: ["আমার সুখ","আমার নিরাপদ আশ্রয়","আমার সেরা বন্ধু","এগুলো সব"], correct: 3, msg: "তুমি আমার সবচেয়ে প্রিয় মানুষ, আমার শান্তি, এবং আমার চিরকাল। 💞" }
     ];
 
     let quizIdx = 0, quizScore = 0;
@@ -1827,7 +1852,7 @@
     function renderQuiz() {
         const area = document.getElementById('quiz-area');
         if (quizIdx >= QUIZ_DATA.length) {
-            area.innerHTML = '<div class="quiz-card"><div class="quiz-emoji" style="font-size:3rem; margin-bottom:12px;">🎉</div><div class="quiz-question">Quiz Complete!</div><div class="quiz-score">You got ' + quizScore + ' / ' + QUIZ_DATA.length + ' right</div><div class="quiz-result">' + (quizScore === QUIZ_DATA.length ? "Perfect score! You know our love story by heart!" : "You know us so well — that's all that matters!") + '</div></div>';
+            area.innerHTML = '<div class="quiz-card"><div class="quiz-emoji" style="font-size:3rem; margin-bottom:12px;">🎉</div><div class="quiz-question">কুইজ শেষ!</div><div class="quiz-score">তুমি পেলে ' + quizScore + ' / ' + QUIZ_DATA.length + ' সঠিক</div><div class="quiz-result">' + (quizScore === QUIZ_DATA.length ? "পারফেক্ট স্কোর! তুমি আমাদের ভালোবাসার গল্প হৃদয়ের গভীর থেকে জানো!" : "তুমি আমাদের খুব ভালো চেনো — এটুকুই যথেষ্ট!") + '</div></div>';
             return;
         }
         const d = QUIZ_DATA[quizIdx];
@@ -1856,12 +1881,12 @@
 
     // ========== WOULD YOU RATHER ==========
     const WYR_DATA = [
-        { a: { emoji: "🌅", text: "Watch the sunrise together" }, b: { emoji: "🌙", text: "Watch the moonrise together" }, msg: "Either way, I just want to be next to you." },
-        { a: { emoji: "🍽️", text: "I cook for you" }, b: { emoji: "👩‍🍳", text: "You cook for me" }, msg: "As long as we eat together, it's perfect." },
-        { a: { emoji: "🎵", text: "Listen to our song on repeat" }, b: { emoji: "💬", text: "Talk about our memories all night" }, msg: "Both make my heart full — you make my heart full." },
-        { a: { emoji: "✈️", text: "Travel the world with me" }, b: { emoji: "🏠", text: "Build a cozy home with me" }, msg: "Home is wherever you are." },
-        { a: { emoji: "📸", text: "Take 100 photos of us" }, b: { emoji: "📝", text: "Write 100 love notes for each other" }, msg: "I'd do both — you deserve the world." },
-        { a: { emoji: "🤗", text: "A tight hug right now" }, b: { emoji: "😘", text: "A soft kiss right now" }, msg: "I want both, but you first." }
+        { a: { emoji: "🌅", text: "তোমার সাথে সূর্যোদয় দেখা" }, b: { emoji: "🌙", text: "তোমার সাথে চাঁদের আলো দেখা" }, msg: "যেকোনো হোক, আমি শুধু তোমার পাশে থাকতে চাই।" },
+        { a: { emoji: "🍽️", text: "আমি তোমার জন্য রান্না করব" }, b: { emoji: "👩‍🍳", text: "তুমি আমার জন্য রান্না করবে" }, msg: "আমরা একসাথে খাব, তাই তো পারফেক্ট।" },
+        { a: { emoji: "🎵", text: "আমাদের গান বারবার শোনা" }, b: { emoji: "💬", text: "রাত জাগিয়ে আমাদের স্মৃতি নিয়ে কথা বলা" }, msg: "দুটোই আমার হৃদয় ভরিয়ে দেয় — তুমি আমার হৃদয় ভরিয়ে দাও।" },
+        { a: { emoji: "✈️", text: "আমার সাথে পৃথিবী ঘোরা" }, b: { emoji: "🏠", text: "আমার সাথে একটি আরামদায়ক বাসা তৈরি করা" }, msg: "বাসা হলো যেখানে তুমি আছো।" },
+        { a: { emoji: "📸", text: "আমাদের ১০০টি ছবি তোলা" }, b: { emoji: "📝", text: "একে অপরের জন্য ১০০টি ভালোবাসার চিঠি লেখা" }, msg: "আমি দুটোই করতাম — তুমি পৃথিবীর সবকিছুর যোগ্য।" },
+        { a: { emoji: "🤗", text: "এখনই একটি শক্ত জড়িয়ে ধরা" }, b: { emoji: "😘", text: "এখনই একটি নরম চুমু" }, msg: "আমি দুটোই চাই, কিন্তু প্রথমে তুমি।" }
     ];
 
     let wyrIdx = 0;
@@ -1877,7 +1902,7 @@
         const counter = document.getElementById('wyr-counter');
         if (wyrIdx >= WYR_DATA.length) {
             counter.textContent = '';
-            area.innerHTML = '<div class="wyr-card"><div style="font-size:3rem; margin-bottom:12px;">💝</div><div class="quiz-question" style="color:#FFB8FF;">Every choice leads back to us!</div><div class="wyr-result">No matter what you choose, I choose you — every single time.</div></div>';
+            area.innerHTML = '<div class="wyr-card"><div style="font-size:3rem; margin-bottom:12px;">💝</div><div class="quiz-question" style="color:#FFB8FF;">প্রতিটি পছন্দ আমাদের দিকে ফিরিয়ে আনে!</div><div class="wyr-result">তুমি যাই বাছো, আমি তোমাকে বাছি — সবসময়।</div></div>';
             return;
         }
         counter.textContent = (wyrIdx+1) + ' / ' + WYR_DATA.length;
