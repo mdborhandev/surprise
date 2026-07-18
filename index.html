@@ -594,6 +594,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
     // ========== CONFIG ==========
+    let NICK_EMOJIS = ['🕊️','🧸','💛','✨','👶','🐾','💕'];
     let NICKNAMES = ['My Paki','My Monu','My Fahu','My Sonamoni','My Baby','My Pet','My Sajna','Jaan','Jaanu','Sweetheart','Princess','Darling','Honey','My Queen','Angel','Beautiful','Cutie','Babu','Shona','Gudiya','Rani','Mere Dil','Meri Jaan','Pyaari','Choti','Jaane Jaan','Dil Ki Dhadkan','Meri Zindagi','amar sona','amar priyo','amar bhalobasha','amar life','amar jaan','amar dil','amar mon','amar shona','amar rani','amar princess','amar angel','amar honey','amar darling','amar jaanu','amar babu','amar cutie','amar Gudiya','amar pakhi','amar choto','amar mishti','amar sundori'];
     const IMAGES = ['Paki','Monu','Fahu','Sonamoni','Baby','My Pet','My Sajna','Jaan','Jaanu','Sweetheart','Princess','Darling','Honey','My Queen','Angel','Beautiful','Cutie','Babu','Shona','Gudiya','Rani','Mere Dil','Meri Jaan','Pyaari','Choti','Jaane Jaan','Dil Ki Dhadkan','Meri Zindagi'];
 
@@ -741,6 +742,7 @@
             const d = await r.json();
             target = new Date(d.birthday + 'T00:00:00').getTime();
             if (d.nicknames && d.nicknames.length) NICKNAMES = d.nicknames;
+            if (d.nickname_emojis && d.nickname_emojis.length) NICK_EMOJIS = d.nickname_emojis;
             if (d.password !== undefined) passwordOn = d.password;
             if (d.password_code) PASSWORD_CODE = d.password_code;
             if (d.name) appUserName = d.name;
@@ -1792,14 +1794,38 @@
         }
     }
 
+    let nickCycleTimer = null;
+
     function showWelcomeScreen() {
-        const n = nextNick();
-        document.getElementById('welcome-nick').innerHTML = '<span class="golden-name">' + n + '</span>';
+        if (nickCycleTimer) { clearInterval(nickCycleTimer); nickCycleTimer = null; }
+        const nickEl = document.getElementById('welcome-nick');
+        let idx = 0;
+        nickEl.innerHTML = '<span class="golden-name">' + NICKNAMES[idx] + '</span> ' + (NICK_EMOJIS[idx] || '');
+        nickEl.style.opacity = '1';
+        nickEl.style.transition = 'opacity 0.4s ease';
         showPhase('welcome-phase', true);
         confetti();
+
+        // Cycle through all nicknames
+        nickCycleTimer = setInterval(() => {
+            nickEl.style.opacity = '0';
+            setTimeout(() => {
+                idx++;
+                if (idx >= NICKNAMES.length) {
+                    clearInterval(nickCycleTimer);
+                    nickCycleTimer = null;
+                    nickEl.innerHTML = '<span class="golden-name">' + NICKNAMES[0] + '</span> ' + (NICK_EMOJIS[0] || '');
+                    nickEl.style.opacity = '1';
+                    return;
+                }
+                nickEl.innerHTML = '<span class="golden-name">' + NICKNAMES[idx] + '</span> ' + (NICK_EMOJIS[idx] || '');
+                nickEl.style.opacity = '1';
+            }, 400);
+        }, 1500);
     }
 
     function goToLetter() {
+        if (nickCycleTimer) { clearInterval(nickCycleTimer); nickCycleTimer = null; }
         showPhase('welcome-phase', false);
         startPhase2();
         setPhaseURL('letter');
