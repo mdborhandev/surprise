@@ -353,13 +353,40 @@
         .type-skip-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); }
 
         /* Birthday Passed Screen */
-        #passed-screen { position: fixed; inset: 0; z-index: 150; background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; }
+        #passed-screen { position: fixed; inset: 0; z-index: 150; background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 20px; overflow: hidden; }
         #passed-screen.active { display: flex; }
-        .passed-emoji { font-size: 5rem; margin-bottom: 20px; animation: floatUp 3s ease-in-out infinite; }
-        .passed-title { font-size: clamp(1.6rem, 6vw, 2.8rem); font-weight: 800; color: #fff; margin-bottom: 12px; }
-        .passed-sub { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.7; max-width: 380px; margin: 0 auto 28px; }
-        .passed-btn { padding: 14px 36px; border-radius: 30px; background: rgba(251,191,36,0.15); border: 1.5px solid rgba(251,191,36,0.3); color: rgba(255,255,255,0.7); font-family: 'Orbitron', sans-serif; font-size: 12px; letter-spacing: 0.15em; cursor: pointer; transition: all 0.3s; }
-        .passed-btn:hover { background: rgba(255,184,255,0.25); color: #FFB8FF; transform: scale(1.05); }
+        #passed-screen.active .passed-emoji { animation: passedEmojiIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards, floatUp 3s ease-in-out 0.8s infinite; }
+        #passed-screen.active .passed-title { animation: passedFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
+        #passed-screen.active .passed-sub { animation: passedFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; opacity: 0; }
+        #passed-screen.active .passed-hint { animation: passedFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards; opacity: 0; }
+        #passed-screen.active .passed-btn { animation: passedFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards; opacity: 0; }
+        @keyframes passedEmojiIn { 0% { opacity: 0; transform: scale(0.3) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        @keyframes passedFadeUp { 0% { opacity: 0; transform: translateY(15px); } 100% { opacity: 1; transform: translateY(0); } }
+        .passed-emoji { font-size: 6rem; margin-bottom: 24px; filter: drop-shadow(0 0 30px rgba(255,184,255,0.4)); position: relative; z-index: 2; opacity: 0; }
+        .passed-emoji-glow { position: absolute; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,184,255,0.15) 0%, transparent 70%); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: pulse 3s ease-in-out infinite; z-index: 1; }
+        .passed-title { font-size: clamp(1.8rem, 7vw, 3.2rem); font-weight: 900; color: #fff; margin-bottom: 8px; letter-spacing: 0.02em; line-height: 1.2; }
+        .passed-title .golden-name { color: #FFB8FF; text-shadow: 0 0 20px rgba(255,184,255,0.3); }
+        .passed-sub { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.8; max-width: 400px; margin: 0 auto 12px; }
+        .passed-hint { font-size: 12px; color: rgba(255,184,255,0.5); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 32px; }
+        .passed-btn { padding: 16px 44px; border-radius: 40px; background: linear-gradient(135deg, rgba(255,184,255,0.2) 0%, rgba(255,184,255,0.08) 100%); border: 1.5px solid rgba(255,184,255,0.4); color: rgba(255,255,255,0.85); font-family: 'Orbitron', sans-serif; font-size: 13px; letter-spacing: 0.15em; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); position: relative; overflow: hidden; }
+        .passed-btn::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,184,255,0.3) 0%, rgba(255,184,255,0.1) 100%); opacity: 0; transition: opacity 0.4s ease; }
+        .passed-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,184,255,0.2), 0 8px 32px rgba(0,0,0,0.3); border-color: rgba(255,184,255,0.6); }
+        .passed-btn:hover::before { opacity: 1; }
+        .passed-btn span { position: relative; z-index: 1; }
+        .passed-confetti { position: absolute; top: -10px; width: 8px; height: 8px; opacity: 0; animation: confettiPass 4s ease-in-out forwards; pointer-events: none; }
+        @keyframes confettiPass { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        .passed-sparkle { position: absolute; width: 3px; height: 3px; background: rgba(255,184,255,0.6); border-radius: 50%; animation: sparklePass 2s ease-in-out infinite; pointer-events: none; }
+        @keyframes sparklePass { 0%,100% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1); } }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            #passed-screen.active .passed-emoji { animation: none; opacity: 1; }
+            #passed-screen.active .passed-title,
+            #passed-screen.active .passed-sub,
+            #passed-screen.active .passed-hint,
+            #passed-screen.active .passed-btn { animation: none; opacity: 1; }
+            .passed-confetti, .passed-sparkle { display: none; }
+        }
 
         /* Gallery Phase */
         .gallery-grid { column-count: 3; column-gap: 8px; max-width: 440px; width: 100%; max-height: 68vh; overflow-y: auto; padding: 0 4px 20px; scroll-behavior: smooth; }
@@ -480,10 +507,12 @@
 
     <!-- Birthday Passed Screen -->
     <div id="passed-screen">
+        <div class="passed-emoji-glow"></div>
         <div class="passed-emoji">🎂</div>
-        <div class="passed-title"><span class="golden-name">Happy Birthday!</span></div>
-        <div class="passed-sub">Your birthday may have passed, but this surprise was made with love and is waiting for you whenever you're ready.</div>
-        <button class="passed-btn" onclick="startPassedSurprise()">VIEW SURPRISE &#8594;</button>
+        <div class="passed-title"><span class="golden-name">শুভ জন্মদিন!</span></div>
+        <div class="passed-sub">জন্মদিন তো একদিন, কিন্তু তোমাকে ভালোবাসা প্রতিদিন। এই সারপ্রাইজটি তোমার জন্য তৈরি করা হয়েছে — তুমি যখনই চাও তখনই দেখতে পারো।</div>
+        <div class="passed-hint">তোমার জন্য একটি বিশেষ সারপ্রাইজ অপেক্ষা করছে</div>
+        <button class="passed-btn" onclick="startPassedSurprise()"><span>সারপ্রাইজ দেখো &#8594;</span></button>
     </div>
 
     <!-- Stars -->
@@ -985,8 +1014,11 @@
         if (diff <= 0) {
             document.getElementById('loading-screen').style.opacity = '0';
             document.getElementById('loading-screen').style.transition = 'opacity 0.5s';
-            setTimeout(() => { document.getElementById('loading-screen').style.display = 'none'; }, 500);
-            document.getElementById('passed-screen').classList.add('active');
+            setTimeout(() => { 
+                document.getElementById('loading-screen').style.display = 'none'; 
+                document.getElementById('passed-screen').classList.add('active');
+                createPassedAnimations();
+            }, 500);
             return;
         }
 
@@ -1005,6 +1037,34 @@
         surpriseStarted = true;
         saveProgress('reveal');
         startSurprise();
+    }
+
+    // ========== PASSED SCREEN ANIMATIONS ==========
+    let passedAnimationsCreated = false;
+    function createPassedAnimations() {
+        const screen = document.getElementById('passed-screen');
+        if (!screen || passedAnimationsCreated) return;
+        passedAnimationsCreated = true;
+
+        // Create confetti (fewer on mobile)
+        const confettiCount = isMobile ? 12 : 25;
+        const colors = ['#FFB8FF', '#FBBF24', '#F87171', '#A78BFA', '#34D399', '#60A5FA'];
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'passed-confetti';
+            const size = 4 + Math.random() * 8;
+            confetti.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*3}s;animation-duration:${3+Math.random()*3}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+            screen.appendChild(confetti);
+        }
+
+        // Create sparkles (fewer on mobile)
+        const sparkleCount = isMobile ? 6 : 12;
+        for (let i = 0; i < sparkleCount; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'passed-sparkle';
+            sparkle.style.cssText = `left:${10+Math.random()*80}%;top:${10+Math.random()*80}%;animation-delay:${Math.random()*2}s;animation-duration:${1.5+Math.random()*1.5}s;`;
+            screen.appendChild(sparkle);
+        }
     }
 
     function resetAndStartOver() {
