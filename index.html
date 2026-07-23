@@ -883,16 +883,20 @@
     ];
     const FINALE_IMGS = IMAGES.slice(0, 6);
 
-    const HERO_IMAGES = [
-        'Angel.png','Babu.png','Baby.png','Beautiful.png','Choti.png','Cutie.png',
-        'Darling.png','Dil Ki Dhadkan.png','Fahu.png','Gudiya.png','Honey.png',
-        'Jaane Jaan.png','Jaan.png','Jaanu.png','Mere Dil.png','Meri Jaan.png',
-        'Meri Zindagi.png','Monu.png','My Pet.png','My Queen.png','My Sajna.png',
-        'Princess.png','Pyaari.png','Rani.png','Shona.png','Sonamoni.png','Sweetheart.png'
+    let REVEAL_IMAGES = [
+        'Jaane Jaan.png','Dil Ki Dhadkan.png','Fahu.png','Baby.png',
+        'Sweetheart.png','Shona.png','Meri Zindagi.png','Pyaari.png'
+    ];
+    let FINALE_HERO_IMAGES = [
+        'Mere Dil.png','My Pet.png','Rani.png','Pyaari.png',
+        'Sonamoni.png','Sweetheart.png'
     ];
 
-    function getRandomHero() {
-        return 'Fahamida/' + HERO_IMAGES[Math.floor(Math.random() * HERO_IMAGES.length)];
+    function getRandomRevealImage() {
+        return 'Fahamida/' + REVEAL_IMAGES[Math.floor(Math.random() * REVEAL_IMAGES.length)];
+    }
+    function getRandomFinaleImage() {
+        return 'Fahamida/' + FINALE_HERO_IMAGES[Math.floor(Math.random() * FINALE_HERO_IMAGES.length)];
     }
 
     const GALLERY_IMGS = [
@@ -975,6 +979,8 @@
             if (d.password !== undefined) passwordOn = d.password;
             if (d.password_code) PASSWORD_CODE = d.password_code;
             if (d.name) appUserName = d.name;
+            if (d.reveal_images && d.reveal_images.length) REVEAL_IMAGES = d.reveal_images;
+            if (d.finale_images && d.finale_images.length) FINALE_HERO_IMAGES = d.finale_images;
             nickname = NICKNAMES[0];
             document.getElementById('title-name').innerHTML = '<span class="golden-name">' + appUserName + '</span>\'s Birthday';
             document.getElementById('reveal-title').innerHTML = 'My Dear <span class="golden-name">' + appUserName + ' Baby</span>';
@@ -2524,9 +2530,9 @@
     // ========== CACHE BUST ==========
     const _cb = '?v=' + Date.now();
     const _revealHero = document.getElementById('reveal-hero-img');
-    if (_revealHero) _revealHero.src = getRandomHero() + _cb;
+    if (_revealHero) _revealHero.src = getRandomRevealImage() + _cb;
     const _heroImg = document.getElementById('finale-hero-img');
-    if (_heroImg) _heroImg.src = getRandomHero() + _cb;
+    if (_heroImg) _heroImg.src = getRandomFinaleImage() + _cb;
     const _audioSrc = document.querySelector('#bg-music source');
     if (_audioSrc) _audioSrc.src = _audioSrc.src.split('?')[0] + _cb;
 
