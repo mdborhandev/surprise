@@ -229,7 +229,7 @@
         .coupon-hint { font-size: 10px; color: rgba(255,255,255,0.25); margin-top: 12px; }
         .coupon-promise { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.6; font-style: italic; }
         .coupon-tap-hint { font-size: 10px; color: rgba(255,255,255,0.3); margin-top: auto; padding-top: 10px; }
-        .coupon-mystery { font-size: 2.5rem; margin-bottom: 8px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.15)); }
+        .coupon-mystery { font-size: 3.5rem; margin-bottom: 0; filter: drop-shadow(0 0 12px rgba(255,255,255,0.2)); line-height: 1; }
         .coupon-card.selected .coupon-front { border-color: rgba(251,191,36,0.5); background: linear-gradient(135deg, rgba(251,191,36,0.1) 0%, rgba(251,191,36,0.03) 100%); }
         .coupon-card.selected .coupon-front::after { content: '✓'; position: absolute; top: 10px; right: 10px; width: 22px; height: 22px; background: #FBBF24; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
         .coupon-card.selected .coupon-back { border-color: rgba(251,191,36,0.5); }
@@ -1740,22 +1740,22 @@
 
     // ========== PHASE 5: LOVE COUPONS ==========
     const LOVE_COUPONS = [
-        { icon: '💞', title: 'Deep Talk Date', promise: 'An evening where we put our phones away and talk about our dreams, fears, and everything in between.' },
-        { icon: '💌', title: 'Letters From My Heart', promise: 'We exchange handwritten letters sharing what we love most about each other and our journey together.' },
-        { icon: '🌅', title: 'Sunset Promise Walk', promise: 'A peaceful walk together while watching the sunset and making promises for our future.' },
-        { icon: '📸', title: 'Memory Photo Day', promise: 'We spend the afternoon taking beautiful photos together and creating new memories to keep forever.' },
-        { icon: '📝', title: 'Our Couple Bucket List', promise: 'We write down all the places we want to visit, dreams we want to achieve, and adventures we want to share.' },
-        { icon: '🎨', title: 'Create Together', promise: 'We spend time drawing, writing, or creating something together that will always remind us of this day.' },
-        { icon: '🍰', title: 'Birthday Treat Date', promise: 'Your favorite snacks, dessert, and quality time together while celebrating you.' },
-        { icon: '🌹', title: 'Flower & Compliment Hour', promise: 'A special hour where I give you flowers and tell you all the reasons why you are so precious to me.' },
-        { icon: '🎁', title: 'Secret Birthday Surprise', promise: 'A surprise planned with love that will make this birthday unforgettable and strengthen our bond even more.' }
+        { icon: '💍', title: 'Handmade Bracelet', promise: 'A bracelet with her name or initials, made with love and care.' },
+        { icon: '🧸', title: 'Custom Teddy Bear', promise: 'A cute teddy with a handwritten note tied to it, a hug she can keep forever.' },
+        { icon: '🔑', title: 'Matching Keychain Set', promise: 'Two keychains, one for you and one for her, with a special engraving to stay connected.' },
+        { icon: '🍢', title: 'Street Food Date', promise: 'Explore the best local food spots together, trying everything from spicy to sweet.' },
+        { icon: '🌇', title: 'Rooftop Restaurant Date', promise: 'A romantic dinner at a rooftop restaurant with a beautiful view and great food.' },
+        { icon: '🕯️', title: 'Candle Making Workshop', promise: 'Make personalized candles together to keep as a warm memory of this day.' },
+        { icon: '🎭', title: 'Blindfold Taste Test', promise: 'She blindfolds you, you guess the food, then switch — fun, flirty, and delicious.' },
+        { icon: '🤳', title: '20 Pose Selfie Challenge', promise: 'Click 20 creative and fun selfies together with different poses to treasure forever.' },
+        { icon: '💍', title: 'Promise Ring', promise: 'A simple ring with a meaningful inscription inside, a promise of forever.' }
     ];
 
     let selectedCoupons = [];
     const COUPON_CATEGORIES = [
-        { name: '❤️ Heart-to-Heart Moments', start: 0, end: 2 },
-        { name: '🌸 Memory Making', start: 3, end: 5 },
-        { name: '✨ Romance & Happiness', start: 6, end: 8 }
+        { name: '🎁 Keepsake Gift', start: 0, end: 2 },
+        { name: '🌙 Experience Together', start: 3, end: 5 },
+        { name: '💌 Sealed with Love', start: 6, end: 8 }
     ];
 
     function getCouponCategory(index) {
@@ -1769,7 +1769,6 @@
         const grid = document.getElementById('coupons-grid');
         grid.innerHTML = '';
 
-        const FACE_EMOJIS = ['😊','🥰','😍','😘','🤗','😋','🤭','😌','😇'];
         let catIdx = 0;
 
         LOVE_COUPONS.forEach((coupon, i) => {
@@ -1788,7 +1787,7 @@
             card.innerHTML = `
                 <div class="coupon-inner">
                     <div class="coupon-front">
-                        <div class="coupon-mystery">🎁 ${FACE_EMOJIS[i]}</div>
+                        <div class="coupon-mystery">${coupon.icon}</div>
                         <div class="coupon-hint">Tap to pick</div>
                     </div>
                     <div class="coupon-back">
