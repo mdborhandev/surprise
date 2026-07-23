@@ -529,7 +529,7 @@
             <p class="countdown-tag">Counting down to</p>
             <h1 id="title-name" class="countdown-name"></h1>
             <div class="countdown-divider"></div>
-            <p class="countdown-sub">Something beautiful is on its way</p>
+            <p class="countdown-sub">Turning 24 — Something beautiful is on its way</p>
         </div>
         <div class="countdown-grid">
             <div class="count-box"><div id="cd-days" class="count-num">00</div><div class="count-label">Days</div></div>
@@ -671,7 +671,7 @@
         <div class="finale-hero">
             <img src="" alt="" id="finale-hero-img">
             <div class="finale-hero-overlay">
-                <div class="finale-hero-title">Happy Birthday!</div>
+                <div class="finale-hero-title">Happy 24th Birthday!</div>
                 <div class="finale-hero-sub">To the most beautiful soul in my life</div>
             </div>
         </div>
@@ -686,7 +686,7 @@
         </div>
         <div class="finale-card" id="finale-card">
             <div class="finale-card-emoji">&#10084;</div>
-            <div class="finale-card-title">Happy Birthday!</div>
+            <div class="finale-card-title">Happy 24th Birthday!</div>
             <div id="finale-card-text"></div>
             <div class="finale-card-sign" id="finale-card-sign"></div>
         </div>
@@ -985,13 +985,13 @@
             nickname = NICKNAMES[0];
             document.getElementById('title-name').innerHTML = '<span class="golden-name">' + appUserName + '</span>\'s Birthday';
             document.getElementById('reveal-title').innerHTML = 'My Dear <span class="golden-name">' + appUserName + ' Baby</span>';
-            document.getElementById('reveal-sub').textContent = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
+            document.getElementById('reveal-sub').innerHTML = '<span style="font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#FFB8FF;display:block;margin-bottom:12px;text-shadow:0 0 20px rgba(255,184,255,0.4);">Turning 24</span><span style="font-size:clamp(12px,3vw,15px);color:rgba(255,255,255,0.5);">Wishing you a day filled with love, laughter, and all the happiness you deserve.</span>';
         } catch(e) {
             target = new Date('2026-07-24T00:00:00').getTime();
             nickname = NICKNAMES[0];
             document.getElementById('title-name').innerHTML = '<span class="golden-name">Fahamida</span>\'s Birthday';
             document.getElementById('reveal-title').innerHTML = 'My Dear <span class="golden-name">Fahamida Baby</span>';
-            document.getElementById('reveal-sub').textContent = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
+            document.getElementById('reveal-sub').innerHTML = '<span style="font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#FFB8FF;display:block;margin-bottom:12px;text-shadow:0 0 20px rgba(255,184,255,0.4);">Turning 24</span><span style="font-size:clamp(12px,3vw,15px);color:rgba(255,255,255,0.5);">Wishing you a day filled with love, laughter, and all the happiness you deserve.</span>';
         }
 
         loadProgress = 40;
@@ -1386,7 +1386,7 @@
         const subEl = document.getElementById('reveal-sub');
 
         const titleHTML = 'Happy Birthday My Dear <span class="golden-name">' + appUserName + ' Baby</span>';
-        const subText = "Wishing you a day filled with love, laughter, and all the happiness you deserve.";
+        const subText = '<span style="font-size:clamp(2rem,6vw,3rem);font-weight:900;color:#FFB8FF;display:block;margin-bottom:12px;text-shadow:0 0 20px rgba(255,184,255,0.4);">Turning 24</span><span style="font-size:clamp(12px,3vw,15px);color:rgba(255,255,255,0.5);">Wishing you a day filled with love, laughter, and all the happiness you deserve.</span>';
 
         titleEl.innerHTML = '';
         subEl.textContent = '';
